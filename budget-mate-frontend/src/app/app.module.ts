@@ -5,6 +5,7 @@ import {RouterOutlet} from "@angular/router";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {DashboardModule} from "./dashboard/dashboard.module";
 import {AppRoutingModule} from "./app-routing.module";
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {AppRoutingModule} from "./app-routing.module";
     RouterOutlet,
     BrowserAnimationsModule,
     DashboardModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

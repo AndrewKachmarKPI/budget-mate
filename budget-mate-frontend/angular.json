@@ -23,9 +23,28 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/vendor/fonts/boxicons.css",
+              "src/assets/vendor/css/core.css",
+              "src/assets/vendor/css/theme-default.css",
+              "src/assets/css/demo.css",
+              "src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css",
+              "src/assets/vendor/libs/apex-charts/apex-charts.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/vendor/js/helpers.js",
+              "src/assets/js/config.js",
+              "src/assets/vendor/js/menu.js",
+              "src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js",
+              "src/assets/vendor/libs/apex-charts/apexcharts.js",
+              "src/assets/vendor/libs/highlight/highlight.js",
+              "src/assets/vendor/libs/masonry/masonry.js",
+              "src/assets/vendor/libs/popper/popper.js",
+              "src/assets/vendor/libs/jquery/jquery.js",
+              "src/assets/vendor/js/bootstrap.js",
+              "src/assets/js/dashboards-analytics.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -90,7 +109,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/vendor/fonts/boxicons.css",
+              "src/assets/vendor/css/core.css",
+              "src/assets/vendor/css/theme-default.css",
+              "src/assets/css/demo.css",
+              "src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css",
+              "src/assets/vendor/libs/apex-charts/apex-charts.css"
             ],
             "scripts": []
           }
