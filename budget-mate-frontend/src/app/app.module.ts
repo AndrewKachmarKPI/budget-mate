@@ -7,11 +7,6 @@ import {DashboardModule} from "./dashboard/dashboard.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {ToastrModule} from "ngx-toastr";
 import { RegisterComponent } from './register/register.component';
-import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
-import { BoardAdminComponent } from './board-admin/board-admin.component';
-import { BoardModeratorComponent } from './board-moderator/board-moderator.component';
-import { BoardUserComponent } from './board-user/board-user.component';
 import {HttpClientModule} from "@angular/common/http";
 import { httpInterceptorProviders } from './_helpers/http.interceptor';
 import { FormsModule } from '@angular/forms';
@@ -20,11 +15,6 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     RegisterComponent,
-    HomeComponent,
-    ProfileComponent,
-    BoardAdminComponent,
-    BoardModeratorComponent,
-    BoardUserComponent,
   ],
   imports: [
     BrowserModule,
