@@ -23,6 +23,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/vendor/css/pages/page-auth.css",
               "src/assets/vendor/css/core.css",
               "src/assets/vendor/css/theme-default.css",
               "src/styles.css",
