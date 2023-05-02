@@ -6,10 +6,15 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {DashboardModule} from "./dashboard/dashboard.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {ToastrModule} from "ngx-toastr";
+import { RegisterComponent } from './register/register.component';
+import {HttpClientModule} from "@angular/common/http";
+import { httpInterceptorProviders } from './_helpers/http.interceptor';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -18,8 +23,10 @@ import {ToastrModule} from "ngx-toastr";
     DashboardModule,
     AppRoutingModule,
     ToastrModule.forRoot(),
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders,RegisterComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
