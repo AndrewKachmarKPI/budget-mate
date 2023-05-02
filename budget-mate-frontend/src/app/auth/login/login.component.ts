@@ -12,11 +12,9 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class LoginComponent implements OnInit {
   public passwordType: 'text' | 'password' = 'password';
-
   public formGroup = new FormGroup({
     username: new FormControl('', Validators.compose([Validators.required])),
-    password: new FormControl('', Validators.compose([Validators.required])),
-
+    password: new FormControl('', Validators.compose([Validators.required,Validators.minLength(6)])),
   });
 
   constructor(private authService: AuthService,
@@ -37,7 +35,7 @@ export class LoginComponent implements OnInit {
 
 
   onSubmit(): void {
-    console.log("FOERM", this.controls);
+    console.log("FORM", this.controls);
     if (this.formGroup.valid) {
       const username: string = this.controls.username.value;
       const password: string = this.controls.password.value;
@@ -47,11 +45,11 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         },
         error: err => {
-          this.toaster.error("Failed lgin");
+          this.toaster.error("Failed login");
         }
       });
     } else {
-      this.toaster.error("FOrm is not valid");
+      this.toaster.error("Form is not valid");
     }
 
   }
