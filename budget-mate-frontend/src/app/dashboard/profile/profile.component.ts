@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { StorageService } from '../../_services/storage.service';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-profile',
@@ -7,11 +7,11 @@ import { StorageService } from '../../_services/storage.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  currentUser: any;
+  public currentPage: 'Account' | 'Notifications' | 'Connections' = 'Account';
 
-  constructor(private storageService: StorageService) { }
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit(): void {
-    this.currentUser = this.storageService.getUser();
   }
 }
