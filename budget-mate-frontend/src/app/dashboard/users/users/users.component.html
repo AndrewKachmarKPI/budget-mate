@@ -1,0 +1,214 @@
+<div class="row g-4 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="content-left">
+            <span>Session</span>
+            <div class="d-flex align-items-end mt-2">
+              <h4 class="mb-0 me-2">21,459</h4>
+              <small class="text-success">(+29%)</small>
+            </div>
+            <small>Total Users</small>
+          </div>
+          <span class="badge bg-label-primary rounded p-2">
+            <i class="bx bx-user bx-sm"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="content-left">
+            <span>Paid Users</span>
+            <div class="d-flex align-items-end mt-2">
+              <h4 class="mb-0 me-2">4,567</h4>
+              <small class="text-success">(+18%)</small>
+            </div>
+            <small>Last week analytics </small>
+          </div>
+          <span class="badge bg-label-danger rounded p-2">
+            <i class="bx bx-user-plus bx-sm"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="content-left">
+            <span>Active Users</span>
+            <div class="d-flex align-items-end mt-2">
+              <h4 class="mb-0 me-2">19,860</h4>
+              <small class="text-danger">(-14%)</small>
+            </div>
+            <small>Last week analytics</small>
+          </div>
+          <span class="badge bg-label-success rounded p-2">
+            <i class="bx bx-group bx-sm"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="content-left">
+            <span>Pending Users</span>
+            <div class="d-flex align-items-end mt-2">
+              <h4 class="mb-0 me-2">237</h4>
+              <small class="text-success">(+42%)</small>
+            </div>
+            <small>Last week analytics</small>
+          </div>
+          <span class="badge bg-label-warning rounded p-2">
+            <i class="bx bx-user-voice bx-sm"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex justify-content-between align-items-center row py-2 gap-3 gap-md-0">
+      <div class="col-md-3">
+        <h5 class="mb-0">
+          Users
+        </h5>
+      </div>
+      <div class="col-md-3 user_role"><select id="UserRole" class="form-select text-capitalize">
+        <option value=""> Select Role</option>
+        <option value="Admin">Admin</option>
+        <option value="Author">Author</option>
+        <option value="Editor">Editor</option>
+        <option value="Maintainer">Maintainer</option>
+        <option value="Subscriber">Subscriber</option>
+      </select>
+      </div>
+      <div class="col-md-3 user_plan"><select id="UserPlan" class="form-select text-capitalize">
+        <option value=""> Select Plan</option>
+        <option value="Basic">Basic</option>
+        <option value="Company">Company</option>
+        <option value="Enterprise">Enterprise</option>
+        <option value="Team">Team</option>
+      </select>
+      </div>
+      <div class="col-md-3 user_status"><select id="FilterTransaction" class="form-select text-capitalize">
+        <option value=""> Select Status</option>
+        <option value="Pending" class="text-capitalize">Pending</option>
+        <option value="Active" class="text-capitalize">Active</option>
+        <option value="Inactive" class="text-capitalize">Inactive</option>
+      </select></div>
+    </div>
+  </div>
+
+  <div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>User</th>
+        <th>Role</th>
+        <th>Plan</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+      <tr>
+        <td>
+          <div class="d-flex justify-content-start align-items-center user-name">
+            <div class="avatar-wrapper">
+              <div class="avatar avatar-sm me-3"><img src="../../assets/img/avatars/7.png" alt="Avatar"
+                                                      class="rounded-circle"></div>
+            </div>
+            <div class="d-flex flex-column"><a href="app-user-view-account.html" class="text-body text-truncate"><span
+              class="fw-semibold">Zsazsa McCleverty</span></a><small
+              class="text-muted">zmcclevertye@soundcloud.com</small></div>
+          </div>
+        </td>
+        <td>
+          <span class="text-truncate d-flex align-items-center">
+            <span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2">
+              <i class="bx bx-pie-chart-alt bx-xs"></i>
+            </span>
+            Maintainer
+          </span>
+        </td>
+        <td>
+          Basic
+        </td>
+        <td>
+          <span class="badge bg-label-primary me-1">Active</span>
+        </td>
+        <td>
+          <div class="d-inline-block text-nowrap">
+            <button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button>
+            <button class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></button>
+            <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
+              class="bx bx-dots-vertical-rounded"></i></button>
+            <div class="dropdown-menu dropdown-menu-end m-0"><a href="app-user-view-account.html"
+                                                                class="dropdown-item">View</a><a
+              href="javascript:;" class="dropdown-item">Suspend</a></div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="card-footer">
+    <div class="d-flex justify-content-end align-items-center">
+      <label class="me-2">
+        <select class="form-select">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </label>
+      <nav aria-label="Page navigation">
+        <ul class="pagination mb-0 d-flex justify-content-end">
+          <li class="page-item first">
+            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+          </li>
+          <li class="page-item prev">
+            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">2</a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="javascript:void(0);">3</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">4</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="javascript:void(0);">5</a>
+          </li>
+          <li class="page-item next">
+            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+          </li>
+          <li class="page-item last">
+            <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+

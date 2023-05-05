@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   public passwordType: 'text' | 'password' = 'password';
   public formGroup = new FormGroup({
     username: new FormControl('', Validators.compose([Validators.required])),
-    password: new FormControl('', Validators.compose([Validators.required,Validators.minLength(6)])),
+    password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
   });
 
   constructor(private authService: AuthService,
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
         }
       });
     } else {
-      this.toaster.error("Form is not valid");
+      this.toaster.error("Fill all form fields");
     }
 
   }
