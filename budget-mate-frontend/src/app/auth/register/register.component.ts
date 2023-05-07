@@ -34,24 +34,21 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const username: string = this.formGroup.controls.username.value;
-    const email= this.formGroup.controls.email.value;
-    const password: string = this.formGroup.controls.password.value;
-    if(this.formGroup.valid) {
+    if(this.formGroup.valid){
+      const username: string = this.formGroup.controls.username.value;
+      const email= this.formGroup.controls.email.value;
+      const password: string = this.formGroup.controls.password.value;
       this.authService.register(username, email, password).subscribe({
         next: data => {
-          console.log(data);
-          this.toaster.success("Successfully signed up!");
-          this.router.navigate(['/auth/login']);
+          this.router.navigate(['/auth/login']).then(()=>{
+            console.log(data);
+            this.toaster.success("Successfully signed up!");
+          });
         },
         error: err => {
           this.toaster.error("Oops, something went wrong...");
         }
       })
-    }
-    else {
-      //може впринципі не нада? Там ітак на півекрана червоного виходить, коли невалідні дані
-      //this.toaster.error("Please, input correct data");
     }
   }
 }
