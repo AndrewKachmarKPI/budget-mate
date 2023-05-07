@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../_services/auth.service";
 import {bounceAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, shakeAnimation} from "angular-animations";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +17,7 @@ export class DashboardComponent implements OnInit {
   public nestedElements: HTMLLIElement[] = [];
   public animationState: boolean = false;
 
-  constructor(private router: Router,
+  constructor(private router: Router, private spinnerService: NgxSpinnerService,
               private authService: AuthService) {
   }
 
@@ -84,5 +85,11 @@ export class DashboardComponent implements OnInit {
 
   public openMyBalanceDialog() {
     this.shake();
+    setTimeout(() => {
+      this.spinnerService.show('main');
+    }, 500);
+    setTimeout(() => {
+      this.spinnerService.hide('main');
+    },5000);
   }
 }

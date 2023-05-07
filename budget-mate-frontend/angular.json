@@ -32,7 +32,8 @@
               "src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css",
               "src/assets/vendor/libs/apex-charts/apex-charts.css",
               "src/assets/vendor/css/pages/page-account-settings.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
             "scripts": [
               "src/assets/vendor/js/helpers.js",
