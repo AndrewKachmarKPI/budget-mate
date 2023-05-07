@@ -6,16 +6,12 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {DashboardModule} from "./dashboard/dashboard.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {ToastrModule} from "ngx-toastr";
-
-import {RegisterComponent} from './register/register.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {FormsModule} from '@angular/forms';
 import {NgxSpinnerModule} from "ngx-spinner";
 import {TokenInterceptor} from "./_helpers/token-interceptor";
 import {SpinnerInterceptor} from "./_helpers/spinner-interceptor";
-
-import { RegisterComponent } from './auth/register/register.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RegisterComponent} from './auth/register/register.component';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -32,7 +28,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     ToastrModule.forRoot(),
     HttpClientModule,
     FormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
     ReactiveFormsModule
   ],
   providers: [RegisterComponent,
