@@ -26,11 +26,11 @@
                 autofocus
               />
             </div>
-            <div class="mb-3" *ngIf="f.submitted||formGroup.controls['username'].invalid">
-                <div *ngIf="formGroup.controls['username'].errors['required']&&formGroup.controls['username'].touched"
+            <div class="mb-3" *ngIf="(f.submitted || formGroup.controls['username'].touched) &&  formGroup.controls['username'].invalid">
+                <div @load *ngIf="formGroup.controls['username'].errors['required']&&formGroup.controls['username'].touched"
                      class="alert alert-danger">Username is required.
                 </div>
-              <div *ngIf="formGroup.controls['username'].errors['minlength']&&formGroup.controls['username'].touched"
+              <div @load *ngIf="formGroup.controls['username'].errors['minlength']&&formGroup.controls['username'].touched"
                    class="alert alert-danger">Username must be atleast 3 characters long.
               </div>
             </div>
@@ -55,11 +55,11 @@
                   class="bx" [ngClass]="[passwordType=='password'?'bx-hide':'bx-show']"></i></span>
               </div>
             </div>
-            <div class="mb-3" *ngIf="f.submitted||formGroup.controls['password'].invalid">
-                <div *ngIf="formGroup.controls['password'].errors['required']&&formGroup.controls['password'].touched"
+            <div class="mb-3" *ngIf="(f.submitted || formGroup.controls['password'].touched) &&  formGroup.controls['password'].invalid">
+                <div @load *ngIf="formGroup.controls['password'].errors['required']"
                      class="alert alert-danger">Password is required.
                 </div>
-                <div *ngIf="formGroup.controls['password'].errors['minlength']&&formGroup.controls['password'].touched"
+                <div @load *ngIf="formGroup.controls['password'].errors['minlength']"
                      class="alert alert-danger">Password must be atleast 6 characters long.
                 </div>
             </div>
