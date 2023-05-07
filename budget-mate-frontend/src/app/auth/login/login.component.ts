@@ -13,7 +13,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class LoginComponent implements OnInit {
   public passwordType: 'text' | 'password' = 'password';
   public formGroup = new FormGroup({
-    username: new FormControl('', Validators.compose([Validators.required])),
+    username: new FormControl('', Validators.compose([Validators.required,Validators.minLength(3)])),
     password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
   });
 
@@ -42,16 +42,15 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(username, password).subscribe({
         next: data => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/dashboard']).then(()=>{
+            this.toaster.success("Successfully logged in!");
+          });
         },
         error: err => {
           this.toaster.error("Failed login");
         }
       });
-    } else {
-      this.toaster.error("Fill all form fields");
     }
-
   }
 
   onclickTest() {
