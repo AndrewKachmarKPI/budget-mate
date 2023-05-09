@@ -11,14 +11,19 @@ import { ConnectionsSettingsComponent } from './connections-settings/connections
 import { UsersComponent } from './users/users/users.component';
 import { RolesComponent } from './users/roles/roles.component';
 import { PricingComponent } from './pricing/pricing.component';
+import { SavingsDashboardComponent } from './savings-dashboard/savings-dashboard.component';
+import {NgApexchartsModule} from "ng-apexcharts";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 
 @NgModule({
-  declarations: [DashboardComponent, BudgetDashboardComponent, ProfileComponent, AccountSettingsComponent, NotificationSettingsComponent, ConnectionsSettingsComponent, UsersComponent, RolesComponent, PricingComponent],
+  declarations: [DashboardComponent, BudgetDashboardComponent, ProfileComponent, AccountSettingsComponent, NotificationSettingsComponent, ConnectionsSettingsComponent, UsersComponent, RolesComponent, PricingComponent, SavingsDashboardComponent],
   imports: [
     CommonModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    NgApexchartsModule,
+    ReactiveFormsModule
   ]
 })
 export class DashboardModule {

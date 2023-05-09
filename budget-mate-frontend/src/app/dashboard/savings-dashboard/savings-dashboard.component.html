@@ -1,0 +1,91 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Savings /</span>Piggy bank
+  </h4>
+  <button class="btn btn-secondary create-new btn-primary" type="button">
+    <span>
+      <i class="bx bx-plus me-sm-1"></i>
+      <span class="d-none d-sm-inline-block"
+            data-bs-toggle="modal" data-bs-target="#createBank">Create Piggy bank</span>
+    </span>
+  </button>
+</div>
+<div class="row">
+  <div class="col-md-4 col-xl-3  mb-4">
+    <div class="card h-100">
+      <div class="card-header text-center">
+        <small class="card-subtitle mb-2">Savings goal</small>
+        <h4 class="card-title mb-0 mt-1">Traveling</h4>
+      </div>
+      <div class="card-body" style="position: relative;">
+        <div style="text-align:center">
+          <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [plotOptions]="chartOptions.plotOptions"
+            [stroke]="chartOptions.stroke"
+            [fill]="chartOptions.fill">
+          </apx-chart>
+        </div>
+        <div class="d-flex flex-column align-items-center mt-2">
+          <small class="text-muted">Your score is based on the</small>
+          <small class="fw-semibold">287 Transactions</small>
+          <a href="javascript:void(0)" class="btn btn-sm btn-primary mt-2" role="button">View details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--CREATE BANK MODAL-->
+<div class="modal fade" id="createBank" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">Create piggy bank</h5>
+        <button (click)="resetForm()"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form #form="ngForm" [formGroup]="formGroup" (ngSubmit)="createBank()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col mb-3">
+              <label for="name" class="form-label">Bank name</label>
+              <input type="text" id="name" class="form-control" placeholder="Enter bank name"
+                     formControlName="bankTitleControl"
+                     [ngClass]="{'invalid': controls['bankTitleControl'].invalid && (form.submitted||controls['bankTitleControl'].touched)}"/>
+            </div>
+          </div>
+          <div class="row g-2">
+            <div class="col mb-0">
+              <label class="form-label" for="emailSmall">Goal</label>
+              <input type="number" class="form-control" id="emailSmall" placeholder="100" min="1"
+                     formControlName="goalControl"
+                     [ngClass]="{'invalid': controls['goalControl'].invalid && (form.submitted||controls['goalControl'].touched)}"/>
+            </div>
+            <div class="col mb-0">
+              <label for="deadline" class="form-label">Deadline</label>
+              <input id="deadline" type="text" class="form-control" placeholder="DD / MM / YY"
+                     formControlName="deadlineControl"
+                     [ngClass]="{'invalid': controls['deadlineControl'].invalid && (form.submitted||controls['deadlineControl'].touched)}"/>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" (click)="resetForm()">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+            Create bank
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

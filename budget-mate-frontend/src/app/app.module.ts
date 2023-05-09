@@ -12,6 +12,7 @@ import {TokenInterceptor} from "./_helpers/token-interceptor";
 import {SpinnerInterceptor} from "./_helpers/spinner-interceptor";
 import {RegisterComponent} from './auth/register/register.component';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {NgApexchartsModule} from "ng-apexcharts";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {ReactiveFormsModule, FormsModule} from '@angular/forms';
     HttpClientModule,
     FormsModule,
     NgxSpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgApexchartsModule
   ],
   providers: [RegisterComponent,
     {
