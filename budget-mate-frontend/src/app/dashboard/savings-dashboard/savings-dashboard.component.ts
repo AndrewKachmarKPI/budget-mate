@@ -11,6 +11,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import flatpickr from "flatpickr";
 import {BankService} from "../../_services/bank.service";
 import {ToastrService} from "ngx-toastr";
+import {CreateBankDto} from "../../models/create-bank-dto";
+import {BankDto} from "../../models/bank-dto";
 
 
 export type ChartOptions = {
@@ -29,6 +31,9 @@ export type ChartOptions = {
 })
 export class SavingsDashboardComponent implements OnInit, AfterViewInit {
   @ViewChild("chart") chart: ChartComponent;
+  @ViewChild("closeForm") closeForm: HTMLButtonElement;
+
+  public banks: BankDto[] = [];
   public chartsOptions: Map<string, Partial<ChartOptions>> = new Map<string, Partial<ChartOptions>>();
   public chartOptions: Partial<ChartOptions>;
 
@@ -46,6 +51,7 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit {
 
   constructor(private bankService: BankService, private toastService: ToastrService) {
     this.initChart()
+    this.getMyBanks();
   }
 
   get controls() {
@@ -60,13 +66,29 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit {
   }
 
 
+  public getMyBanks() {
+    this.bankService.getMyBanks().subscribe({
+      next: (banks) => {
+        this.banks = banks;
+      }
+    })
+  }
+
   public createBank() {
-    console.log("FORM<", this.formGroup);
     if (this.formGroup.valid) {
-      this.bankService.createBank().subscribe({
+      const createBankDto: CreateBankDto = new CreateBankDto(
+        this.controls['bankTitleControl'].value,
+        this.controls['goalControl'].value,
+        this.controls['deadlineControl'].value,)
+      this.bankService.createBank(createBankDto).subscribe({
         next: () => {
+          this.closeForm.click();
           this.resetForm();
-          this.toastService.success("Piggy bank created");
+          this.toastService.success("Piggy bank created!");
+        },
+        error: (err) => {
+          this.toastService.error("Failed to create piggy bank!");
+          console.log(err);
         }
       })
     }
