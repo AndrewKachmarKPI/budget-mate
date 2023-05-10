@@ -114,7 +114,7 @@
       <div class="modal-body">
         <div class="col-12 fv-plugins-icon-container">
           <label class="form-label w-100">Goal progress</label>
-          <div class="progress" *ngIf="selectedBank">
+          <div class="progress progress-height" *ngIf="selectedBank">
             <div class="progress-bar progress-height progress-bar-striped progress-bar-animated" role="progressbar"
                  [ngClass]="getProgressColor()"
                  [ngStyle]="{width:selectedBank['progress']+'%'}" [attr.aria-valuenow]="selectedBank['progress']"
