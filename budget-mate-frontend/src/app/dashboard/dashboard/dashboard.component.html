@@ -87,6 +87,12 @@
         <li class="menu-header small text-uppercase">
           <span class="menu-header-text">Tools</span>
         </li>
+        <li class="menu-item" [ngClass]="{'active':isRouteActive('piggy')}">
+          <a routerLink="/piggy" class="menu-link">
+            <i class="menu-icon tf-icons bx bxs-bank"></i>
+            <div data-i18n="Layouts">Piggy bank</div>
+          </a>
+        </li>
         <li class="menu-item" [ngClass]="{'active':isRouteActive('bills')}">
           <a class="menu-link">
             <i class="menu-icon tf-icons bx bx-money"></i>
