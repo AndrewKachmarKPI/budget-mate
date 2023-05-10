@@ -13,9 +13,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/api/banks")
 @RestController
+@CrossOrigin("*")
+@RequestMapping("/api/banks")
 public class BankController {
     @Resource
     private BankService bankService;

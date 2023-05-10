@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,7 @@ public class BankServiceImpl implements BankService {
             throw new RuntimeException("Bank with name " + createBankDto.getTitle() + " already exists!");
         }
         BankEntity bankEntity = BankEntity.builder()
+                .bankId(UUID.randomUUID().toString())
                 .ownerUsername(OWNER_USERNAME)
                 .bankName(createBankDto.getTitle())
                 .currentAmount(0.0)

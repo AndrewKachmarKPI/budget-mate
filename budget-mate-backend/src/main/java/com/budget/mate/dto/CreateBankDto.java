@@ -14,7 +14,7 @@ public class CreateBankDto {
     @NotNull
     @NotEmpty
     @NotBlank
-    @Size(min = 5)
+    @Size(min = 2)
     private String title;
     @NotNull
     @Min(10)

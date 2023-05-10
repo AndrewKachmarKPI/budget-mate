@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {
   ApexNonAxisChartSeries,
   ApexPlotOptions,
@@ -29,19 +29,17 @@ export type ChartOptions = {
   templateUrl: './savings-dashboard.component.html',
   styleUrls: ['./savings-dashboard.component.css']
 })
-export class SavingsDashboardComponent implements OnInit, AfterViewInit {
+export class SavingsDashboardComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @ViewChild("chart") chart: ChartComponent;
   @ViewChild("closeForm") closeForm: HTMLButtonElement;
 
-  public banks: BankDto[] = [];
-  public chartsOptions: Map<string, Partial<ChartOptions>> = new Map<string, Partial<ChartOptions>>();
-  public chartOptions: Partial<ChartOptions>;
-
+  public chartsOptions: Map<BankDto, Partial<ChartOptions>> = new Map<BankDto, Partial<ChartOptions>>();
+  public selectedBank: BankDto;
   public formGroup: FormGroup = new FormGroup<any>({
     bankTitleControl: new FormControl("", Validators.compose([
-      Validators.required, Validators.minLength(3)
+      Validators.required, Validators.minLength(2)
     ])),
-    goalControl: new FormControl(100, Validators.compose([
+    goalControl: new FormControl("", Validators.compose([
       Validators.required, Validators.min(5)
     ])),
     deadlineControl: new FormControl("", Validators.compose([
@@ -50,7 +48,6 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit {
   })
 
   constructor(private bankService: BankService, private toastService: ToastrService) {
-    this.initChart()
     this.getMyBanks();
   }
 
@@ -65,30 +62,33 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit {
     this.initDataPicker();
   }
 
+  ngAfterViewChecked(): void {
+  }
+
 
   public getMyBanks() {
     this.bankService.getMyBanks().subscribe({
       next: (banks) => {
-        this.banks = banks;
+        this.initCharts(banks)
       }
     })
   }
 
-  public createBank() {
+  public createBank(closeBtn) {
     if (this.formGroup.valid) {
       const createBankDto: CreateBankDto = new CreateBankDto(
         this.controls['bankTitleControl'].value,
         this.controls['goalControl'].value,
         this.controls['deadlineControl'].value,)
       this.bankService.createBank(createBankDto).subscribe({
-        next: () => {
-          this.closeForm.click();
+        next: (bank) => {
+          closeBtn.click();
           this.resetForm();
           this.toastService.success("Piggy bank created!");
+          this.initSingleChart(bank);
         },
         error: (err) => {
-          this.toastService.error("Failed to create piggy bank!");
-          console.log(err);
+          this.toastService.error(err.error.message);
         }
       })
     }
@@ -107,9 +107,40 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit {
     this.formGroup.markAsUntouched();
   }
 
-  public initChart() {
-    this.chartOptions = {
-      series: [75],
+  public initCharts(banks: BankDto[]) {
+    banks.forEach(bank => {
+      this.initSingleChart(bank);
+    });
+  }
+
+  public openBankDetails(bank: BankDto) {
+    this.selectedBank = bank;
+  }
+
+  public getProgressColor() {
+    let color = "bg-primary";
+    if (this.selectedBank['isSuccess']) {
+      color = "bg-success";
+    } else if (this.selectedBank['isSuccess'] == false) {
+      color = "bg-danger";
+    }
+    return color;
+  }
+
+  public initSingleChart(bank: BankDto) {
+    const percent = (bank.currentAmount * 100) / bank.goal;
+    let color = "#fff";
+    if (percent == 100) {
+      color = '#d6f5c0'
+      bank['isSuccess'] = true;
+    } else if (new Date() > new Date(bank.deadline)) {
+      color = '#f5c5be';
+      bank['isSuccess'] = false;
+    }
+    bank['progress'] = parseInt(String(percent));
+
+    const chartOptions: Partial<ChartOptions> = {
+      series: [percent],
       chart: {
         height: 300,
         type: "radialBar",
@@ -124,7 +155,7 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit {
           hollow: {
             margin: 0,
             size: "70%",
-            background: "#fff",
+            background: color,
             image: undefined,
             position: "front",
             dropShadow: {
@@ -138,7 +169,7 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit {
           track: {
             background: "#fff",
             strokeWidth: "67%",
-            margin: 0, // margin is in pixels
+            margin: 0,
             dropShadow: {
               enabled: true,
               top: -3,
@@ -185,5 +216,6 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit {
       },
       labels: ["Percent"]
     };
+    this.chartsOptions.set(bank, chartOptions);
   }
 }

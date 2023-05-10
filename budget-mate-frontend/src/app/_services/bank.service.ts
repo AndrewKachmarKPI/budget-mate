@@ -14,7 +14,7 @@ export class BankService {
   }
 
   public createBank(createBankDto: CreateBankDto): Observable<BankDto> {
-    const req = `${url}/api/banks`
+    const req = `${url}/banks`
     return this.http.post<BankDto>(req, createBankDto);
   }
 
