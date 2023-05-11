@@ -17,21 +17,24 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping("/api/banks")
 public class BankController {
-    @Resource
-    private BankService bankService;
+   @Resource
+   private BankServiceImpl bankService;
 
-    @PostMapping
-    public ResponseEntity<BankDto> createBank(@Valid @RequestBody CreateBankDto createBankDto) {
-        return ResponseEntity.ok(bankService.createBank(createBankDto));
+   @PostMapping(value = { "/add", "/update" })
+   public ResponseEntity<BaseResponse> createOrUpdateBank(@Valid @RequestBody BankDto bankDto) {
+      BaseResponse response = bankService.createOrUpdateBank(bankDto);
+      return new ResponseEntity<>(response, HttpStatus.CREATED);
+   }
+
+   @GetMapping(value = "/{bankId}")
+    public ResponseEntity<BankDto> getBankById(@PathVariable(Long id) @NotNull @NotEmpty @NotBlank String bankId) {
+        BankDto bank = bankService.findBankById(id);
+        return new ResponseEntity<EmployeeDTO>(bank, HttpStatus.OK);
     }
 
-    @GetMapping("/{bankId}")
-    public ResponseEntity<BankDto> getBankById(@PathVariable("bankId") @NotNull @NotEmpty @NotBlank String bankId) {
-        return ResponseEntity.ok(bankService.getBankById(bankId));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<BankDto>> getMyBanks() {
-        return ResponseEntity.ok(bankService.findMyBanks());
-    }
+   @GetMapping(value = "/find")
+   public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+      List<EmployeeDTO> list = bankService.findEmployeeList();
+      return new ResponseEntity<List<BankDto>>(list, HttpStatus.OK);
+   }
 }
