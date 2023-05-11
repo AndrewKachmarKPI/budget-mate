@@ -15,38 +15,34 @@ import java.util.stream.Collectors;
 
 @Service
 public class BankServiceImpl implements BankService {
-    @Resource
-    private BankRepository bankRepository;
-    @Resource
-    private Mapper bm;
+   @Resource
+   private BankRepository bankRepository;
+   @Resource
+   private Mapper bm;
 
-    private static final String OWNER_USERNAME = "username"; //FIXME replace with username
+   private final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+   private final String OWNER_USERNAME = authentication.getName();
 
-    @Override
-    public BankDto createBank(CreateBankDto createBankDto) {
-        if (bankRepository.existsByBankNameAndOwnerUsername(createBankDto.getTitle(), OWNER_USERNAME)) {
-            throw new RuntimeException("Bank with name " + createBankDto.getTitle() + " already exists!");
-        }
-        BankEntity bankEntity = BankEntity.builder()
-                .bankId(UUID.randomUUID().toString())
-                .ownerUsername(OWNER_USERNAME)
-                .bankName(createBankDto.getTitle())
-                .currentAmount(0.0)
-                .goal(createBankDto.getGoal())
-                .deadline(LocalDate.parse(createBankDto.getDeadline())).build();
-        return bm.bankEntityToDto(bankRepository.save(bankEntity));
-    }
+   @Override
+   public BankDto createOrUpdateBank(BankDto bankDto) {
+      if (bankRepository.existsByBankNameAndOwnerUsername(bankDto.getTitle(), OWNER_USERNAME)) {
+         throw new RuntimeException("Bank with name " + bankDto.getTitle() + " already exists!");
+      }
+      BankEntity bankEntity = BankEntity.builder().bankId(UUID.randomUUID().toString()).ownerUsername(OWNER_USERNAME)
+            .bankName(bankDto.getTitle()).currentAmount(0.0).goal(createBankDto.getGoal())
+            .deadline(LocalDate.parse(createBankDto.getDeadline())).build();
+      return bm.bankEntityToDto(bankRepository.save(bankEntity));
+   }
 
-    @Override
-    public BankDto getBankById(String bankId) {
-        return bm.bankEntityToDto(bankRepository.findByBankId(bankId).orElseThrow(() ->
-                new RuntimeException("Bank with id " + bankId + " already exists!")));
-    }
+   @Override
+   public BankDto getBankById(long bankId) {
+      return bm.bankEntityToDto(bankRepository.findByBankId(bankId)
+            .orElseThrow(() -> new RuntimeException("Bank with id " + bankId + " not found!")));
+   }
 
-    @Override
-    public List<BankDto> findMyBanks() {
-        return bankRepository.findAllByOwnerUsernameOrderByDeadlineDesc(OWNER_USERNAME)
-                .stream().map(bankEntity -> bm.bankEntityToDto(bankEntity))
-                .collect(Collectors.toList());
-    }
+   @Override
+   public List<BankDto> findMyBanks() {
+      return bankRepository.findAllByOwnerUsernameOrderByDeadlineDesc(OWNER_USERNAME).stream()
+            .map(bankEntity -> bm.bankEntityToDto(bankEntity)).collect(Collectors.toList());
+   }
 }

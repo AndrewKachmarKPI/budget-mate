@@ -9,10 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface BankRepository extends JpaRepository<BankEntity, Long> {
-    Optional<BankEntity> findByBankName(String name);
+   public Optional<BankEntity> findByBankName(String name);
 
-    Optional<BankEntity> findByBankId(String bankId);
+   public Optional<BankEntity> findByBankId(String bankId);
 
-    Boolean existsByBankNameAndOwnerUsername(String bankName, String owner);
-    List<BankEntity> findAllByOwnerUsernameOrderByDeadlineDesc(String owner);
+   public Boolean existsByBankNameAndOwnerUsername(String bankName, String owner);
+
+   public List<BankEntity> findAllByOwnerUsernameOrderByDeadlineDesc(String owner);
+
 }

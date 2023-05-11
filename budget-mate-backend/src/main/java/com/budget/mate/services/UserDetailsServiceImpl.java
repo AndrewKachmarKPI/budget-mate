@@ -16,19 +16,18 @@ import java.util.stream.Collectors;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Resource
-    private UserRepository userRepository;
+   @Resource
+   private UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        UserEntity userEntity = userRepository.findByUsername(username);
+   @Override
+   public UserDetails loadUserByUsername(String username) {
+      UserEntity userEntity = userRepository.findByUsername(username);
 
-        if (userEntity != null) {
-            List<GrantedAuthority> authorities = userEntity.getRoleEntities()
-                    .stream().map(roles -> new SimpleGrantedAuthority(roles.getRoleName()))
-                    .collect(Collectors.toList());
-            return new User(userEntity.getPhoneNumber(), userEntity.getPassword(), authorities);
-        }
-        throw new RuntimeException("Invalid credentials!");
-    }
+      if (userEntity != null) {
+         List<GrantedAuthority> authorities = userEntity.getRoleEntities().stream()
+               .map(roles -> new SimpleGrantedAuthority(roles.getRoleName())).collect(Collectors.toList());
+         return new User(userEntity.getPhoneNumber(), userEntity.getPassword(), authorities);
+      }
+      throw new RuntimeException("Invalid credentials!");
+   }
 }

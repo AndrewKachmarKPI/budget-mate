@@ -22,16 +22,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.tokenServices(tokenServices);
+       resources.tokenServices(tokenServices);
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
-                .requestMatchers()
+        http.requestMatchers()
                 .and()
                 .authorizeRequests()
-                .anyRequest().permitAll();
-    }
+              .anyRequest().permitAll();
+     }
 
 }

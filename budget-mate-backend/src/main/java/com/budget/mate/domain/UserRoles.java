@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum UserRoles {
-    ADMIN("ADMIN"),
-    BASIC_CLIENT("BASIC_CLIENT");
+   ADMIN("ADMIN"), BASIC_CLIENT("BASIC_CLIENT");
 
-    private String title;
+   private String title;
 
-    public String getTitle() {
-        return "ROLE_" + title;
-    }
+   public String getTitle() {
+      return "ROLE_" + title;
+   }
 }

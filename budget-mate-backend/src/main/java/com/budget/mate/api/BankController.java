@@ -28,13 +28,13 @@ public class BankController {
 
    @GetMapping(value = "/{bankId}")
     public ResponseEntity<BankDto> getBankById(@PathVariable(Long id) @NotNull @NotEmpty @NotBlank String bankId) {
-        BankDto bank = bankService.findBankById(id);
-        return new ResponseEntity<EmployeeDTO>(bank, HttpStatus.OK);
+        BankDto bank = bankService.getBankById(id);
+        return new ResponseEntity<BankDto>(bank, HttpStatus.OK);
     }
 
    @GetMapping(value = "/find")
-   public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-      List<EmployeeDTO> list = bankService.findEmployeeList();
+   public ResponseEntity<List<BankDto>> findMyBanks() {
+      List<BankDto> list = bankService.findMyBanks();
       return new ResponseEntity<List<BankDto>>(list, HttpStatus.OK);
    }
 }

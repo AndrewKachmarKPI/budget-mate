@@ -8,9 +8,10 @@ import java.util.List;
 
 @Service
 public interface BankService {
-    BankDto createBank(CreateBankDto createBankDto);
 
-    BankDto getBankById(String bankId);
+   BankDto createBank(CreateBankDto createBankDto);
 
-    List<BankDto> findMyBanks();
+   BankDto getBankById(String bankId);
+
+   List<BankDto> findMyBanks();
 }
