@@ -1,0 +1,95 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Profile /</span>Billing details
+  </h4>
+</div>
+<div class='mb-3'>
+  <div class='col-3 mb-3'style="width: 18rem">
+    <div class="card text-center" >
+      <div class="card-header">
+        Current plan
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Super giga mega plan</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <div class="mb-3"><a href="#" class="btn btn-primary">Change plan</a>
+          <a href="#" class="btn btn-primary" style="margin-left: 10px">Pay now</a></div>
+      </div>
+    </div>
+  </div>
+  <!--I tuta she z novogo ryadka yakos-->
+  <div class='col' style="width: 18rem">
+    <div class="card text-center" >
+      <div class="card-header">
+        Future payments
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Super giga mega plan</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <div class="mb-3"><a href="#" class="btn btn-primary">Change plan</a>
+          <a href="#" class="btn btn-primary" style="margin-left: 10px">Pay now</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Amount</th>
+      <th>Plan</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Payment method</th>
+      <th>Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr
+    *ngFor="let invoice of invoices"
+    >
+      <td><strong>{{invoice.amount}}</strong></td>
+      <td>{{invoice.plan}}</td>
+      <td>
+        {{invoice.invoiceDate}}
+      </td>
+      <td><span class="{{this.statusesAndClasses[invoice.status]}}">{{invoice.status}}</span></td>
+      <td>
+        {{invoice.paymentMethod}}
+      </td>
+      <td><div class="dropdown">
+        <button type="button"
+                class="btn p-0 dropdown-toggle hide-arrow"
+                (click)="invoice.isExpanded = !invoice.isExpanded"><i class="bx bx-dots-vertical-rounded"></i></button>
+      </div></td>
+      <!--
+      sukpizdec yak yogo zrobiti z novoyi strichki
+      <td colspan="6">
+        <td class="clearfix">
+          <div *ngIf="invoice.isExpanded">
+            <div>
+              <table >
+              <tr >
+                <th >header 1</th>
+                <th class="header">header 2</th>
+                <th class="header">header 3</th>
+              </tr>
+              <tr class="table-row">
+                <td class="cell">1</td>
+                <td class="cell">2</td>
+                <td class="cell">3</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </td>-->
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+

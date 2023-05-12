@@ -16,6 +16,7 @@ export class BudgetDashboardComponent implements OnInit {
 
   showSuccess() {
     this.toastr.success('Congratulations', 'YOU ARE GAY',{
+      //fisting is 300 bucks
       timeOut: 5000,
     });
 

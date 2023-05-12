@@ -14,11 +14,12 @@ import { PricingComponent } from './pricing/pricing.component';
 import { SavingsDashboardComponent } from './savings-dashboard/savings-dashboard.component';
 import {NgApexchartsModule} from "ng-apexcharts";
 import {ReactiveFormsModule} from "@angular/forms";
+import { BillingDetailsComponent } from './billing-details/billing-details.component';
 
 
 
 @NgModule({
-  declarations: [DashboardComponent, BudgetDashboardComponent, ProfileComponent, AccountSettingsComponent, NotificationSettingsComponent, ConnectionsSettingsComponent, UsersComponent, RolesComponent, PricingComponent, SavingsDashboardComponent],
+  declarations: [DashboardComponent, BudgetDashboardComponent, ProfileComponent, AccountSettingsComponent, NotificationSettingsComponent, ConnectionsSettingsComponent, UsersComponent, RolesComponent, PricingComponent, SavingsDashboardComponent, BillingDetailsComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
