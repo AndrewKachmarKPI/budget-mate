@@ -1,4 +1,4 @@
-package com.budget.mate.domain;
+package com.budget.mate.enums;
 
 import lombok.AllArgsConstructor;
 
