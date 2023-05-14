@@ -3,68 +3,91 @@
     <span class="text-muted fw-light">Profile /</span>Billing details
   </h4>
 </div>
-<div class='row mb-5'>
-    <div class="col-md-6 col-xl-4">
-      <div class="card bg-primary text-white mb-3">
-        <div class="card-header">Current plan</div>
-        <div class="card-body">
-          <h1 class="card-title text-white">300$</h1>
-          <p class="card-text">
-            Due date: 23.04.2024
-          </p>
-          <div class="mb-3"><a href="#" class="btn btn-secondary">Change plan</a>
+<div class="container p-0">
+  <div class="row">
+    <div class="col-xl-8">
+      <div class="container p-0">
+        <div class='row mb-3'>
+          <div class="col-6">
+            <div class="card bg-primary text-white mb-3">
+              <div class="card-header">Current plan</div>
+              <div class="card-body">
+                <h1 class="card-title text-white">300$</h1>
+                <p class="card-text">
+                  Due date: 23.04.2024
+                </p>
+                <div class="mb-0"><a href="#" class="btn btn-secondary">Change plan</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card bg-secondary text-white mb-3">
+              <div class="card-header">Next payment</div>
+              <div class="card-body">
+                <h1 class="card-title text-white">300$</h1>
+                <p class="card-text">
+                  On: 23.05.2024
+                </p>
+                <div class="mb-0"><a href="#" class="btn btn-primary">Manage payments</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='row mb-5'>
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                    <tr>
+                      <th>Invoice code</th>
+                      <th>Date</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Payment method</th>
+                      <th>Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let invoice of invoices">
+                      <td><strong>{{invoice.code}}</strong></td>
+                      <td>{{invoice.invoiceDate}}</td>
+                      <td><strong>{{invoice.amount}}$</strong></td>
+                      <td><span class="{{this.statusesAndClasses[invoice.status]}}">{{invoice.status}}</span></td>
+                      <td>
+                        {{invoice.paymentMethod}}
+                      </td>
+                      <td>
+                        <div class="dropdown">
+                          <button type="button"
+                                  class="btn p-0 dropdown-toggle hide-arrow"
+                                  routerLink="/invoice/{{invoice.code}}">
+                            <i class="bx bx-paperclip"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="card">
+        <div class="card-body">
+
+        </div>
+      </div>
+    </div>
   </div>
-    <div class="col-md-6 col-xl-4">
-      <div class="card bg-secondary text-white mb-3">
-        <div class="card-header">Next payment</div>
-        <div class="card-body">
-          <h1 class="card-title text-white">300$</h1>
-          <p class="card-text">
-            On: 23.05.2024
-          </p>
-          <div class="mb-3"><a href="#" class="btn btn-primary">Manage payments</a>
-          </div>
-        </div>
-      </div>
-      </div>
+
 </div>
-
-
-<div class="table-responsive">
-  <table class="table">
-    <thead>
-    <tr>
-      <th>Invoice code</th>
-      <th>Date</th>
-      <th>Amount</th>
-      <th>Status</th>
-      <th>Payment method</th>
-      <th>Details</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr
-    *ngFor="let invoice of invoices"
-    >
-      <td><strong>{{invoice.code}}</strong></td>
-      <td>{{invoice.invoiceDate}}</td>
-      <td><strong>{{invoice.amount}}$</strong></td>
-      <td><span class="{{this.statusesAndClasses[invoice.status]}}">{{invoice.status}}</span></td>
-      <td>
-        {{invoice.paymentMethod}}
-      </td>
-      <td><div class="dropdown">
-        <button type="button"
-                class="btn p-0 dropdown-toggle hide-arrow"
-                routerLink="/invoice/{{invoice.code}}"><i class="bx bx-dots-vertical-rounded"></i></button>
-      </div></td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-
 
 
