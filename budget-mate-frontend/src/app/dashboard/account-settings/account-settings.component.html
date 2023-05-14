@@ -3,25 +3,17 @@
   <!-- Account -->
   <div class="card-body">
     <div class="d-flex align-items-start align-items-sm-center gap-4">
-      <img
-        src="../assets/img/avatars/1.png"
-        alt="user-avatar"
-        class="d-block rounded"
-        height="100"
-        width="100"
-        id="uploadedAvatar"
+      <img src="../assets/img/avatars/1.png"
+           alt="user-avatar"
+           class="d-block rounded"
+           height="100"
+           width="100"
+           id="uploadedAvatar"
       />
       <div class="button-wrapper">
-        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+        <label class="btn btn-primary me-2 mb-4" tabindex="0" data-bs-toggle="modal" data-bs-target="#backDropModal">
           <span class="d-none d-sm-block">Upload new photo</span>
           <i class="bx bx-upload d-block d-sm-none"></i>
-          <input
-            type="file"
-            id="upload"
-            class="account-file-input"
-            hidden
-            accept="image/png, image/jpeg"
-          />
         </label>
         <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
           <i class="bx bx-reset d-block d-sm-none"></i>
@@ -170,6 +162,55 @@
         >
       </div>
       <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
+    </form>
+  </div>
+</div>
+
+
+<!-- AVATAR MODAL -->
+<div class="modal fade" id="backDropModal" data-bs-backdrop="static" tabindex="-1">
+  <input #file type="file" class="invisible" accept="image/*" (change)="fileChangeEvent($event)"/>
+  <div class="modal-dialog">
+    <form class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="backDropModalTitle">Upload avatar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-template [ngIf]="imageChangedEvent==''">
+          <form class="dropzone p-5" id="dropzone-basic" (click)="file.click()">
+            <div class="h5 mb-0 text-center">
+              Drop files here or click to upload
+            </div>
+          </form>
+        </ng-template>
+        <ng-template [ngIf]="imageChangedEvent!=''">
+          <div class="flex-column d-flex justify-content-center align-items-center">
+            <img [src]="croppedImage"
+                 alt="user-avatar"
+                 class="d-block rounded border border-primary"
+                 height="100"
+                 width="100"/>
+            <image-cropper
+              format="png"
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="4 / 4"
+              [resizeToWidth]="100"
+              (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded()"
+              (cropperReady)="cropperReady()"
+              (loadImageFailed)="loadImageFailed()"></image-cropper>
+          </div>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary" (click)="clearImage()" *ngIf="imageChangedEvent!=''">
+          Change <i class="bx bx-trash"></i>
+        </button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
     </form>
   </div>
 </div>

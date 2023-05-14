@@ -2,3 +2,18 @@
   padding: 10px 16px;
   text-align: start;
 }
+.navbar-dropdown .badge-notifications {
+  top: 0.5rem;
+  padding: 0.2rem 0.4rem;
+}
+.badge.badge-notifications {
+  position: absolute;
+  top: auto;
+  display: inline-block;
+  margin: 0;
+  transform: translate(-50%, -30%);
+}
+
+.dropdown-notifications .dropdown-menu{
+  width: 400px;
+}
