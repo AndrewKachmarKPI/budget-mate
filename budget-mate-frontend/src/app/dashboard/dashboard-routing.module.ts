@@ -7,6 +7,8 @@ import {UsersComponent} from "./users/users/users.component";
 import {RolesComponent} from "./users/roles/roles.component";
 import {PricingComponent} from "./pricing/pricing.component";
 import {SavingsDashboardComponent} from "./savings-dashboard/savings-dashboard.component";
+import {BillingDetailsComponent} from "./billing-details/billing-details.component";
+import {InvoiceComponent} from "./invoice/invoice.component";
 
 const routes: Routes = [
   {
@@ -36,6 +38,14 @@ const routes: Routes = [
       {
         path: 'piggy',
         component: SavingsDashboardComponent,
+      },
+      {
+        path: 'billings',
+        component: BillingDetailsComponent,
+      },
+      {
+        path: 'invoice/:code',
+        component: InvoiceComponent,
       },
     ]
   }
