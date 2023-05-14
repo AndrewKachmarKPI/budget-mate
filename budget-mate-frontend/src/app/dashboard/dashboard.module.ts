@@ -16,17 +16,19 @@ import {NgApexchartsModule} from "ng-apexcharts";
 import {ReactiveFormsModule} from "@angular/forms";
 import { BillingDetailsComponent } from './billing-details/billing-details.component';
 import { InvoiceComponent } from './invoice/invoice.component';
+import {ImageCropperModule} from "ngx-image-cropper";
 
 
 
 @NgModule({
   declarations: [DashboardComponent, BudgetDashboardComponent, ProfileComponent, AccountSettingsComponent, NotificationSettingsComponent, ConnectionsSettingsComponent, UsersComponent, RolesComponent, PricingComponent, SavingsDashboardComponent, BillingDetailsComponent, InvoiceComponent],
-  imports: [
-    CommonModule,
-    DashboardRoutingModule,
-    NgApexchartsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        DashboardRoutingModule,
+        NgApexchartsModule,
+        ReactiveFormsModule,
+        ImageCropperModule
+    ]
 })
 export class DashboardModule {
 }

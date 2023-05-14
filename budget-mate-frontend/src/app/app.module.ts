@@ -13,6 +13,7 @@ import {SpinnerInterceptor} from "./_helpers/spinner-interceptor";
 import {RegisterComponent} from './auth/register/register.component';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {NgApexchartsModule} from "ng-apexcharts";
+import {ImageCropperModule} from "ngx-image-cropper";
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import {NgApexchartsModule} from "ng-apexcharts";
     FormsModule,
     NgxSpinnerModule,
     ReactiveFormsModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    ImageCropperModule
   ],
   providers: [RegisterComponent,
     {

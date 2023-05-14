@@ -170,6 +170,74 @@
           </div>
           <!-- /Search -->
           <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+              <a class="nav-link dropdown-toggle hide-arrow" routerLink="/pricing">
+                <span class="badge rounded-pill bg-label-warning">BASIC</span>
+              </a>
+            </li>
+            <li class="nav-item dropdown-language dropdown me-xl-0">
+              <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <img class="rounded-circle me-1" src="assets/img/country/united-kingdom.png" alt="country">
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item selected" href="javascript:void(0);" data-language="en">
+                    <img class="rounded-circle me-2" src="assets/img/country/united-kingdom.png" alt="country">
+                    <span class="align-middle">English</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0);" data-language="pt">
+                    <img class="rounded-circle me-2" src="assets/img/country/ukraine.png" alt="country">
+                    <span class="align-middle">Ukrainian</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+
+            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+              <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
+                 data-bs-auto-close="outside" aria-expanded="false">
+                <i class="bx bx-bell bx-sm"></i>
+                <span class="badge bg-danger rounded-pill badge-notifications">5</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end py-0">
+                <li class="dropdown-menu-header border-bottom">
+                  <div class="dropdown-header d-flex align-items-center py-3">
+                    <h5 class="text-body mb-0 me-auto">Notifications</h5>
+                    <a href="javascript:void(0)" class="dropdown-notifications-all text-body" data-bs-toggle="tooltip"
+                       data-bs-placement="top" aria-label="Mark all as read"
+                       data-bs-original-title="Mark all as read"><i class="bx fs-4 bx-envelope-open"></i></a>
+                  </div>
+                </li>
+                <li class="dropdown-notifications-list scrollable-container ps">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0 me-3">
+                          <div class="avatar">
+                            <img src="assets/img/avatars/robot.png" alt="" class="w-px-40 h-auto rounded-circle">
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6 class="mb-1">Congratulation Lettie 🎉</h6>
+                          <p class="mb-0">You have successfully registered!</p>
+                          <small class="text-muted">1m ago</small>
+                        </div>
+                        <div class="flex-shrink-0 dropdown-notifications-actions">
+                          <a href="javascript:void(0)" class="dropdown-notifications-read"><span
+                            class="badge badge-dot"></span></a>
+                          <a href="javascript:void(0)" class="dropdown-notifications-archive"><span
+                            class="bx bx-x"></span></a>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+              </ul>
+            </li>
+
+
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
               <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                 <div class="avatar avatar-online">
@@ -208,10 +276,10 @@
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#">
+                  <a class="dropdown-item cursor-pointer">
                         <span class="d-flex align-items-center align-middle">
                           <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                          <span class="flex-grow-1 align-middle">Billing</span>
+                          <span class="flex-grow-1 align-middle" routerLink="/billings">Billing</span>
                           <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
                         </span>
                   </a>
