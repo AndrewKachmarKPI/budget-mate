@@ -1,7 +1,4 @@
 package com.budget.mate;
-
-import com.budget.mate.enums.UserRoles;
-import com.budget.mate.repositories.RoleRepository;
 import com.budget.mate.services.RoleService;
 import com.budget.mate.services.UserService;
 import org.springframework.boot.CommandLineRunner;

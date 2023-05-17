@@ -39,6 +39,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Value("${security.signing-key}")
     private String signingKey;
+
     @Value("${security.clientSecret}")
     private String clientSecret;
     @Value("${security.clientId}")

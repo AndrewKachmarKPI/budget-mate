@@ -5,6 +5,7 @@ import lombok.*;
 @Builder(toBuilder = true)
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterUserDto {

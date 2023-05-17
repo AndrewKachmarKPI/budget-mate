@@ -21,7 +21,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.tokenService.getToken();
-    const refreshToken = this.tokenService.getRefreshToken();
 
     if (token) {
       request = request.clone({
@@ -35,14 +34,6 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           if (error.error.error === 'invalid_token') {
-            // this.auth.refreshToken({refresh_token: refreshToken}).subscribe({
-            //   complete: () => {
-            //     location.reload();
-            //   },
-            //   error: () => {
-            //     this.router.navigate(['/auth/login']);
-            //   }
-            // });
           } else {
             this.router.navigate(['/auth/login']);
           }

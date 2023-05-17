@@ -7,6 +7,7 @@ import {NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {RegisterUserDto} from "../models/register-user-dto";
 
 @Component({
   selector: 'app-register',
@@ -54,14 +55,13 @@ export class RegisterComponent implements OnInit {
       const username: string = this.formGroup.controls.username.value;
       const email = this.formGroup.controls.email.value;
       const password: string = this.formGroup.controls.password.value;
-      this.authService.register(username, email, password).subscribe({
-        next: data => {
+      this.authService.register(new RegisterUserDto(username, email, password)).subscribe({
+        next: (data) => {
           this.router.navigate(['/auth/login']).then(() => {
-            console.log(data);
             this.toaster.success("Successfully signed up!");
           });
         },
-        error: err => {
+        error: (err) => {
           this.toaster.error("Oops, something went wrong...");
         }
       })

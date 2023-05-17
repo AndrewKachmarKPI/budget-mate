@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(registerUserDto.getUsername())) {
             throw new RuntimeException("User with username [" + registerUserDto.getUsername() + "] already exits");
         }
+        System.out.println("INPUT_>"+ registerUserDto);
         ProfileEntity profileEntity = profileRepository.save(ProfileEntity.builder()
                 .registered(LocalDateTime.now())
                 .billingPlan(BillingPlan.BASIC)
