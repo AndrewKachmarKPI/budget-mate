@@ -9,6 +9,7 @@ import {PricingComponent} from "./pricing/pricing.component";
 import {SavingsDashboardComponent} from "./savings-dashboard/savings-dashboard.component";
 import {BillingDetailsComponent} from "./billing-details/billing-details.component";
 import {InvoiceComponent} from "./invoice/invoice.component";
+import {FrequentyAskedQuestionsComponent} from "./frequenty-asked-questions/frequenty-asked-questions.component";
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'invoice/:code',
         component: InvoiceComponent,
+      },
+      {
+        path:'faq',
+        component:FrequentyAskedQuestionsComponent,
       },
     ]
   }

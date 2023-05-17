@@ -17,11 +17,12 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { BillingDetailsComponent } from './billing-details/billing-details.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import {ImageCropperModule} from "ngx-image-cropper";
+import { FrequentyAskedQuestionsComponent } from './frequenty-asked-questions/frequenty-asked-questions.component';
 
 
 
 @NgModule({
-  declarations: [DashboardComponent, BudgetDashboardComponent, ProfileComponent, AccountSettingsComponent, NotificationSettingsComponent, ConnectionsSettingsComponent, UsersComponent, RolesComponent, PricingComponent, SavingsDashboardComponent, BillingDetailsComponent, InvoiceComponent],
+  declarations: [DashboardComponent, BudgetDashboardComponent, ProfileComponent, AccountSettingsComponent, NotificationSettingsComponent, ConnectionsSettingsComponent, UsersComponent, RolesComponent, PricingComponent, SavingsDashboardComponent, BillingDetailsComponent, InvoiceComponent, FrequentyAskedQuestionsComponent],
     imports: [
         CommonModule,
         DashboardRoutingModule,
