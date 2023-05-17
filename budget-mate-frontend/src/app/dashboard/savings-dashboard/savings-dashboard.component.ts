@@ -35,6 +35,7 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit, AfterVi
 
   public chartsOptions: Map<BankDto, Partial<ChartOptions>> = new Map<BankDto, Partial<ChartOptions>>();
   public selectedBank: BankDto;
+  public cards: any[] = [];
   public formGroup: FormGroup = new FormGroup<any>({
     bankTitleControl: new FormControl("", Validators.compose([
       Validators.required, Validators.minLength(2)
@@ -47,8 +48,10 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit, AfterVi
     ])),
   })
 
-  constructor(private bankService: BankService, private toastService: ToastrService) {
+  constructor(private bankService: BankService,
+              private toastService: ToastrService) {
     this.getMyBanks();
+    this.findAllCards();
   }
 
   get controls() {
@@ -70,6 +73,22 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit, AfterVi
     this.bankService.getMyBanks().subscribe({
       next: (banks) => {
         this.initCharts(banks)
+      }
+    })
+  }
+
+  public topUpBank() {
+    this.bankService.topUpBank(this.selectedBank.bankId, "", 100).subscribe({
+      next: (bank) => {
+        this.selectedBank = bank;
+      }
+    });
+  }
+
+  public findAllCards() {
+    this.bankService.findAllMyCards().subscribe({
+      next: (cards) => {
+        this.cards = cards;
       }
     })
   }

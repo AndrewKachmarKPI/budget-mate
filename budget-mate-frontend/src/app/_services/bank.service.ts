@@ -27,4 +27,20 @@ export class BankService {
     const req = `${url}/banks`
     return this.http.get<BankDto[]>(req);
   }
+
+  public topUpBank(bankId: string, cardId: string, sum: number): Observable<BankDto> {
+    const req = `${url}/banks/top-up`
+    return this.http.post<BankDto>(req, {}, {
+      params: {
+        bankId: bankId,
+        cardId: cardId,
+        sum: sum
+      }
+    });
+  }
+
+  public findAllMyCards():Observable<any>{
+    const req = `${url}/cards`
+    return this.http.get(req);
+  }
 }

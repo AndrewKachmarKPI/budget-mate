@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -39,7 +40,8 @@ public class BankServiceImpl implements BankService {
                 .bankName(createBankDto.getTitle())
                 .currentAmount(0.0)
                 .goal(createBankDto.getGoal())
-                .deadline(LocalDate.parse(createBankDto.getDeadline())).build();
+                .deadline(LocalDate.parse(createBankDto.getDeadline()))
+                .transactions(new ArrayList<>()).build();
         return bm.bankEntityToDto(bankRepository.save(bankEntity));
     }
 

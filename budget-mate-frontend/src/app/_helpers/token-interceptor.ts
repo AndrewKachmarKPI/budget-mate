@@ -21,7 +21,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.tokenService.getToken();
-
     if (token) {
       request = request.clone({
         setHeaders: {
@@ -34,6 +33,8 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           if (error.error.error === 'invalid_token') {
+            this.tokenService.removeToken();
+            this.router.navigate(['/auth/login']);
           } else {
             this.router.navigate(['/auth/login']);
           }

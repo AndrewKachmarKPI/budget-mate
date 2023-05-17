@@ -1,6 +1,6 @@
 export class BankDto {
   constructor(private _id?: string,
-              private _bankId?: number,
+              private _bankId?: string,
               private _bankName?: string,
               private _goal?: number,
               private _currentAmount?: number,
@@ -11,7 +11,7 @@ export class BankDto {
     return this._id;
   }
 
-  get bankId(): number {
+  get bankId(): string {
     return this._bankId;
   }
 

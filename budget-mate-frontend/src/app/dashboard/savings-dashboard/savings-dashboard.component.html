@@ -44,10 +44,18 @@
           <div class="d-flex flex-column align-items-center mt-2">
             <small class="text-muted">Your goal is - <b>{{bank.key.goal}}₴</b></small>
             <small class="fw-semibold">Saving till {{bank.key.deadline|date:'dd.MM.y'}} </small>
-            <a href="javascript:void(0)" class="btn btn-sm btn-primary mt-2" role="button"
-               data-bs-toggle="modal" data-bs-target="#bankDetails"
-               (click)="openBankDetails(bank.key)">View details</a>
+            <div class="flex-row">
+              <a href="javascript:void(0)" class="btn btn-sm btn-primary mt-2 me-2" role="button"
+                 data-bs-toggle="modal" data-bs-target="#bankDetails"
+                 (click)="openBankDetails(bank.key)">View details</a>
+              <a href="javascript:void(0)" class="btn btn-sm btn-success mt-2" role="button"
+                 data-bs-toggle="modal" data-bs-target="#transfer" (click)="openBankDetails(bank.key)">
+                <i class="bx bx-transfer me-sm-1"></i>
+                Transfer money
+              </a>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -107,9 +115,8 @@
     </div>
   </div>
 </div>
+
 <!--BANK DETAILS-->
-
-
 <div class="modal fade" id="bankDetails" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -212,13 +219,54 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-danger">
-          <i class="bx bx-archive me-sm-1"></i>
-          Archive bank
+        <button type="button" class="btn btn-outline-primary">
+          <i class="bx bx-move me-sm-1"></i>
+          Widthraw
         </button>
-        <button type="submit" class="btn btn-primary">
-          Complete bank
+        <button type="submit" class="btn btn-success" role="button"
+                data-bs-toggle="modal" data-bs-target="#transfer">
+          <i class="bx bx-transfer me-sm-1"></i>
+          Transfer
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--TRANSFER MONEY-->
+<div class="modal fade" id="transfer" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="model3">Transfer money</h5>
+        <button (click)="resetForm()"
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12 fv-plugins-icon-container mb-3">
+          <label class="form-label w-100">Transfer sum</label>
+          <input type="number" class="form-control" placeholder="100₴" min="1"/>
+        </div>
+        <div class="col-md mb-md-0 mb-2">
+          <div class="form-check custom-option custom-option-icon checked">
+            <label class="form-check-label custom-option-content" for="customRadioPercentage">
+                    <span class="card-body">
+                      <i class="bx bx-purchase-tag"></i>
+                      <span class="custom-option-title">Percentage</span>
+                      <small>Create a deal which offer uses some % off (i.e 5% OFF) on total.</small>
+                    </span>
+              <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="customRadioPercentage" checked="">
+            </label>
+          </div>
+        </div>
+        <div class="col-12 fv-plugins-icon-container">
+          <label class="form-label w-100">Card</label>
+
+        </div>
       </div>
     </div>
   </div>
