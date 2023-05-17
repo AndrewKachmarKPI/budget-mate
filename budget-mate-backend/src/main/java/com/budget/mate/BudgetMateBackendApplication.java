@@ -1,5 +1,10 @@
 package com.budget.mate;
 
+import com.budget.mate.enums.UserRoles;
+import com.budget.mate.repositories.RoleRepository;
+import com.budget.mate.services.RoleService;
+import com.budget.mate.services.UserService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +25,14 @@ public class BudgetMateBackendApplication {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:4200");
             }
+        };
+    }
+
+    @Bean
+    CommandLineRunner init(RoleService roleService, UserService userService) {
+        return args -> {
+            roleService.createDefaultRoles();
+            userService.registerDefaultUsers();
         };
     }
 }
