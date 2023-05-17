@@ -12,9 +12,6 @@ import javax.annotation.Resource;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Resource
-    private BCryptPasswordEncoder passwordEncoder;
-
     @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -27,9 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/token").permitAll()
                 .antMatchers("/token/token/find-all/**").denyAll()
                 .antMatchers("/token/revoke/refresh-token").authenticated()
-                .anyRequest().authenticated()
-                .and().formLogin().permitAll()
-                .and().csrf().disable();
+                .anyRequest().authenticated();
     }
 
     @Override

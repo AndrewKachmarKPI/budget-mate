@@ -39,6 +39,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Value("${security.signing-key}")
     private String signingKey;
+
     @Value("${security.clientSecret}")
     private String clientSecret;
     @Value("${security.clientId}")
@@ -94,10 +95,5 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         defaultTokenServices.setTokenStore(tokenStore(jdbcTemplate));
         defaultTokenServices.setSupportRefreshToken(true);
         return defaultTokenServices;
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

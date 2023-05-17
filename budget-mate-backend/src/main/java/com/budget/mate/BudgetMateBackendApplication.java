@@ -1,8 +1,11 @@
 package com.budget.mate;
-
+import com.budget.mate.services.RoleService;
+import com.budget.mate.services.UserService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,13 +16,27 @@ public class BudgetMateBackendApplication {
     }
 
     @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
+                registry
+                        .addMapping("/**")
                         .allowedOrigins("http://localhost:4200");
             }
+        };
+    }
+
+    @Bean
+    CommandLineRunner init(RoleService roleService, UserService userService) {
+        return args -> {
+            roleService.createDefaultRoles();
+            userService.registerDefaultUsers();
         };
     }
 }

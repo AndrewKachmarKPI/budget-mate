@@ -10,6 +10,8 @@ import {SavingsDashboardComponent} from "./savings-dashboard/savings-dashboard.c
 import {BillingDetailsComponent} from "./billing-details/billing-details.component";
 import {InvoiceComponent} from "./invoice/invoice.component";
 import {FrequentyAskedQuestionsComponent} from "./frequenty-asked-questions/frequenty-asked-questions.component";
+import {AuthGuard} from "../_helpers/auth-guard.service";
+import {UserRoles} from "../auth/models/user-roles";
 
 const routes: Routes = [
   {
@@ -19,38 +21,53 @@ const routes: Routes = [
       {
         path: 'budget',
         component: BudgetDashboardComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'pricing',
-        component: PricingComponent
+        component: PricingComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'users',
-        component: UsersComponent
+        component: UsersComponent,
+        canActivate: [AuthGuard],
+        data: {
+          roles: [UserRoles.ADMIN]
+        }
       },
       {
         path: 'roles',
-        component: RolesComponent
+        component: RolesComponent,
+        canActivate: [AuthGuard],
+        data: {
+          roles: [UserRoles.ADMIN]
+        }
       },
       {
         path: 'piggy',
         component: SavingsDashboardComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'billings',
         component: BillingDetailsComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'invoice/:code',
         component: InvoiceComponent,
+        canActivate: [AuthGuard],
       },
       {
-        path:'faq',
-        component:FrequentyAskedQuestionsComponent,
+        path: 'faq',
+        component: FrequentyAskedQuestionsComponent,
+        canActivate: [AuthGuard]
       },
     ]
   }

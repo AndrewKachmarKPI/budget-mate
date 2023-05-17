@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {TokenService} from "../../_services/token-service";
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,7 @@ export class LoginComponent implements OnInit {
   });
   public isSubmitted: boolean = false;
 
-  constructor(private authService: AuthService,
+  constructor(private authService: AuthService, private tokenService: TokenService,
               private router: Router, private toaster: ToastrService,
               private storageService: StorageService) {
   }
@@ -59,6 +60,8 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/dashboard']).then(() => {
             this.toaster.success("Successfully logged in!");
           });
+          //TODO save token to localstorage
+          this.tokenService.saveToken(data['access_token']);
         },
         error: err => {
           this.toaster.error("Failed login");
