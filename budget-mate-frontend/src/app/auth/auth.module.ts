@@ -6,6 +6,7 @@ import {RouterOutlet} from "@angular/router";
 import {AuthRoutingModule} from "./auth-routing.module";
 import {ToastrModule} from "ngx-toastr";
 import {ReactiveFormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {ReactiveFormsModule} from "@angular/forms";
   imports: [
     CommonModule,
     RouterOutlet,
+    HttpClientModule,
     AuthRoutingModule,
     ToastrModule.forRoot(),
     ReactiveFormsModule,

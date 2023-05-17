@@ -4,6 +4,7 @@ import {Observable, tap} from 'rxjs';
 import {login_url, url} from "../../environments/environment";
 import {RegisterUserDto} from "../auth/models/register-user-dto";
 import {UserDto} from "../auth/models/user-dto";
+import {TokenService} from "./token-service";
 
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({
@@ -16,7 +17,8 @@ const HTTP_OPTIONS = {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private tokenService: TokenService) {
   }
 
   login(username: string, password: string): Observable<any> {
@@ -32,7 +34,11 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${url}/auth/signout`, {});
+    return this.http.delete(`${url}/users/logout`).pipe(
+      tap(() => {
+        this.tokenService.removeToken();
+      })
+    );
   }
 
   public isLoggedIn() {

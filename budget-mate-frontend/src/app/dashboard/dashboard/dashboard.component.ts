@@ -75,8 +75,11 @@ export class DashboardComponent implements OnInit {
   }
 
   public logout() {
-    this.authService.logout();
-    this.router.navigate(['/auth/login']);
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/auth/login']);
+      }
+    });
   }
 
   public shake() {
@@ -90,6 +93,6 @@ export class DashboardComponent implements OnInit {
     }, 500);
     setTimeout(() => {
       this.spinnerService.hide('main');
-    },5000);
+    }, 5000);
   }
 }

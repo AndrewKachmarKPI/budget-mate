@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/token").permitAll()
                 .antMatchers("/token/token/find-all/**").denyAll()
                 .antMatchers("/token/revoke/refresh-token").authenticated()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
     }
 
     @Override
