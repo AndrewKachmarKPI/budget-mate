@@ -95,9 +95,4 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         defaultTokenServices.setSupportRefreshToken(true);
         return defaultTokenServices;
     }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

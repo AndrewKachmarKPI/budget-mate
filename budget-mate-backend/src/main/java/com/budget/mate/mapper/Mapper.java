@@ -6,10 +6,15 @@ import com.budget.mate.domain.UserEntity;
 import com.budget.mate.dto.BankDto;
 import com.budget.mate.dto.CardDto;
 import com.budget.mate.dto.UserDto;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class Mapper {
+    @Resource
+    private BCryptPasswordEncoder passwordEncoder;
 
     public BankDto bankEntityToDto(BankEntity bankEntity) {
         return BankDto.builder()
@@ -49,5 +54,9 @@ public class Mapper {
                     .avatarId(userEntity.getProfileEntity().getAvatar().getFileId()).build();
         }
         return userDto;
+    }
+
+    public String encode(String value) {
+        return this.passwordEncoder.encode(value);
     }
 }

@@ -11,15 +11,11 @@ import com.budget.mate.enums.UserStatus;
 import com.budget.mate.mapper.Mapper;
 import com.budget.mate.repositories.ProfileRepository;
 import com.budget.mate.repositories.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -28,8 +24,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Resource
     private ProfileRepository profileRepository;
-    @Resource
-    private BCryptPasswordEncoder passwordEncoder;
     @Resource
     private RoleService roleService;
     @Resource
@@ -49,7 +43,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = UserEntity.builder()
                 .userStatus(UserStatus.NEW)
                 .username(registerUserDto.getUsername())
-                .password(passwordEncoder.encode(registerUserDto.getPassword()))
+                .password(mapper.encode(registerUserDto.getPassword()))
                 .roleEntities(Set.of(roleService.findRoleByName(UserRoles.BASIC_CLIENT.getRoleTitle())))
                 .profileEntity(profileEntity)
                 .build();
@@ -75,7 +69,7 @@ public class UserServiceImpl implements UserService {
         if (!userRepository.existsByUsername("budget-admin")) {
             RegisterUserDto registerUserDto = RegisterUserDto.builder()
                     .username("budget-admin")
-                    .password("admin")
+                    .password("11111111")
                     .email("admin@gmail.com")
                     .build();
             register(registerUserDto);

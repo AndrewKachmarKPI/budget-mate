@@ -24,8 +24,8 @@ public class ProfileEntity {
     private String firstName;
     @Column
     private String lastName;
-    @Column
-    @Pattern(regexp = "^$|^([A-Za-z0-9+_.-]{2,100}@)([a-z_.-]{1,100})([.])([a-z]{2,4})$")
+    @Column(nullable = false)
+    @Pattern(regexp = "^([A-Za-z0-9+_.-]{2,100}@)([a-z_.-]{1,100})([.])([a-z]{2,4})$")
     private String email;
     @Column(unique = true)
     private String phoneNumber;
