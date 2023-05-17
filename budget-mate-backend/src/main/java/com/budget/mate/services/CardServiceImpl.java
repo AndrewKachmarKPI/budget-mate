@@ -58,6 +58,11 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public CardEntity findCardEntityById(String cardId) {
+        return findByCardId(cardId);
+    }
+
+    @Override
     public CardDto updateCard(String cardId, CardDto cardDto) {
         if (cardRepository.existsByNumber(cardDto.getNumber())) {
             throw new RuntimeException("Card with number " + cardDto.getNumber() + " already exist");

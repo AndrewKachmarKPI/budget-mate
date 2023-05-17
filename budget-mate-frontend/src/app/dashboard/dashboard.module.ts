@@ -22,7 +22,21 @@ import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
-  declarations: [DashboardComponent, BudgetDashboardComponent, ProfileComponent, AccountSettingsComponent, NotificationSettingsComponent, ConnectionsSettingsComponent, UsersComponent, RolesComponent, PricingComponent, SavingsDashboardComponent, BillingDetailsComponent, InvoiceComponent, FrequentyAskedQuestionsComponent],
+  declarations: [
+    DashboardComponent,
+    BudgetDashboardComponent,
+    ProfileComponent,
+    AccountSettingsComponent,
+    NotificationSettingsComponent,
+    ConnectionsSettingsComponent,
+    UsersComponent,
+    RolesComponent,
+    PricingComponent,
+    SavingsDashboardComponent,
+    BillingDetailsComponent,
+    InvoiceComponent,
+    FrequentyAskedQuestionsComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule,

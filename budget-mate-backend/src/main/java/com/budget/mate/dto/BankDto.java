@@ -3,6 +3,7 @@ package com.budget.mate.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder(toBuilder = true)
 @Getter
@@ -16,4 +17,5 @@ public class BankDto {
     private Double goal;
     private Double currentAmount;
     private LocalDate deadline;
+    private List<TransactionDto> transactions;
 }

@@ -2,14 +2,18 @@ package com.budget.mate.mapper;
 
 import com.budget.mate.domain.BankEntity;
 import com.budget.mate.domain.CardEntity;
+import com.budget.mate.domain.TransactionEntity;
 import com.budget.mate.domain.UserEntity;
 import com.budget.mate.dto.BankDto;
 import com.budget.mate.dto.CardDto;
+import com.budget.mate.dto.TransactionDto;
 import com.budget.mate.dto.UserDto;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.stream.Collectors;
 
 @Component
 public class Mapper {
@@ -24,8 +28,18 @@ public class Mapper {
                 .currentAmount(bankEntity.getCurrentAmount())
                 .deadline(bankEntity.getDeadline())
                 .goal(bankEntity.getGoal())
+                .transactions(bankEntity.getTransactions().stream().map(this::transactionEntityToDto).collect(Collectors.toList()))
                 .build();
     }
+
+    public TransactionDto transactionEntityToDto(TransactionEntity transaction) {
+        return TransactionDto.builder()
+                .created(transaction.getCreated())
+                .sum(transaction.getSum())
+                .cardDto(cardEntityToDto(transaction.getCardEntity()))
+                .build();
+    }
+
 
     public CardDto cardEntityToDto(CardEntity cardEntity) {
         return CardDto.builder()
@@ -58,5 +72,9 @@ public class Mapper {
 
     public String encode(String value) {
         return this.passwordEncoder.encode(value);
+    }
+
+    public String username() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

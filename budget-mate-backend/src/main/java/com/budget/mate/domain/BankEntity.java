@@ -2,11 +2,9 @@ package com.budget.mate.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder(toBuilder = true)
 @Getter
@@ -30,4 +28,6 @@ public class BankEntity {
     private Double currentAmount;
     @Column(nullable = false)
     private LocalDate deadline;
+    @OneToMany
+    private List<TransactionEntity> transactions;
 }

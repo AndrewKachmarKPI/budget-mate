@@ -25,6 +25,13 @@ public class BankController {
         return ResponseEntity.ok(bankService.createBank(createBankDto));
     }
 
+    @PostMapping("/top-up")
+    public ResponseEntity<BankDto> topUpBank(@RequestParam("bankId") String bankId,
+                                             @RequestParam("cardId") String cardId,
+                                             @RequestParam("sum") Double sum) {
+        return ResponseEntity.ok(bankService.topUpBank(bankId, cardId, sum));
+    }
+
     @GetMapping("/{bankId}")
     public ResponseEntity<BankDto> getBankById(@PathVariable("bankId") @NotNull @NotEmpty @NotBlank String bankId) {
         return ResponseEntity.ok(bankService.getBankById(bankId));

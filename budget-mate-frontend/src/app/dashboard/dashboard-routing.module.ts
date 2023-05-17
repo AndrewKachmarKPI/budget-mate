@@ -19,7 +19,7 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       {
-        path: 'budget',
+        path: 'budgets',
         component: BudgetDashboardComponent,
         canActivate: [AuthGuard]
       },

@@ -1,5 +1,6 @@
 package com.budget.mate.services;
 
+import com.budget.mate.domain.CardEntity;
 import com.budget.mate.dto.CardDto;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface CardService {
     CardDto updateCard(String cardId, CardDto cardDto);
 
     CardDto selectCardAsPrimary(String cardId);
+
+    CardEntity findCardEntityById(String cardId);
 }
