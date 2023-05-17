@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             List<GrantedAuthority> authorities = userEntity.getRoleEntities()
                     .stream().map(roles -> new SimpleGrantedAuthority(roles.getRoleName()))
                     .collect(Collectors.toList());
-            return new User(userEntity.getPhoneNumber(), userEntity.getPassword(), authorities);
+            return new User(userEntity.getUsername(), userEntity.getPassword(), authorities);
         }
         throw new RuntimeException("Invalid credentials!");
     }
