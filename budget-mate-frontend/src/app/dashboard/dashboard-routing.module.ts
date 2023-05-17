@@ -49,7 +49,7 @@ const routes: Routes = [
         component: InvoiceComponent,
       },
       {
-        path:'frequently-asked-questions',
+        path:'faq',
         component:FrequentyAskedQuestionsComponent,
       },
     ]
