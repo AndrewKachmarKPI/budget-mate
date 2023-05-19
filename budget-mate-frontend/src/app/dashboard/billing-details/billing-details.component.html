@@ -93,8 +93,8 @@
           <div class="card-information me-2">
             <img class="mb-3 img-fluid" src="assets/img/icons/brands/{{card.type}}.png" alt="Master Card">
             <div class="d-flex align-items-center mb-1 flex-wrap gap-2">
-              <h6 class="mb-0 me-2">{{card.ownerName}}</h6>
-              <span *ngIf="card.isPrimary" class="badge bg-label-primary">Primary</span>
+              <h6 class="mb-0 me-2">{{card.holder}}</h6>
+              <!--<span *ngIf="card.isPrimary" class="badge bg-label-primary">Primary</span>-->
             </div>
             <span class="card-number">∗∗∗∗ ∗∗∗∗ {{card.number.slice(-4)}}</span>
           </div>
@@ -102,7 +102,7 @@
             <div class="d-flex order-sm-0 order-1 mt-sm-0 mt-3">
               <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editCardModal"
                       (click)="loadCardDataToFormGroup(card)">Edit</button>
-              <button class="btn btn-secondary">
+              <button class="btn btn-secondary" (click)="deleteCard(card)">
                 Delete
               </button>
             </div>

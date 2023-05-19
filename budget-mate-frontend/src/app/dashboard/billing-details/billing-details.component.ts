@@ -5,6 +5,7 @@ import Cleave from "cleave.js";
 import 'cleave.js/dist/addons/cleave-phone.i18n';
 import {CardDto} from "../../models/card-dto";
 import {CardService} from "../../_services/card.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-billing-details',
@@ -41,13 +42,14 @@ export class BillingDetailsComponent implements OnInit {
     cvv: new FormControl('', Validators.compose([Validators.required])),
   });
   constructor(private elementRef: ElementRef,
-              private cardService:CardService) {
+              private cardService:CardService,
+              private toastrService:ToastrService) {
     cardService.findAllMyCards().subscribe(
       (data: CardDto[]) => {
         this.cards = data;
       },
       (error: any) => {
-        console.error('An error occurred:', error);
+          this.toastrService.error("Oops! Couldn't retrieve cards information...");
       }
     );
 
@@ -100,35 +102,59 @@ export class BillingDetailsComponent implements OnInit {
     }
   }
   public tempCard;
-  saveCard():void{
-    var tempData={type:"",ownerName:"",number:"",expiration:"",cvv:"",isPrimary:false};
-    tempData.number=this.cardFormGroup.value.number.replace(/\s/g, "");
-    tempData.type=this.determineCardType(tempData.number)
-    tempData.ownerName=this.cardFormGroup.value.ownerName
-    tempData.expiration=this.cardFormGroup.value.expiration
-    tempData.cvv=this.cardFormGroup.value.cvv
-    //treba she podumati yak handleti primarity of cards
-    //tempData.isPrimary=false
-    this.cardFormGroup.reset()
-    //tipa she v bd shletsia
-    //this.cards.push(tempData)
-  }
+  saveCard():void {
 
-  saveCardChanges(card:any){
-    card.number=this.cardFormGroup.value.number.replace(/\s/g, "");
-    card.ownerName=this.cardFormGroup.value.ownerName;
-    card.expiration=this.cardFormGroup.value.expiration;
-    card.cvv=this.cardFormGroup.value.cvv;
-    card.type=this.determineCardType(card.number)
-    this.cardFormGroup.reset()
+
+    var newCard= new CardDto(
+      "i hope i get it right that it's overwritten in cardservice by guid",
+      this.cardFormGroup.value.number.replace(/\s/g, ""),
+      this.cardFormGroup.value.ownerName,
+      this.cardFormGroup.value.expiration,
+      this.cardFormGroup.value.cvv,
+      this.determineCardType(this.cardFormGroup.value.number.replace(/\s/g, ""))
+    )
+
+    this.cardService.addCard(newCard).subscribe({
+      next: (bank) => {
+        this.cardFormGroup.reset()
+        this.toastrService.success("Card successfully saved!");
+        this.cards.push(newCard);
+      },
+      error:()=>{
+        this.toastrService.error("Oops! Something went wrong");
+      }
+    })
   }
-  loadCardDataToFormGroup(card:any){
+  saveCardChanges(card:CardDto){
+    var newCard= new CardDto(
+      card.id,
+      this.cardFormGroup.value.number.replace(/\s/g, ""),
+      this.cardFormGroup.value.ownerName,
+      this.cardFormGroup.value.expiration,
+      this.cardFormGroup.value.cvv,
+      this.determineCardType(this.cardFormGroup.value.number.replace(/\s/g, ""))
+    )
+
+
+    this.cardService.updateCardById(newCard.id,newCard).subscribe({
+      next: (bank) => {
+        this.cardFormGroup.reset()
+        this.toastrService.success("Card successfully edited!");
+        //now i guess it'd be best to reload the page or add setters to change cards info
+
+      },
+      error:()=>{
+        this.toastrService.error("Oops! Something went wrong");
+      }
+    })
+  }
+  loadCardDataToFormGroup(card:CardDto){
     this.cardFormGroup.patchValue({
       //щось цей клів не хоче апдейтити автоматом по загрузці, отож костиль
       number: this.formatCreditCardNumber(card.number),
-      ownerName: card.ownerName,
+      ownerName: card.holder,
       expiration: card.expiration,
-      cvv: card.cvv
+      cvv: card.secretCode
     })
     this.tempCard=card;
   }
@@ -149,6 +175,17 @@ export class BillingDetailsComponent implements OnInit {
   }
   closeCardModal(){
     this.cardFormGroup.reset()
+  }
+  deleteCard(cardDto:CardDto){
+    this.cardService.removeCardById(cardDto.id).subscribe({
+      next: (bank) => {
+        this.toastrService.success("Card successfully removed!");
+        //this.cards.pop(cardDto) ?
+      },
+      error:()=>{
+        this.toastrService.error("Oops! Something went wrong");
+      }
+    })
   }
   formatCreditCardNumber(cardNumber: string): string {
     //formats my digit sequence in a manner that this cleave would format
