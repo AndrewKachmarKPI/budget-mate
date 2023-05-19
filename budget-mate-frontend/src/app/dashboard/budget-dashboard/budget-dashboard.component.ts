@@ -7,6 +7,7 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./budget-dashboard.component.css']
 })
 export class BudgetDashboardComponent implements OnInit {
+  public budgets: any[] = [];
 
   constructor(private toastr: ToastrService) {
   }
@@ -15,7 +16,7 @@ export class BudgetDashboardComponent implements OnInit {
   }
 
   showSuccess() {
-    this.toastr.success('Congratulations', 'YOU ARE GAY',{
+    this.toastr.success('Congratulations', 'YOU ARE GAY', {
       //fisting is 300 bucks
       timeOut: 5000,
     });
