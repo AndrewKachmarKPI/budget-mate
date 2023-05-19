@@ -41,6 +41,7 @@ public class Mapper {
                 .number(cardEntity.getNumber())
                 .holderName(cardEntity.getHolder())
                 .expirationDate(cardEntity.getExpirationDate())
+                .name(cardEntity.getName())
                 .secretCode(cardEntity.getSecretCode())
                 .type(cardEntity.getType().getName())
                 .build();

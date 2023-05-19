@@ -2,11 +2,12 @@ package com.budget.mate.services;
 
 import com.budget.mate.domain.CardEntity;
 import com.budget.mate.dto.CardDto;
+import com.budget.mate.dto.CreateCardDto;
 
 import java.util.List;
 
 public interface CardService {
-    CardDto addCard(CardDto cardDto);
+    CardDto addCard(CreateCardDto cardDto);
 
     Boolean removeCardById(String cardId);
 

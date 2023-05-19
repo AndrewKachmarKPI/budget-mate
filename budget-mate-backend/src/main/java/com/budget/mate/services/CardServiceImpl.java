@@ -2,6 +2,7 @@ package com.budget.mate.services;
 
 import com.budget.mate.domain.CardEntity;
 import com.budget.mate.dto.CardDto;
+import com.budget.mate.dto.CreateCardDto;
 import com.budget.mate.enums.CardType;
 import com.budget.mate.mapper.Mapper;
 import com.budget.mate.repositories.CardRepository;
@@ -23,7 +24,7 @@ public class CardServiceImpl implements CardService {
     private static final String OWNER_USERNAME = "username"; //FIXME replace with username
 
     @Override
-    public CardDto addCard(CardDto cardDto) {
+    public CardDto addCard(CreateCardDto cardDto) {
         if (cardRepository.existsByNumber(cardDto.getNumber())) {
             throw new RuntimeException("Card with number " + cardDto.getNumber() + " already exist");
         }
@@ -31,7 +32,8 @@ public class CardServiceImpl implements CardService {
                 .cardId(UUID.randomUUID().toString())
                 .number(cardDto.getNumber())
                 .holder(OWNER_USERNAME)
-                .expirationDate(cardDto.getExpirationDate())
+                .expirationDate(cardDto.getExpDate())
+                .name(cardDto.getName())
                 .secretCode(cardDto.getSecretCode())
                 .isPrimary(false)
                 .type(getCreditCardType(cardDto.getNumber()))

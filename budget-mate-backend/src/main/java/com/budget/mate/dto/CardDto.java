@@ -16,10 +16,11 @@ public class CardDto {
     private String cardId;
 
     private String number;
+    private String name;
 
     private String holderName;
 
-    private LocalDate expirationDate;
+    private String expirationDate;
 
     private String secretCode;
 
