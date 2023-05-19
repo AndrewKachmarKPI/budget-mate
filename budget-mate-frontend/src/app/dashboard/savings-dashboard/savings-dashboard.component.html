@@ -178,38 +178,23 @@
               <tbody class="table-border-bottom-0">
               <tr>
                 <td>
-                  <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                  <i class="fab fa-cc-visa fa-lg me-3"></i>
                   <strong>Angular Project</strong>
                 </td>
-                <td>Albert Cook</td>
+                <td>100$</td>
                 <td>
-                  <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                        class="avatar avatar-xs pull-up" aria-label="Lilian Fuller"
-                        data-bs-original-title="Lilian Fuller">
-                      <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle">
-                    </li>
-                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                        class="avatar avatar-xs pull-up" aria-label="Sophia Wilkerson"
-                        data-bs-original-title="Sophia Wilkerson">
-                      <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle">
-                    </li>
-                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                        class="avatar avatar-xs pull-up" aria-label="Christina Parker"
-                        data-bs-original-title="Christina Parker">
-                      <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle">
-                    </li>
-                  </ul>
+                  2023
                 </td>
-                <td><span class="badge bg-label-primary me-1">Active</span></td>
+                <td>
+                  <span class="badge bg-label-primary me-1">
+                    COMPLETED
+                  </span>
+                </td>
                 <td>
                   <div class="dropdown">
-                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
-                      class="bx bx-dots-vertical-rounded"></i></button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                      <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                    </div>
+                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                      <i class="bx bx-paperclip"></i>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -233,6 +218,7 @@
   </div>
 </div>
 
+
 <!--TRANSFER MONEY-->
 <div class="modal fade" id="transfer" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -246,28 +232,42 @@
                 aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">
-        <div class="col-12 fv-plugins-icon-container mb-3">
-          <label class="form-label w-100">Transfer sum</label>
-          <input type="number" class="form-control" placeholder="100₴" min="1"/>
-        </div>
-        <div class="col-md mb-md-0 mb-2">
-          <div class="form-check custom-option custom-option-icon checked">
-            <label class="form-check-label custom-option-content" for="customRadioPercentage">
+      <form #formTopUo="ngForm" [formGroup]="topUpGroup" (ngSubmit)="topUpBank(closeTopUp)">
+        <div class="modal-body">
+          <div class="col-12 fv-plugins-icon-container mb-3">
+            <label class="form-label w-100">Transfer sum</label>
+            <input type="number" class="form-control" placeholder="100₴" min="1" formControlName="sumControl"
+                   [ngClass]="{'invalid': controls['sumControl'].invalid && (formTopUo.submitted||controls['sumControl'].touched)}"/>
+          </div>
+          <div class="col-md mb-md-0 mb-2">
+            <div class="form-check custom-option custom-option-icon checked">
+              <label class="form-check-label custom-option-content" for="customRadioPercentage">
                     <span class="card-body">
                       <i class="bx bx-purchase-tag"></i>
                       <span class="custom-option-title">Percentage</span>
                       <small>Create a deal which offer uses some % off (i.e 5% OFF) on total.</small>
                     </span>
-              <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="customRadioPercentage" checked="">
-            </label>
+                <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="customRadioPercentage"
+                       checked="">
+              </label>
+            </div>
+          </div>
+          <div class="col-12 fv-plugins-icon-container">
+            <label class="form-label w-100">Card</label>
+
           </div>
         </div>
-        <div class="col-12 fv-plugins-icon-container">
-          <label class="form-label w-100">Card</label>
-
+        <div class="modal-footer">
+          <button #closeTopUp type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                  (click)="resetTopUp()">
+            Close
+          </button>
+          <button type="submit" class="btn btn-success">
+            Transafer
+          </button>
         </div>
-      </div>
+      </form>
+
     </div>
   </div>
 </div>

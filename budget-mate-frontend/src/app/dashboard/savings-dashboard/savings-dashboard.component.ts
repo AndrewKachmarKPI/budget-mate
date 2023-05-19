@@ -47,6 +47,14 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit, AfterVi
       Validators.required
     ])),
   })
+  public topUpGroup: FormGroup = new FormGroup<any>({
+    sumControl: new FormControl("", Validators.compose([
+      Validators.required, Validators.min(1)
+    ])),
+    cardControl: new FormControl("", Validators.compose([
+      Validators.required
+    ]))
+  })
 
   constructor(private bankService: BankService,
               private toastService: ToastrService) {
@@ -77,12 +85,16 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit, AfterVi
     })
   }
 
-  public topUpBank() {
-    this.bankService.topUpBank(this.selectedBank.bankId, "", 100).subscribe({
-      next: (bank) => {
-        this.selectedBank = bank;
-      }
-    });
+  public topUpBank(close: HTMLButtonElement) {
+    console.log(this.topUpGroup);
+    if (this.topUpGroup.valid) {
+      this.bankService.topUpBank(this.selectedBank.bankId, "", 100).subscribe({
+        next: (bank) => {
+          this.selectedBank = bank;
+          close.click();
+        }
+      });
+    }
   }
 
   public findAllCards() {
@@ -236,5 +248,9 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit, AfterVi
       labels: ["Percent"]
     };
     this.chartsOptions.set(bank, chartOptions);
+  }
+
+  public resetTopUp() {
+    this.topUpGroup.reset();
   }
 }
