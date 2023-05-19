@@ -3,6 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { ElementRef } from '@angular/core';
 import Cleave from "cleave.js";
 import 'cleave.js/dist/addons/cleave-phone.i18n';
+import {CardDto} from "../../models/card-dto";
+import {CardService} from "../../_services/card.service";
 
 @Component({
   selector: 'app-billing-details',
@@ -21,11 +23,11 @@ export class BillingDetailsComponent implements OnInit {
     { code:'1XBDAS4',amount: 99,plan: 'Plan4',invoiceDate:'11.05.2023',datePaid:'12.05.23',status:'Pending',paymentMethod:'karta4',invoiceNumber:1234},
   ];
 
-  cards:any=[
+  /*public cards:any=[
     {type:"mastercard",ownerName:"Tom McBride", expiration:"12/26", number:"4716313599689856",cvv:"133",isPrimary:true},
     {type:"visa",ownerName:"Mildred Melnyk", expiration:"12/26", number:"5525132581415896",cvv:"144",isPrimary:false},
-  ]
-
+  ]*/
+  public cards:CardDto[];
   public statusesAndClasses = new Map<string, String>([
     ["Completed", 'badge bg-label-success me-1'],
     ["Active",'badge bg-label-primary me-1'],
@@ -38,7 +40,18 @@ export class BillingDetailsComponent implements OnInit {
     expiration: new FormControl('', Validators.compose([Validators.required])),
     cvv: new FormControl('', Validators.compose([Validators.required])),
   });
-  constructor(private elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef,
+              private cardService:CardService) {
+    cardService.findAllMyCards().subscribe(
+      (data: CardDto[]) => {
+        this.cards = data;
+      },
+      (error: any) => {
+        console.error('An error occurred:', error);
+      }
+    );
+
+  }
 
 
   ngOnInit(): void {
@@ -98,7 +111,7 @@ export class BillingDetailsComponent implements OnInit {
     //tempData.isPrimary=false
     this.cardFormGroup.reset()
     //tipa she v bd shletsia
-    this.cards.push(tempData)
+    //this.cards.push(tempData)
   }
 
   saveCardChanges(card:any){
