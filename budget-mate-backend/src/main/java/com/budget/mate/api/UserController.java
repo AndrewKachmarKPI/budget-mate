@@ -26,6 +26,16 @@ public class UserController {
         return ResponseEntity.ok(userService.register(registerUserDto));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> myUser() {
+        return ResponseEntity.ok(userService.getUser());
+    }
+
+    @PostMapping("/change-avatar")
+    public ResponseEntity<String> changeAvatar(@RequestParam("fileId") String fileId) {
+        return ResponseEntity.ok(userService.changeAvatar(fileId));
+    }
+
     @DeleteMapping("/logout")
     public void revokeToken(HttpServletRequest request) {
         ConsumerTokenServices tokenServices = context.getBean("tokenServices", ConsumerTokenServices.class);

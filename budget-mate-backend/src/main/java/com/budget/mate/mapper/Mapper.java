@@ -1,13 +1,7 @@
 package com.budget.mate.mapper;
 
-import com.budget.mate.domain.BankEntity;
-import com.budget.mate.domain.CardEntity;
-import com.budget.mate.domain.TransactionEntity;
-import com.budget.mate.domain.UserEntity;
-import com.budget.mate.dto.BankDto;
-import com.budget.mate.dto.CardDto;
-import com.budget.mate.dto.TransactionDto;
-import com.budget.mate.dto.UserDto;
+import com.budget.mate.domain.*;
+import com.budget.mate.dto.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -65,9 +59,20 @@ public class Mapper {
                 .build();
         if (userEntity.hasAvatar()) {
             userDto = userDto.toBuilder()
-                    .avatarId(userEntity.getProfileEntity().getAvatar().getFileId()).build();
+                    .avatarId(userEntity.getProfileEntity().getAvatar()).build();
         }
         return userDto;
+    }
+
+    public FileDto getFileDto(FileEntity fileEntity) {
+        return FileDto.builder()
+                .fileId(fileEntity.getFileId())
+                .category(fileEntity.getCategory())
+                .name(fileEntity.getName())
+                .type(fileEntity.getType())
+                .content(fileEntity.getContent())
+                .url(fileEntity.getUrl())
+                .size(fileEntity.getSize()).build();
     }
 
     public String encode(String value) {

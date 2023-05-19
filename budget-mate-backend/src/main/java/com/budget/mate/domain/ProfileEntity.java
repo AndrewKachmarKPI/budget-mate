@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -33,6 +33,5 @@ public class ProfileEntity {
     private BillingPlan billingPlan;
     @Column(nullable = false)
     private LocalDateTime registered;
-    @OneToOne
-    private FileEntity avatar;
+    private String avatar;
 }

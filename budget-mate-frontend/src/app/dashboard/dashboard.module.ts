@@ -19,6 +19,7 @@ import {InvoiceComponent} from './invoice/invoice.component';
 import {ImageCropperModule} from "ngx-image-cropper";
 import {FrequentyAskedQuestionsComponent} from './frequenty-asked-questions/frequenty-asked-questions.component';
 import {HttpClientModule} from "@angular/common/http";
+import { ImgBoxComponent } from './img-box/img-box.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import {HttpClientModule} from "@angular/common/http";
     SavingsDashboardComponent,
     BillingDetailsComponent,
     InvoiceComponent,
-    FrequentyAskedQuestionsComponent
+    FrequentyAskedQuestionsComponent,
+    ImgBoxComponent
   ],
   imports: [
     CommonModule,

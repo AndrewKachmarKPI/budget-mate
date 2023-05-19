@@ -92,16 +92,16 @@
 
 
         <!-- Misc -->
-        <li class="menu-header small text-uppercase">
+        <li class="menu-header small text-uppercase" *ngIf="isAdmin">
           <span class="menu-header-text">Admin tools</span>
         </li>
-        <li class="menu-item" [ngClass]="{'active':isRouteActive('users')}">
+        <li class="menu-item" [ngClass]="{'active':isRouteActive('users')}" *ngIf="isAdmin">
           <a routerLink="/users" class="menu-link">
             <i class="menu-icon tf-icons bx bx-user"></i>
             <div data-i18n="Layouts">Users</div>
           </a>
         </li>
-        <li class="menu-item" [ngClass]="{'active':isRouteActive('roles')}">
+        <li class="menu-item" [ngClass]="{'active':isRouteActive('roles')}" *ngIf="isAdmin">
           <a routerLink="/roles" class="menu-link">
             <i class="menu-icon tf-icons bx bx-check-shield"></i>
             <div data-i18n="Layouts">Roles & Permissions</div>
@@ -136,8 +136,8 @@
         </li>
         <li class="menu-item" [ngClass]="{'active':isRouteActive('billings')}">
           <a routerLink="/billings" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-archive"></i>
-            <div data-i18n="Layouts">Bills</div>
+            <i class="menu-icon tf-icons bx bx-credit-card"></i>
+            <div data-i18n="Layouts">Billing</div>
           </a>
         </li>
         <li class="menu-item" [ngClass]="{'active':isRouteActive('faq')}">
@@ -191,7 +191,9 @@
           <ul class="navbar-nav flex-row align-items-center ms-auto">
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
               <a class="nav-link dropdown-toggle hide-arrow" routerLink="/pricing">
-                <span class="badge rounded-pill bg-label-warning">BASIC</span>
+                <span class="badge rounded-pill" [ngClass]="[getBillingPlanColor()]" *ngIf="userDto && userDto.billingPlan">
+                  {{userDto.billingPlan}}
+                </span>
               </a>
             </li>
             <li class="nav-item dropdown-language dropdown me-xl-0">
@@ -257,24 +259,24 @@
             </li>
 
 
-            <li class="nav-item navbar-dropdown dropdown-user dropdown">
-              <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+            <li class="nav-item navbar-dropdown dropdown-user dropdown" *ngIf="userDto">
+              <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                 <div class="avatar avatar-online">
-                  <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle"/>
+                  <img [src]="userDto.avatarId" alt class="w-px-40 h-auto rounded-circle"/>
                 </div>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li>
-                  <a class="dropdown-item" href="#">
+                  <a class="dropdown-item" routerLink="/profile" [queryParams]="{tab:'Account'}">
                     <div class="d-flex">
                       <div class="flex-shrink-0 me-3">
                         <div class="avatar avatar-online">
-                          <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle"/>
+                          <img [src]="userDto.avatarId" alt class="w-px-40 h-auto rounded-circle"/>
                         </div>
                       </div>
                       <div class="flex-grow-1">
-                        <span class="fw-semibold d-block">John Doe</span>
-                        <small class="text-muted">Admin</small>
+                        <span class="fw-semibold d-block">{{userDto.firstName}} {{userDto.lastName}}</span>
+                        <small class="text-muted">{{userDto.username}}</small>
                       </div>
                     </div>
                   </a>
@@ -289,7 +291,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#">
+                  <a class="dropdown-item" routerLink="/profile" [queryParams]="{tab:'Notifications'}">
                     <i class="bx bx-cog me-2"></i>
                     <span class="align-middle">Settings</span>
                   </a>
@@ -299,7 +301,6 @@
                         <span class="d-flex align-items-center align-middle">
                           <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
                           <span class="flex-grow-1 align-middle" routerLink="/billings">Billing</span>
-                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
                         </span>
                   </a>
                 </li>
@@ -307,7 +308,7 @@
                   <div class="dropdown-divider"></div>
                 </li>
                 <li>
-                  <a class="dropdown-item" (click)="logout()">
+                  <a class="dropdown-item cursor-pointer" (click)="logout()">
                     <i class="bx bx-power-off me-2"></i>
                     <span class="align-middle">Log Out</span>
                   </a>

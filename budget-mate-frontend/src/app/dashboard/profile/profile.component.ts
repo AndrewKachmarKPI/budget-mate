@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
+import {FileService} from "../../_services/file.service";
+import {FileDto} from "../../models/file-dto";
+import {UserDto} from "../../auth/models/user-dto";
 
 
 @Component({
@@ -11,8 +14,10 @@ import {Location} from "@angular/common";
 })
 export class ProfileComponent implements OnInit {
   public currentPage: string = 'account';
+  public files: FileDto[] = [];
+  public userDto: UserDto;
 
-  constructor(private userService: UserService,
+  constructor(private userService: UserService, private fileService: FileService,
               private router: Router, private location: Location,
               private activatedRoute: ActivatedRoute) {
   }
@@ -21,6 +26,7 @@ export class ProfileComponent implements OnInit {
     this.activatedRoute.queryParamMap.subscribe(value => {
       this.currentPage = value.get('tab');
     });
+    this.getAvatars();
   }
 
   public openMenuTab(tabName: string) {
@@ -34,4 +40,13 @@ export class ProfileComponent implements OnInit {
     });
     this.location.go(urlTree.toString());
   }
+
+  public getAvatars() {
+    this.fileService.getAllDefaultAvatars().subscribe({
+      next: (files) => {
+        this.files = files;
+      }
+    });
+  }
+
 }

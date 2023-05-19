@@ -19,6 +19,8 @@ public class FileEntity {
     @Column(nullable = false, unique = true)
     private String fileId;
     @Column(nullable = false)
+    private String category;
+    @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     private String type;

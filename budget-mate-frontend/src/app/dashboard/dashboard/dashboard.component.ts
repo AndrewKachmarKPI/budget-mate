@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {AuthService} from "../../_services/auth.service";
-import {bounceAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation, shakeAnimation} from "angular-animations";
+import {bounceAnimation} from "angular-animations";
 import {NgxSpinnerService} from "ngx-spinner";
+import {UserDto} from "../../auth/models/user-dto";
+import {UserService} from "../services/user.service";
+import {BillingPlan} from "../../auth/models/billing-plan";
 
 @Component({
   selector: 'app-dashboard',
@@ -16,12 +19,15 @@ export class DashboardComponent implements OnInit {
   public menuItems: Map<string, any> = new Map<string, any>();
   public nestedElements: HTMLLIElement[] = [];
   public animationState: boolean = false;
+  public userDto: UserDto;
 
-  constructor(private router: Router, private spinnerService: NgxSpinnerService,
+  constructor(private router: Router, private spinnerService: NgxSpinnerService, private userService: UserService,
               private authService: AuthService) {
   }
 
   ngOnInit(): void {
+    this.getProfile();
+    this.listenAvatarChange();
   }
 
   get currentYear() {
@@ -94,5 +100,32 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.spinnerService.hide('main');
     }, 5000);
+  }
+
+  public getProfile() {
+    this.userService.myProfile().subscribe({
+      next: (userDto) => {
+        this.userDto = userDto;
+      }
+    })
+  }
+
+  public listenAvatarChange() {
+    this.userService.currentAvatar.subscribe({
+      next: (url) => {
+        if (url) this.userDto.avatarId = url;
+      }
+    })
+  }
+
+  public getBillingPlanColor() {
+    if (this.userDto.billingPlan == BillingPlan.BASIC) return "bg-label-warning";
+    if (this.userDto.billingPlan == BillingPlan.PREMIUM) return "bg-label-primary";
+    if (this.userDto.billingPlan == BillingPlan.PRO) return "bg-label-info";
+    return "";
+  }
+
+  public isAdmin() {
+    return this.authService.isAdmin;
   }
 }

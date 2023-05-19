@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     void registerDefaultUsers();
 
+    String changeAvatar(String fileId);
+
     UserDto register(RegisterUserDto registerUserDto);
 
     UserDto promoteUser(String username, UserRoles userRole);
+    UserDto getUser();
 }

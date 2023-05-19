@@ -34,7 +34,7 @@
       <div class="tab-content p-0 bg-transparent shadow-none">
         <div class="tab-pane fade" id="navs-pills-top-home" role="tabpanel"
              [ngClass]="{'active show':currentPage == 'Account'}">
-          <app-account-settings></app-account-settings>
+          <app-account-settings [files]="files"></app-account-settings>
         </div>
         <div class="tab-pane fade" id="navs-pills-top-profile" role="tabpanel"
              [ngClass]="{'active show':currentPage == 'Notifications'}">

@@ -1,4 +1,6 @@
 package com.budget.mate;
+
+import com.budget.mate.services.FileService;
 import com.budget.mate.services.RoleService;
 import com.budget.mate.services.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -33,8 +35,9 @@ public class BudgetMateBackendApplication {
     }
 
     @Bean
-    CommandLineRunner init(RoleService roleService, UserService userService) {
+    CommandLineRunner init(RoleService roleService, UserService userService, FileService fileService) {
         return args -> {
+            fileService.loadDefaultAvatars();
             roleService.createDefaultRoles();
             userService.registerDefaultUsers();
         };

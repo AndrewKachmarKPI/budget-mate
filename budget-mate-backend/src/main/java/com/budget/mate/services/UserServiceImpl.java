@@ -27,6 +27,8 @@ public class UserServiceImpl implements UserService {
     @Resource
     private RoleService roleService;
     @Resource
+    private FileService fileService;
+    @Resource
     private Mapper mapper;
 
     @Override
@@ -35,8 +37,9 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(registerUserDto.getUsername())) {
             throw new RuntimeException("User with username [" + registerUserDto.getUsername() + "] already exits");
         }
-        System.out.println("INPUT_>"+ registerUserDto);
+        System.out.println("INPUT_>" + registerUserDto);
         ProfileEntity profileEntity = profileRepository.save(ProfileEntity.builder()
+                .avatar(fileService.findAvatarUrlByName("chicken.png"))
                 .registered(LocalDateTime.now())
                 .billingPlan(BillingPlan.BASIC)
                 .email(registerUserDto.getEmail()).build());
@@ -58,11 +61,17 @@ public class UserServiceImpl implements UserService {
         if (userEntity.hasRole(userRole.getRoleTitle())) {
             throw new RuntimeException("User already has role [" + userRole.getTitle() + "]");
         }
-        RoleEntity roleEntity = roleService.findRoleByName(UserRoles.BASIC_CLIENT.getRoleTitle());
+        RoleEntity roleEntity = roleService.findRoleByName(userRole.getRoleTitle());
         userEntity = userEntity.toBuilder()
                 .roleEntities(userEntity.appendRole(roleEntity))
                 .build();
         return mapper.userToDto(userRepository.save(userEntity));
+    }
+
+    @Override
+    public UserDto getUser() {
+        UserEntity userEntity = findUserEntity(mapper.username());
+        return mapper.userToDto(userEntity);
     }
 
     @Override
@@ -75,7 +84,28 @@ public class UserServiceImpl implements UserService {
                     .build();
             register(registerUserDto);
             promoteUser(registerUserDto.getUsername(), UserRoles.ADMIN);
+            UserEntity userEntity = findUserEntity(registerUserDto.getUsername());
+            ProfileEntity profileEntity = userEntity.getProfileEntity().toBuilder()
+                    .firstName("Alex")
+                    .lastName("Pick")
+                    .phoneNumber("0688463078")
+                    .email("admin@gmail.com")
+                    .billingPlan(BillingPlan.PRO)
+                    .build();
+            profileEntity = profileRepository.save(profileEntity);
+            userEntity.setProfileEntity(profileEntity);
+            userRepository.save(userEntity);
         }
+    }
+
+    @Override
+    public String changeAvatar(String fileId) {
+        UserEntity userEntity = findUserEntity(mapper.username());
+        String avatar = fileService.findAvatarUrlById(fileId);
+        userEntity.getProfileEntity().setAvatar(avatar);
+        profileRepository.save(userEntity.getProfileEntity());
+        userRepository.save(userEntity);
+        return avatar;
     }
 
     private UserEntity findUserEntity(String username) {

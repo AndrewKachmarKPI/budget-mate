@@ -5,6 +5,9 @@ import {login_url, url} from "../../environments/environment";
 import {RegisterUserDto} from "../auth/models/register-user-dto";
 import {UserDto} from "../auth/models/user-dto";
 import {TokenService} from "./token-service";
+import * as jwt_decode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
+import {UserRoles} from "../auth/models/user-roles";
 
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({
@@ -46,6 +49,12 @@ export class AuthService {
   }
 
   public getUserRoles() {
-    return [];
+    let token = jwtDecode(this.tokenService.getToken());
+    return token['authorities'];
+  }
+
+  get isAdmin() {
+    let token = jwtDecode(this.tokenService.getToken());
+    return token['authorities'].includes(UserRoles.ADMIN);
   }
 }

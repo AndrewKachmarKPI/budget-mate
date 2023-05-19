@@ -57,7 +57,11 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(username, password).subscribe({
         next: data => {
-          this.router.navigate(['/dashboard']).then(() => {
+          this.router.navigate(['/profile'],{
+            queryParams:{
+              tab:'Account'
+            }
+          }).then(() => {
             this.toaster.success("Successfully logged in!");
           });
           //TODO save token to localstorage

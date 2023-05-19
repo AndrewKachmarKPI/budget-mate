@@ -1,5 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ImageCroppedEvent} from "ngx-image-cropper";
+import {FileDto} from "../../models/file-dto";
+import {UserService} from "../services/user.service";
+import {UserDto} from "../../auth/models/user-dto";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-account-settings',
@@ -7,11 +11,14 @@ import {ImageCroppedEvent} from "ngx-image-cropper";
   styleUrls: ['./account-settings.component.css']
 })
 export class AccountSettingsComponent implements OnInit {
+  @Input() files: FileDto[] = [];
+  public userDto: UserDto;
 
-  constructor() {
+  constructor(private userService: UserService, private toast: ToastrService) {
   }
 
   ngOnInit(): void {
+    this.getProfile();
   }
 
   imageChangedEvent: any = '';
@@ -39,5 +46,23 @@ export class AccountSettingsComponent implements OnInit {
 
   clearImage() {
     this.imageChangedEvent = "";
+  }
+
+  public changeAvatar(fileId: string) {
+    this.userService.changeAvatar(fileId).subscribe({
+      next: (fileId) => {
+        this.userService.updateAvatar(fileId);
+        this.toast.success("Avatar changed!");
+        this.userDto.avatarId = fileId;
+      }
+    })
+  }
+
+  public getProfile() {
+    this.userService.myProfile().subscribe({
+      next: (userDto) => {
+        this.userDto = userDto;
+      }
+    })
   }
 }
