@@ -80,7 +80,7 @@
 
 <div class="card">
   <div class="card-header">
-    <div class="d-flex justify-content-between align-items-center row py-2 gap-3 gap-md-0">
+    <div class="d-flex justify-content-between align-items-center row py-0 gap-3 gap-md-0">
       <div class="col-md-3">
         <h5 class="mb-0">
           Users
@@ -88,19 +88,17 @@
       </div>
       <div class="col-md-3 user_role"><select id="UserRole" class="form-select text-capitalize">
         <option value=""> Select Role</option>
-        <option value="Admin">Admin</option>
-        <option value="Author">Author</option>
-        <option value="Editor">Editor</option>
-        <option value="Maintainer">Maintainer</option>
-        <option value="Subscriber">Subscriber</option>
+        <option value="Admin">Basic client</option>
+        <option value="Premium client">Premium client</option>
+        <option value="Editor">Pro client</option>
+        <option value="Maintainer">Admin</option>
       </select>
       </div>
       <div class="col-md-3 user_plan"><select id="UserPlan" class="form-select text-capitalize">
         <option value=""> Select Plan</option>
         <option value="Basic">Basic</option>
-        <option value="Company">Company</option>
-        <option value="Enterprise">Enterprise</option>
-        <option value="Team">Team</option>
+        <option value="Company">Premium</option>
+        <option value="Enterprise">Pro</option>
       </select>
       </div>
       <div class="col-md-3 user_status"><select id="FilterTransaction" class="form-select text-capitalize">
@@ -119,49 +117,56 @@
         <th>User</th>
         <th>Role</th>
         <th>Plan</th>
-        <th>Status</th>
+        <th>Phone number</th>
         <th>Actions</th>
       </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-      <tr>
-        <td>
-          <div class="d-flex justify-content-start align-items-center user-name">
-            <div class="avatar-wrapper">
-              <div class="avatar avatar-sm me-3"><img src="../../assets/img/avatars/7.png" alt="Avatar"
-                                                      class="rounded-circle"></div>
+      <ng-container *ngFor="let user of users">
+        <tr>
+          <td>
+            <div class="d-flex justify-content-start align-items-center user-name">
+              <div class="avatar-wrapper">
+                <div class="avatar avatar-sm me-3">
+                  <img [src]="user.avatarId" alt="Avatar"
+                       class="rounded-circle"></div>
+              </div>
+              <div class="d-flex flex-column"><a href="javascript:void(0)" class="text-body text-truncate"><span
+                class="fw-semibold">{{user.firstName}} {{user.lastName}}</span></a><small
+                class="text-muted">{{user.email}}</small></div>
             </div>
-            <div class="d-flex flex-column"><a href="app-user-view-account.html" class="text-body text-truncate"><span
-              class="fw-semibold">Zsazsa McCleverty</span></a><small
-              class="text-muted">zmcclevertye@soundcloud.com</small></div>
-          </div>
-        </td>
-        <td>
-          <span class="text-truncate d-flex align-items-center">
-            <span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2">
-              <i class="bx bx-pie-chart-alt bx-xs"></i>
-            </span>
-            Maintainer
-          </span>
-        </td>
-        <td>
-          Basic
-        </td>
-        <td>
-          <span class="badge bg-label-primary me-1">Active</span>
-        </td>
-        <td>
-          <div class="d-inline-block text-nowrap">
-            <button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button>
-            <button class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></button>
-            <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
-              class="bx bx-dots-vertical-rounded"></i></button>
-            <div class="dropdown-menu dropdown-menu-end m-0"><a href="app-user-view-account.html"
-                                                                class="dropdown-item">View</a><a
-              href="javascript:;" class="dropdown-item">Suspend</a></div>
-          </div>
-        </td>
-      </tr>
+          </td>
+          <td>
+            <div class="d-flex justify-content-start">
+              <ng-container *ngFor="let role of user.roles">
+              <span class="text-truncate d-flex align-items-center ms-2">
+                <span class="badge badge-center rounded-pill w-px-30 h-px-30 me-2" [ngClass]="[role.style]">
+                  <i class="bx bx-xs" [ngClass]="[role.icon]"></i>
+                </span>
+                {{role.roleName.replace("ROLE_", "")}}
+              </span>
+              </ng-container>
+            </div>
+          </td>
+          <td>
+            <span class="badge me-1" [ngClass]="[getBillingPlanColor(user)]">{{user.billingPlan}}</span>
+          </td>
+          <td>
+            {{user.phoneNumber}}
+          </td>
+          <td>
+            <div class="d-inline-block text-nowrap">
+              <button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button>
+              <button class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></button>
+              <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
+                class="bx bx-dots-vertical-rounded"></i></button>
+              <div class="dropdown-menu dropdown-menu-end m-0"><a href="app-user-view-account.html"
+                                                                  class="dropdown-item">View</a><a
+                href="javascript:;" class="dropdown-item">Suspend</a></div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
       </tbody>
     </table>
 
@@ -185,13 +190,13 @@
           <li class="page-item prev">
             <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
           </li>
-          <li class="page-item">
+          <li class="page-item active">
             <a class="page-link" href="javascript:void(0);">1</a>
           </li>
           <li class="page-item">
             <a class="page-link" href="javascript:void(0);">2</a>
           </li>
-          <li class="page-item active">
+          <li class="page-item">
             <a class="page-link" href="javascript:void(0);">3</a>
           </li>
           <li class="page-item">

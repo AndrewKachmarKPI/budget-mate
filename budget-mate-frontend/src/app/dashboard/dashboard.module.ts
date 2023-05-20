@@ -9,7 +9,6 @@ import {AccountSettingsComponent} from './account-settings/account-settings.comp
 import {NotificationSettingsComponent} from './notification-settings/notification-settings.component';
 import {ConnectionsSettingsComponent} from './connections-settings/connections-settings.component';
 import {UsersComponent} from './users/users/users.component';
-import {RolesComponent} from './users/roles/roles.component';
 import {PricingComponent} from './pricing/pricing.component';
 import {SavingsDashboardComponent} from './savings-dashboard/savings-dashboard.component';
 import {NgApexchartsModule} from "ng-apexcharts";
@@ -31,7 +30,6 @@ import { ImgBoxComponent } from './img-box/img-box.component';
     NotificationSettingsComponent,
     ConnectionsSettingsComponent,
     UsersComponent,
-    RolesComponent,
     PricingComponent,
     SavingsDashboardComponent,
     BillingDetailsComponent,

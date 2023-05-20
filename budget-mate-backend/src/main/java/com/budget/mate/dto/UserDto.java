@@ -5,6 +5,8 @@ import com.budget.mate.enums.UserStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder(toBuilder = true)
 @Getter
@@ -22,4 +24,6 @@ public class UserDto {
     private BillingPlan billingPlan;
     private LocalDateTime registered;
     private String avatarId;
+
+    private List<RoleDto> roles = new ArrayList<>();
 }

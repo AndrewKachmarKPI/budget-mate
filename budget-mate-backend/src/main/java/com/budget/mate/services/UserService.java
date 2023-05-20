@@ -6,6 +6,8 @@ import com.budget.mate.dto.UserDto;
 import com.budget.mate.enums.UserRoles;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface UserService {
     void registerDefaultUsers();
@@ -17,4 +19,6 @@ public interface UserService {
 
     UserDto promoteUser(String username, UserRoles userRole);
     UserDto getUser();
+
+    List<UserDto> getAllUsers();
 }

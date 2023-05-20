@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -73,6 +75,15 @@ public class UserServiceImpl implements UserService {
     public UserDto getUser() {
         UserEntity userEntity = findUserEntity(mapper.username());
         return mapper.userToDto(userEntity);
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream().map(userEntity -> {
+            UserDto user = mapper.userToDto(userEntity);
+            user.setRoles(userEntity.getRoleEntities().stream().map(roleEntity -> mapper.roleToDto(roleEntity)).collect(Collectors.toList()));
+            return user;
+        }).collect(Collectors.toList());
     }
 
     @Override

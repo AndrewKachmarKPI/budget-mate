@@ -1,5 +1,6 @@
 import {BillingPlan} from "./billing-plan";
 import {UserStatus} from "./user-status";
+import {RoleDto} from "./role-dto";
 
 export class UserDto {
   constructor(public username?: string,
@@ -11,6 +12,7 @@ export class UserDto {
               public billingPlan?: BillingPlan,
               public registered?: string,
               public currency?: string,
-              public avatarId?: string) {
+              public avatarId?: string,
+              public roles?: RoleDto[]) {
   }
 }

@@ -21,8 +21,6 @@ public class CardServiceImpl implements CardService {
     @Resource
     private CardRepository cardRepository;
 
-    private static final String OWNER_USERNAME = "username"; //FIXME replace with username
-
     @Override
     public CardDto addCard(CreateCardDto cardDto) {
         if (cardRepository.existsByNumber(cardDto.getNumber())) {
@@ -31,7 +29,7 @@ public class CardServiceImpl implements CardService {
         CardEntity cardEntity = CardEntity.builder()
                 .cardId(UUID.randomUUID().toString())
                 .number(cardDto.getNumber())
-                .holder(OWNER_USERNAME)
+                .holder(mapper.username())
                 .expirationDate(cardDto.getExpDate())
                 .name(cardDto.getName())
                 .secretCode(cardDto.getSecretCode())
@@ -49,7 +47,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<CardDto> findAllMyCards() {
-        return cardRepository.findAllByHolderOrderByIsPrimaryDesc(OWNER_USERNAME)
+        return cardRepository.findAllByHolderOrderByIsPrimaryDesc(mapper.username())
                 .stream().map(cardEntity -> mapper.cardEntityToDto(cardEntity))
                 .collect(Collectors.toList());
     }
@@ -83,7 +81,7 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional
     public CardDto selectCardAsPrimary(String cardId) {
-        List<CardEntity> myCards = cardRepository.findAllByHolderOrderByIsPrimaryDesc(OWNER_USERNAME)
+        List<CardEntity> myCards = cardRepository.findAllByHolderOrderByIsPrimaryDesc(mapper.username())
                 .stream()
                 .map(cardEntity -> cardEntity.toBuilder().isPrimary(false).build())
                 .collect(Collectors.toList());

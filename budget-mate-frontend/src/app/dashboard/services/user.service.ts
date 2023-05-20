@@ -39,6 +39,10 @@ export class UserService {
     return this.http.post(`${url}/users/change-profile`, dto);
   }
 
+  getAllUsers(): Observable<UserDto[]> {
+    return this.http.get<UserDto[]>(`${url}/users`);
+  }
+
   myProfile(): Observable<UserDto> {
     return this.http.get<UserDto>(`${url}/users/me`);
   }

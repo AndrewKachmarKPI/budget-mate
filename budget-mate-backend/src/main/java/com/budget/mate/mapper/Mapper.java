@@ -27,6 +27,14 @@ public class Mapper {
                 .build();
     }
 
+    public RoleDto roleToDto(RoleEntity roleEntity) {
+        return RoleDto.builder()
+                .roleName(roleEntity.getRoleName())
+                .style(roleEntity.getStyle())
+                .created(roleEntity.getCreated())
+                .icon(roleEntity.getIcon()).build();
+    }
+
     public TransactionDto transactionEntityToDto(TransactionEntity transaction) {
         return TransactionDto.builder()
                 .created(transaction.getCreated())

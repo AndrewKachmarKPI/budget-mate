@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -50,5 +51,10 @@ public class UserController {
             String tokenId = authorization.substring("Bearer".length() + 1);
             tokenServices.revokeToken(tokenId);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 }

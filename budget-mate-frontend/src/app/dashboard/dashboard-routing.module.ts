@@ -4,7 +4,6 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
 import {BudgetDashboardComponent} from "./budget-dashboard/budget-dashboard.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {UsersComponent} from "./users/users/users.component";
-import {RolesComponent} from "./users/roles/roles.component";
 import {PricingComponent} from "./pricing/pricing.component";
 import {SavingsDashboardComponent} from "./savings-dashboard/savings-dashboard.component";
 import {BillingDetailsComponent} from "./billing-details/billing-details.component";
@@ -36,14 +35,6 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
-        canActivate: [AuthGuard],
-        data: {
-          roles: [UserRoles.ADMIN]
-        }
-      },
-      {
-        path: 'roles',
-        component: RolesComponent,
         canActivate: [AuthGuard],
         data: {
           roles: [UserRoles.ADMIN]
