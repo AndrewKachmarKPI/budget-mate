@@ -3,6 +3,7 @@ package com.budget.mate.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,7 +28,9 @@ public class BudgetEntity {
     @Column(nullable = false)
     private Double expenses;
     @Column(nullable = false)
-    private LocalDateTime deadline;
+    private LocalDate created;
+    @Column(nullable = false)
+    private LocalDate deadline;
     @Column
     private String category;
     @OneToMany

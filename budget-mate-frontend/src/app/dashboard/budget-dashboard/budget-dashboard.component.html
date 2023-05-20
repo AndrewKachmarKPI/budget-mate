@@ -24,9 +24,81 @@
   </ng-template>
 </div>
 
+<div class="row g-4">
+  <ng-container *ngFor="let budget of budgets">
+    <div class="col-xl-4 col-lg-6 col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-start">
+            <div class="d-flex align-items-start">
+              <div class="avatar me-3">
+                <img src="assets/img/elements/dollar-symbol.png" alt="Avatar" class="rounded-circle" width="38"
+                     height="38">
+              </div>
+              <div class="me-2">
+                <h5 class="mb-1">
+                  <a href="javascript:;" class="h5 stretched-link">
+                    {{budget.name}}
+                  </a>
+                </h5>
+                <div class="client-info d-flex align-items-center">
+                  <h6 class="mb-0 me-1">Owner:</h6><span>{{budget.owner}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="ms-auto">
+              <div class="dropdown zindex-2">
+                <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown"
+                        aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="javascript:void(0);">Rename project</a></li>
+                  <li><a class="dropdown-item" href="javascript:void(0);">View details</a></li>
+                  <li><a class="dropdown-item" href="javascript:void(0);">Add to favorites</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item text-danger" href="javascript:void(0);">Leave Project</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-center flex-wrap">
+            <div class="bg-lighter p-2 rounded me-auto mb-3">
+              <h6 class="mb-1">${{budget.budget}} <span class="text-body fw-normal">/ ${{budget.expenses}}</span></h6>
+              <span>Total Budget</span>
+            </div>
+            <div class="text-end mb-3">
+              <h6 class="mb-1">Created: <span class="text-body fw-normal">{{budget.created|date:'dd/M/yy'}}</span>
+              </h6>
+              <h6 class="mb-1">Deadline: <span class="text-body fw-normal">{{budget.deadline|date:'dd/M/yy'}}</span>
+              </h6>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border-top">
+          <div class="d-flex align-items-center mb-3">
+            <h6 class="mb-1">All Hours: <span class="text-body fw-normal">{{budget.expenses}}/{{budget.budget}}</span></h6>
+            <span class="badge bg-label-success ms-auto">{{getDays(budget.deadline)}} Days left</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <small>Spent budged</small>
+            <small>{{getBudgetPersent(budget)}}% Completed</small>
+          </div>
+          <div class="progress mb-3" style="height: 8px;">
+            <div class="progress-bar" role="progressbar" [style]="{'width':getBudgetPersent(budget)}" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+
 <!--CREATE BUDGET-->
 <div class="modal fade" id="createBudget" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel2">Create budget</h5>
@@ -37,28 +109,39 @@
                 aria-label="Close"
         ></button>
       </div>
-      <form #form="ngForm" [formGroup]="formGroup" (ngSubmit)="createBank(closeForm)">
+      <form #form="ngForm" [formGroup]="formGroup" (ngSubmit)="createBudget(closeForm)">
         <div class="modal-body">
           <div class="row">
             <div class="col mb-3">
-              <label for="name" class="form-label">Bank name</label>
-              <input type="text" id="name" class="form-control" placeholder="Enter bank name"
-                     formControlName="bankTitleControl"
-                     [ngClass]="{'invalid': controls['bankTitleControl'].invalid && (form.submitted||controls['bankTitleControl'].touched)}"/>
+              <label for="name" class="form-label">Budget name</label>
+              <input type="text" id="name" class="form-control" placeholder="Enter budget name"
+                     formControlName="name"
+                     [ngClass]="{'invalid': controls['name'].invalid && (form.submitted||controls['name'].touched)}"/>
             </div>
           </div>
           <div class="row g-2">
             <div class="col mb-0">
-              <label class="form-label" for="emailSmall">Goal</label>
+              <label class="form-label" for="emailSmall">Budget</label>
               <input type="number" class="form-control" id="emailSmall" placeholder="100₴" min="1"
-                     formControlName="goalControl"
-                     [ngClass]="{'invalid': controls['goalControl'].invalid && (form.submitted||controls['goalControl'].touched)}"/>
+                     formControlName="budget"
+                     [ngClass]="{'invalid': controls['budget'].invalid && (form.submitted||controls['budget'].touched)}"/>
+            </div>
+            <div class="col mb-0">
+              <label class="form-label" for="emailSmall">Budget category</label>
+              <select id="defaultSelect" class="form-select" formControlName="category"
+                      [ngClass]="{'invalid': controls['category'].invalid && (form.submitted||controls['category'].touched)}">
+                <option>Budget category</option>
+                <option value="Project">Project</option>
+                <option value="Personal">Personal</option>
+                <option value="Family">Family</option>
+                <option value="Enterprise project">Enterprise project</option>
+              </select>
             </div>
             <div class="col mb-0">
               <label for="deadline" class="form-label">Deadline</label>
               <input id="deadline" type="text" class="form-control" placeholder="DD / MM / YY"
-                     formControlName="deadlineControl"
-                     [ngClass]="{'invalid': controls['deadlineControl'].invalid && (form.submitted||controls['deadlineControl'].touched)}"/>
+                     formControlName="deadline"
+                     [ngClass]="{'invalid': controls['deadline'].invalid && (form.submitted||controls['deadline'].touched)}"/>
             </div>
           </div>
 
@@ -69,7 +152,7 @@
             Close
           </button>
           <button type="submit" class="btn btn-primary">
-            Create bank
+            Create budget
           </button>
         </div>
       </form>

@@ -83,6 +83,7 @@ public class BudgetServiceImpl implements BudgetService {
                 .expenses(0.0)
                 .deadline(createBudgetDto.getDeadline())
                 .category(createBudgetDto.getCategory())
+                .created(LocalDate.now())
                 .transactions(new ArrayList<>())
                 .build();
         return mapper.budgetToDto(budgetRepository.save(budget));

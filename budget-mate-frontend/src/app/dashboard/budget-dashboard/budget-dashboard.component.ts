@@ -1,38 +1,102 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnInit} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {BudgetService} from "../../_services/budget.service";
+import {CreateBudgetDto} from "../../auth/models/create-budget-dto";
+import flatpickr from "flatpickr";
+import {BudgetDto} from "../../auth/models/budget-dto";
 
 @Component({
   selector: 'app-budget-dashboard',
   templateUrl: './budget-dashboard.component.html',
   styleUrls: ['./budget-dashboard.component.css']
 })
-export class BudgetDashboardComponent implements OnInit {
-  public budgets: any[] = [];
+export class BudgetDashboardComponent implements OnInit, AfterViewInit {
+  public budgets: BudgetDto[] = [];
 
   public formGroup: FormGroup = new FormGroup<any>({
-    bankTitleControl: new FormControl("", Validators.compose([
+    name: new FormControl("", Validators.compose([
       Validators.required, Validators.minLength(2)
     ])),
-    goalControl: new FormControl("", Validators.compose([
+    budget: new FormControl("", Validators.compose([
+      Validators.required, Validators.min(2)
+    ])),
+    category: new FormControl("", Validators.compose([
       Validators.required, Validators.min(5)
     ])),
-    deadlineControl: new FormControl("", Validators.compose([
+    deadline: new FormControl("", Validators.compose([
       Validators.required
     ])),
   });
 
-  constructor(private toastr: ToastrService) {
+  constructor(private toastr: ToastrService,
+              private budgetService: BudgetService) {
   }
 
   ngOnInit(): void {
+    this.getMyBudgets();
   }
 
-  showSuccess() {
-    this.toastr.success('Congratulations', 'YOU ARE GAY', {
-      //fisting is 300 bucks
-      timeOut: 5000,
-    });
 
+  get controls() {
+    return this.formGroup.controls;
+  }
+
+  public resetForm() {
+    this.formGroup.reset();
+  }
+
+  public createBudget(close: HTMLButtonElement) {
+    if (this.formGroup.valid) {
+      const dto = new CreateBudgetDto(this.controls['name'].value,
+        this.controls['budget'].value,
+        this.controls['category'].value,
+        this.controls['deadline'].value)
+      this.budgetService.createBudget(dto).subscribe({
+        next: (budget) => {
+          this.budgets.push(budget);
+          close.click();
+          this.toastr.success("Budget created");
+        },
+        error: () => {
+          this.toastr.error("Failed to create budget");
+        }
+      })
+    }
+  }
+
+  public getMyBudgets() {
+    this.budgetService.getAllBudgets().subscribe({
+      next: (budgets) => {
+        this.budgets = budgets;
+      }
+    })
+  }
+
+  ngAfterViewInit(): void {
+    this.initDataPicker();
+  }
+
+  public initDataPicker() {
+    let element = document.getElementById("deadline");
+    flatpickr(element, {
+      minDate: new Date().setDate(new Date().getDate() + 5)
+    });
+  }
+
+  public getDays(deadline: string) {
+    return this.getDateDifference(new Date(), new Date(deadline))
+  }
+
+  public getBudgetPersent(budget: BudgetDto) {
+    const percent = (budget.expenses * 100) / budget.budget;
+    return Math.round(percent);
+  }
+
+  public getDateDifference(startDate: Date, endDate: Date): number {
+    const timeDiff = endDate.getTime() - startDate.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); // 1000 milliseconds * 3600 seconds * 24 hours
+
+    return daysDiff;
   }
 }
