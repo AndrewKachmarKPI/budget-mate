@@ -1,19 +1,19 @@
 package com.budget.mate.dto;
 
-import com.budget.mate.domain.ExpensesCategoryEntity;
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+
 
 @Builder(toBuilder = true)
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionDto {
+public class ExpensesCategoryDto {
+    private String categoryId;
+    private String name;
+    private String icon;
     private LocalDateTime created;
-    private Double sum;
-    private CardDto cardDto;
-    private ExpensesCategoryDto category;
 }

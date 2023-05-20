@@ -36,11 +36,17 @@ public class Mapper {
     }
 
     public TransactionDto transactionEntityToDto(TransactionEntity transaction) {
-        return TransactionDto.builder()
+        TransactionDto transactionDto = TransactionDto.builder()
                 .created(transaction.getCreated())
                 .sum(transaction.getSum())
                 .cardDto(cardEntityToDto(transaction.getCardEntity()))
                 .build();
+        if (transaction.getCategory() != null) {
+            transactionDto = transactionDto.toBuilder()
+                    .category(expensesCategoryToDto(transaction.getCategory()))
+                    .build();
+        }
+        return transactionDto;
     }
 
 
@@ -84,6 +90,28 @@ public class Mapper {
                 .content(fileEntity.getContent())
                 .url(fileEntity.getUrl())
                 .size(fileEntity.getSize()).build();
+    }
+
+    public ExpensesCategoryDto expensesCategoryToDto(ExpensesCategoryEntity category) {
+        return ExpensesCategoryDto.builder()
+                .categoryId(category.getCategoryId())
+                .name(category.getName())
+                .icon(category.getIcon())
+                .created(category.getCreated()).build();
+    }
+
+
+    public BudgetDto budgetToDto(BudgetEntity budget) {
+        return BudgetDto.builder()
+                .budgetId(budget.getBudgetId())
+                .name(budget.getName())
+                .owner(budget.getOwner())
+                .budget(budget.getBudget())
+                .expenses(budget.getExpenses())
+                .deadline(budget.getDeadline())
+                .category(budget.getCategory())
+                .transactions(budget.getTransactions().stream().map(this::transactionEntityToDto).collect(Collectors.toList()))
+                .build();
     }
 
     public String encode(String value) {
