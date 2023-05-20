@@ -10,6 +10,7 @@ export class UserDto {
               public phoneNumber?: string,
               public billingPlan?: BillingPlan,
               public registered?: string,
+              public currency?: string,
               public avatarId?: string) {
   }
 }

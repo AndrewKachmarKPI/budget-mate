@@ -58,6 +58,7 @@ public class Mapper {
                 .phoneNumber(userEntity.getProfileEntity().getPhoneNumber())
                 .billingPlan(userEntity.getProfileEntity().getBillingPlan())
                 .registered(userEntity.getProfileEntity().getRegistered())
+                .currency(userEntity.getProfileEntity().getCurrency())
                 .build();
         if (userEntity.hasAvatar()) {
             userDto = userDto.toBuilder()

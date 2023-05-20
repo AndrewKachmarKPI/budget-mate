@@ -4,6 +4,7 @@ import {UserDto} from "../../auth/models/user-dto";
 import {url} from "../../../environments/environment";
 import {BehaviorSubject, Observable} from "rxjs";
 import {BillingPlan} from "../../auth/models/billing-plan";
+import {ProfileDto} from "../../auth/models/profile-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,10 @@ export class UserService {
         fileId: fileId
       }
     });
+  }
+
+  changeProfile(dto: ProfileDto) {
+    return this.http.post(`${url}/users/change-profile`, dto);
   }
 
   myProfile(): Observable<UserDto> {

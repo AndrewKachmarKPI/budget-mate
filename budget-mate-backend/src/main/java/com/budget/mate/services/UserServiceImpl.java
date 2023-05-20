@@ -3,6 +3,7 @@ package com.budget.mate.services;
 import com.budget.mate.domain.ProfileEntity;
 import com.budget.mate.domain.RoleEntity;
 import com.budget.mate.domain.UserEntity;
+import com.budget.mate.dto.ProfileDto;
 import com.budget.mate.dto.RegisterUserDto;
 import com.budget.mate.dto.UserDto;
 import com.budget.mate.enums.BillingPlan;
@@ -106,6 +107,18 @@ public class UserServiceImpl implements UserService {
         profileRepository.save(userEntity.getProfileEntity());
         userRepository.save(userEntity);
         return avatar;
+    }
+
+    @Override
+    public void changeAvatar(ProfileDto profileDto) {
+        UserEntity userEntity = findUserEntity(mapper.username());
+        userEntity.getProfileEntity().setFirstName(profileDto.getFirstName());
+        userEntity.getProfileEntity().setLastName(profileDto.getLastName());
+        userEntity.getProfileEntity().setPhoneNumber(profileDto.getPhoneNumber());
+        userEntity.getProfileEntity().setEmail(profileDto.getEmail());
+        userEntity.getProfileEntity().setCurrency(profileDto.getCurrency());
+        profileRepository.save(userEntity.getProfileEntity());
+        userRepository.save(userEntity);
     }
 
     private UserEntity findUserEntity(String username) {

@@ -18,6 +18,7 @@ public class UserDto {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private String currency;
     private BillingPlan billingPlan;
     private LocalDateTime registered;
     private String avatarId;

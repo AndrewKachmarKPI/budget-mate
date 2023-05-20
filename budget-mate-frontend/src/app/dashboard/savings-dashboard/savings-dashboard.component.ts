@@ -106,6 +106,10 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit, AfterVi
     }
   }
 
+  public isExpired(bank: BankDto) {
+    return new Date(bank.deadline) < new Date();
+  }
+
   public getMyCards() {
     this.cardService.findAllMyCards().subscribe({
       next: (cards) => {

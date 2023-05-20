@@ -1,5 +1,6 @@
 package com.budget.mate.services;
 
+import com.budget.mate.dto.ProfileDto;
 import com.budget.mate.dto.RegisterUserDto;
 import com.budget.mate.dto.UserDto;
 import com.budget.mate.enums.UserRoles;
@@ -10,6 +11,7 @@ public interface UserService {
     void registerDefaultUsers();
 
     String changeAvatar(String fileId);
+    void changeAvatar(ProfileDto profileDto);
 
     UserDto register(RegisterUserDto registerUserDto);
 

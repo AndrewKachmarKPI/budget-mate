@@ -26,6 +26,7 @@
     <div class="col-md-4 col-xl-3  mb-4">
       <div class="card h-100 saving-container" [ngClass]="{'border border-success':bank.key['percent'] == 100}">
         <span class="badge bg-label-success top-left" *ngIf="bank.key.isClosed">DONE</span>
+        <span class="badge bg-label-danger top-left" *ngIf="isExpired(bank.key)">Expired</span>
         <div class="card-header text-center">
           <small class="card-subtitle mb-2">Savings goal</small>
           <h4 class="card-title mb-0 mt-1">

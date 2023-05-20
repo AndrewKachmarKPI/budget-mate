@@ -1,5 +1,6 @@
 package com.budget.mate.api;
 
+import com.budget.mate.dto.ProfileDto;
 import com.budget.mate.dto.RegisterUserDto;
 import com.budget.mate.dto.UserDto;
 import com.budget.mate.services.UserService;
@@ -34,6 +35,11 @@ public class UserController {
     @PostMapping("/change-avatar")
     public ResponseEntity<String> changeAvatar(@RequestParam("fileId") String fileId) {
         return ResponseEntity.ok(userService.changeAvatar(fileId));
+    }
+
+    @PostMapping("/change-profile")
+    public void changeAvatar(@RequestBody ProfileDto profileDto) {
+        userService.changeAvatar(profileDto);
     }
 
     @DeleteMapping("/logout")

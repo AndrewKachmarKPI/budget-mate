@@ -34,4 +34,5 @@ public class ProfileEntity {
     @Column(nullable = false)
     private LocalDateTime registered;
     private String avatar;
+    private String currency = "";
 }
