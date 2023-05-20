@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserDto} from "../../auth/models/user-dto";
 import {url} from "../../../environments/environment";
 import {BehaviorSubject, Observable} from "rxjs";
+import {BillingPlan} from "../../auth/models/billing-plan";
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,15 @@ import {BehaviorSubject, Observable} from "rxjs";
 export class UserService {
   private avatarSource: BehaviorSubject<string> = new BehaviorSubject<string>("");
   currentAvatar: Observable<string> = this.avatarSource.asObservable();
+  private planSource: BehaviorSubject<BillingPlan> = new BehaviorSubject<BillingPlan>(BillingPlan.BASIC);
+  currentPlan: Observable<BillingPlan> = this.planSource.asObservable();
 
   updateAvatar(url: string) {
     this.avatarSource.next(url);
+  }
+
+  updatePlan(url: BillingPlan) {
+    this.planSource.next(url);
   }
 
   constructor(private http: HttpClient) {

@@ -66,14 +66,15 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardDto updateCard(String cardId, CardDto cardDto) {
-        if (cardRepository.existsByNumber(cardDto.getNumber())) {
+        CardEntity cardEntity = findByCardId(cardId);
+        if (!cardDto.getNumber().equals(cardEntity.getNumber()) && cardRepository.existsByNumber(cardDto.getNumber())) {
             throw new RuntimeException("Card with number " + cardDto.getNumber() + " already exist");
         }
-        CardEntity cardEntity = findByCardId(cardId);
         cardEntity = cardEntity.toBuilder()
                 .number(cardDto.getNumber())
                 .secretCode(cardDto.getSecretCode())
                 .type(getCreditCardType(cardDto.getNumber()))
+                .name(cardDto.getName())
                 .expirationDate(cardDto.getExpirationDate())
                 .build();
         return mapper.cardEntityToDto(cardRepository.save(cardEntity));

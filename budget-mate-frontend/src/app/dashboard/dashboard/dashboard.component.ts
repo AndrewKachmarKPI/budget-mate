@@ -106,6 +106,7 @@ export class DashboardComponent implements OnInit {
     this.userService.myProfile().subscribe({
       next: (userDto) => {
         this.userDto = userDto;
+        this.userService.updatePlan(this.userDto.billingPlan);
       }
     })
   }

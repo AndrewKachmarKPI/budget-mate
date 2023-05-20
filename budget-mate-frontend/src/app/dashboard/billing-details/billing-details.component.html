@@ -11,10 +11,10 @@
           <div class="col-6">
             <div class="card bg-primary text-white mb-3">
               <div class="card-header d-flex justify-content-between align-items-center">
-                Current plan <span class="badge bg-label-warning">BASIC</span>
+                Current plan <span class="badge" [ngClass]="[getBillingPlanColor()]">{{billingPlan}}</span>
               </div>
               <div class="card-body">
-                <h1 class="card-title text-white">300$</h1>
+                <h1 class="card-title text-white">14$</h1>
                 <div class="d-flex justify-content-between align-items-center">
                   <p class="card-text mb-0">
                     Due date: 23.04.2024
@@ -30,7 +30,7 @@
             <div class="card bg-secondary text-white mb-3">
               <div class="card-header">Next payment</div>
               <div class="card-body">
-                <h1 class="card-title text-white">300$</h1>
+                <h1 class="card-title text-white">14$</h1>
                 <div class="d-flex justify-content-between align-items-center">
                   <p class="card-text mb-0">
                     Due date: 23.04.2024
@@ -51,7 +51,7 @@
                   <table class="table table-hover">
                     <thead>
                     <tr>
-                      <th>Invoice code</th>
+                      <th>Transaction code</th>
                       <th>Date</th>
                       <th>Amount</th>
                       <th>Status</th>
@@ -72,7 +72,7 @@
                         <div class="dropdown">
                           <button type="button"
                                   class="btn p-0 dropdown-toggle hide-arrow"
-                                  routerLink="/invoice/{{invoice.code}}">
+                                  routerLink="/bill/{{invoice.code}}">
                             <i class="bx bx-paperclip"></i>
                           </button>
                         </div>
@@ -91,9 +91,9 @@
       <div *ngFor="let card of cards" class="cardMaster bg-lighter rounded-2 p-3 mb-4">
         <div class="d-flex justify-content-between flex-sm-row flex-column">
           <div class="card-information me-2">
-            <img class="mb-3 img-fluid" src="assets/img/icons/brands/{{card.type}}.png" alt="Master Card">
+            <img class="mb-3 img-fluid" src="assets/img/icons/brands/{{card.type}}.png" alt="{{card.type}}">
             <div class="d-flex align-items-center mb-1 flex-wrap gap-2">
-              <h6 class="mb-0 me-2">{{card.holderName}}</h6>
+              <h6 class="mb-0 me-2">{{card.name}}</h6>
               <!--<span *ngIf="card.isPrimary" class="badge bg-label-primary">Primary</span>-->
             </div>
             <span class="card-number">∗∗∗∗ ∗∗∗∗ {{card.number.slice(-4)}}</span>
@@ -101,7 +101,8 @@
           <div class="d-flex flex-column text-start text-sm-end">
             <div class="d-flex order-sm-0 order-1 mt-sm-0 mt-3">
               <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editCardModal"
-                      (click)="loadCardDataToFormGroup(card)">Edit</button>
+                      (click)="loadCardDataToFormGroup(card)">Edit
+              </button>
               <button class="btn btn-secondary" (click)="deleteCard(card)">
                 Delete
               </button>
@@ -110,7 +111,7 @@
           </div>
         </div>
       </div>
-      <div class="row mt-3">
+      <div class="row" [ngClass]="[cards.length==0?'mt-0':'mt-3']">
         <div class="d-grid gap-2 col-lg-12 mx-auto">
           <button class="btn btn-primary btn-lg" type="button" data-bs-toggle="modal"
                   data-bs-target="#backDropModal">
@@ -130,7 +131,8 @@
     <form class="modal-content" #f="ngForm" [formGroup]="cardFormGroup" (ngSubmit)="saveCard()">
       <div class="modal-header">
         <h5 class="modal-title" id="backDropModalTitle">Add credit card</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeCardModal()"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                (click)="closeCardModal()"></button>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -153,7 +155,7 @@
         </div>
         <div class="row g-3">
           <div class="col-12 col-md-6">
-            <label class="form-label" for="modalAddCardName" >Name</label>
+            <label class="form-label" for="modalAddCardName">Name</label>
             <input type="text"
                    id="modalAddCardName"
                    class="form-control"
@@ -185,8 +187,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal" (click)="closeCardModal()">Close</button>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!this.cardFormGroup.valid">Save</button>
+        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal" (click)="closeCardModal()">Close
+        </button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!this.cardFormGroup.valid">
+          Save
+        </button>
       </div>
     </form>
   </div>
@@ -198,7 +203,8 @@
     <form class="modal-content" #f="ngForm" [formGroup]="cardFormGroup" (ngSubmit)="saveCardChanges(tempCard)">
       <div class="modal-header">
         <h5 class="modal-title">Edit credit card</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeCardModal()"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                (click)="closeCardModal()"></button>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -219,7 +225,7 @@
 
         <div class="row g-3">
           <div class="col-12 col-md-6">
-            <label class="form-label" for="modalAddCardName" >Name</label>
+            <label class="form-label" for="modalAddCardName">Name</label>
             <input type="text"
                    id="modalEditCardName"
                    class="form-control"
@@ -251,8 +257,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal" (click)="closeCardModal()">Close</button>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!this.cardFormGroup.valid">Save</button>
+        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal" (click)="closeCardModal()">Close
+        </button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!this.cardFormGroup.valid">
+          Save
+        </button>
       </div>
     </form>
   </div>
