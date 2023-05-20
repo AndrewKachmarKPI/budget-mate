@@ -12,6 +12,7 @@ import {InvoiceComponent} from "./invoice/invoice.component";
 import {FrequentyAskedQuestionsComponent} from "./frequenty-asked-questions/frequenty-asked-questions.component";
 import {AuthGuard} from "../_helpers/auth-guard.service";
 import {UserRoles} from "../auth/models/user-roles";
+import {BudgetViewComponent} from "./budget-view/budget-view.component";
 
 const routes: Routes = [
   {
@@ -57,7 +58,7 @@ const routes: Routes = [
       {
         path: 'billings',
         component: BillingDetailsComponent,
-        //canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'bill/:code',
@@ -69,6 +70,11 @@ const routes: Routes = [
         component: FrequentyAskedQuestionsComponent,
         canActivate: [AuthGuard]
       },
+      {
+        path:'budgets/1',
+        component:BudgetViewComponent,
+        //canActivate:[AuthGuard]
+      }
     ]
   }
 ];
