@@ -93,7 +93,7 @@
           <div class="card-information me-2">
             <img class="mb-3 img-fluid" src="assets/img/icons/brands/{{card.type}}.png" alt="Master Card">
             <div class="d-flex align-items-center mb-1 flex-wrap gap-2">
-              <h6 class="mb-0 me-2">{{card.holder}}</h6>
+              <h6 class="mb-0 me-2">{{card.holderName}}</h6>
               <!--<span *ngIf="card.isPrimary" class="badge bg-label-primary">Primary</span>-->
             </div>
             <span class="card-number">∗∗∗∗ ∗∗∗∗ {{card.number.slice(-4)}}</span>
@@ -106,7 +106,7 @@
                 Delete
               </button>
             </div>
-            <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at {{card.expiration}}</small>
+            <small class="mt-sm-auto mt-2 order-sm-1 order-0">Card expires at {{card.expirationDate}}</small>
           </div>
         </div>
       </div>
@@ -151,7 +151,6 @@
             <div class="fv-plugins-message-container invalid-feedback"></div>
           </div>
         </div>
-
         <div class="row g-3">
           <div class="col-12 col-md-6">
             <label class="form-label" for="modalAddCardName" >Name</label>

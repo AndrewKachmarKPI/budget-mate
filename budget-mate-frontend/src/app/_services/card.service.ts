@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {url} from "../../environments/environment";
 import {CardDto} from "../models/card-dto";
+import {CreateCardDto} from "../models/create-card-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,9 @@ export class CardService {
     const req = `${url}/cards/${cardId}`;
     return this.http.delete<boolean>(req);
   }
-  addCard(cardDto: CardDto): Observable<CardDto> {
+
+  addCard(createCardDto: CreateCardDto): Observable<CardDto> {
     const req = `${url}/cards`;
-    return this.http.post<CardDto>(req, cardDto);
+    return this.http.post<CardDto>(req, createCardDto);
   }
 }

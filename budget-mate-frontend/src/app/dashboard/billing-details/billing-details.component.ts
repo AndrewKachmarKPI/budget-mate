@@ -6,13 +6,13 @@ import 'cleave.js/dist/addons/cleave-phone.i18n';
 import {CardDto} from "../../models/card-dto";
 import {CardService} from "../../_services/card.service";
 import {ToastrService} from "ngx-toastr";
+import {CreateCardDto} from "../../models/create-card-dto";
 
 @Component({
   selector: 'app-billing-details',
   templateUrl: './billing-details.component.html',
   styleUrls: ['./billing-details.component.css']
 })
-
 
 export class BillingDetailsComponent implements OnInit {
 
@@ -36,10 +36,10 @@ export class BillingDetailsComponent implements OnInit {
     ["Pending", 'badge bg-label-warning me-1']
   ]);
   public cardFormGroup = new FormGroup({
-    ownerName: new FormControl('', Validators.compose([Validators.required])),
-    number: new FormControl('', Validators.compose([Validators.required])),
-    expiration: new FormControl('', Validators.compose([Validators.required])),
-    cvv: new FormControl('', Validators.compose([Validators.required])),
+    ownerName: new FormControl('', Validators.compose([Validators.required,Validators.minLength(4)])),
+    number: new FormControl('', Validators.compose([Validators.required,Validators.minLength(16)])),
+    expiration: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5)])),
+    cvv: new FormControl('', Validators.compose([Validators.required,Validators.minLength(3)])),
   });
   constructor(private elementRef: ElementRef,
               private cardService:CardService,
@@ -60,9 +60,12 @@ export class BillingDetailsComponent implements OnInit {
     const n=document.getElementById("modalAddCard");
     const a = document.getElementById("modalAddCardExpiryDate");
     const o = document.getElementById("modalAddCardCvv");
+    const name= document.getElementById("modalAddCardName");
     const nEdit=document.getElementById("modalEditCard");
     const aEdit = document.getElementById("modalEditCardExpiryDate");
     const oEdit = document.getElementById("modalEditCardCvv");
+    const nameEdit= document.getElementById("modalEditCardName");
+
     if(n){
       new Cleave(n,{
         creditCard: !0
@@ -78,6 +81,18 @@ export class BillingDetailsComponent implements OnInit {
         date: true,
         delimiter: '/',
         datePattern: ['m', 'y']
+      });
+    }
+    if(name){
+      new Cleave(name, {
+        delimiter: '',
+        numericOnly: false,
+        uppercase: true,
+        blocks: [
+          { // Only allow letters and spaces
+            pattern: /^[A-Za-z\s]+$/,
+          }
+        ]
       });
     }
     if (aEdit) {
@@ -101,17 +116,27 @@ export class BillingDetailsComponent implements OnInit {
       });
     }
   }
+  if(name){
+    new Cleave(name, {
+      delimiter: '',
+      numericOnly: false,
+      uppercase: true,
+      blocks: [
+        { // Only allow letters and spaces
+          pattern: /^[A-Za-z\s]+$/,
+        }
+      ]
+    });
+  }
   public tempCard;
   saveCard():void {
 
 
-    var newCard= new CardDto(
-      "i hope i get it right that it's overwritten in cardservice by guid",
+    var newCard= new CreateCardDto(
       this.cardFormGroup.value.number.replace(/\s/g, ""),
       this.cardFormGroup.value.ownerName,
       this.cardFormGroup.value.expiration,
       this.cardFormGroup.value.cvv,
-      this.determineCardType(this.cardFormGroup.value.number.replace(/\s/g, ""))
     )
 
     this.cardService.addCard(newCard).subscribe({
@@ -121,30 +146,25 @@ export class BillingDetailsComponent implements OnInit {
         this.cards.push(newCard);
       },
       error:()=>{
-        this.toastrService.error("Oops! Something went wrong");
+        this.toastrService.error("Oops! Couldn't add new card");
       }
     })
   }
   saveCardChanges(card:CardDto){
-    var newCard= new CardDto(
-      card.id,
-      this.cardFormGroup.value.number.replace(/\s/g, ""),
-      this.cardFormGroup.value.ownerName,
-      this.cardFormGroup.value.expiration,
-      this.cardFormGroup.value.cvv,
-      this.determineCardType(this.cardFormGroup.value.number.replace(/\s/g, ""))
-    )
 
+    card.number=this.cardFormGroup.value.number.replace(/\s/g, "")
+    card.holderName= this.cardFormGroup.value.ownerName
+    card.expirationDate= this.cardFormGroup.value.expiration
+    card.secretCode= this.cardFormGroup.value.cvv
+    card.type = this.determineCardType(this.cardFormGroup.value.number.replace(/\s/g, ""))
 
-    this.cardService.updateCardById(newCard.id,newCard).subscribe({
+    this.cardService.updateCardById(card.cardId,card).subscribe({
       next: (bank) => {
         this.cardFormGroup.reset()
         this.toastrService.success("Card successfully edited!");
-        //now i guess it'd be best to reload the page or add setters to change cards info
-
       },
       error:()=>{
-        this.toastrService.error("Oops! Something went wrong");
+        this.toastrService.error("Oops! Save card changes");
       }
     })
   }
@@ -152,8 +172,8 @@ export class BillingDetailsComponent implements OnInit {
     this.cardFormGroup.patchValue({
       //щось цей клів не хоче апдейтити автоматом по загрузці, отож костиль
       number: this.formatCreditCardNumber(card.number),
-      ownerName: card.holder,
-      expiration: card.expiration,
+      ownerName: card.holderName,
+      expiration: card.expirationDate,
       cvv: card.secretCode
     })
     this.tempCard=card;
@@ -177,7 +197,7 @@ export class BillingDetailsComponent implements OnInit {
     this.cardFormGroup.reset()
   }
   deleteCard(cardDto:CardDto){
-    this.cardService.removeCardById(cardDto.id).subscribe({
+    this.cardService.removeCardById(cardDto.cardId).subscribe({
       next: (bank) => {
         this.toastrService.success("Card successfully removed!");
         //this.cards.pop(cardDto) ?
