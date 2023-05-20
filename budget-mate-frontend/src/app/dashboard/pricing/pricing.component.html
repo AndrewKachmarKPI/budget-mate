@@ -8,7 +8,7 @@
         plan that meets your needs.
       </p>
 
-      <div class="row mx-0 gy-3 px-lg-5">
+      <div class="row mx-0 gy-3 px-lg-5" *ngIf="userDto">
         <!-- Basic -->
         <div class="col-lg mb-md-0 mb-4">
           <div class="card border rounded shadow-none">
@@ -47,7 +47,7 @@
 
               <a href="javascript:void(0)" class="btn btn-primary d-grid w-100" routerLink="/billings"
                  *ngIf="userDto.billingPlan == billings.BASIC">Your Current Plan</a>
-              <a href="javascript:void(0)" class="btn d-grid w-100"
+              <a href="javascript:void(0)" class="btn d-grid w-100" (click)="promote(roles.BASIC_CLIENT)"
                  *ngIf="userDto.billingPlan != billings.BASIC">Upgrade or downgrade</a>
             </div>
           </div>
@@ -95,7 +95,8 @@
 
               <a href="javascript:void(0)" class="btn btn-primary d-grid w-100" routerLink="/billings"
                  *ngIf="userDto.billingPlan == billings.PREMIUM">Your Current Plan</a>
-              <a href="javascript:void(0)" class="btn d-grid w-100"
+              <a href="javascript:void(0)" class="btn d-grid w-100 btn-outline-success"
+                 (click)="promote(roles.PREMIUM_CLIENT)"
                  *ngIf="userDto.billingPlan != billings.PREMIUM">Upgrade or downgrade</a>
             </div>
           </div>
@@ -142,7 +143,8 @@
 
               <a href="javascript:void(0)" class="btn btn-primary d-grid w-100"
                  *ngIf="userDto.billingPlan == billings.PRO" routerLink="/billings">Your Current Plan</a>
-              <a href="javascript:void(0)" class="btn d-grid w-100"
+              <a href="javascript:void(0)" class="btn d-grid w-100 btn-outline-success"
+                 (click)="promote(roles.PRO_CLIENT)"
                  *ngIf="userDto.billingPlan != billings.PRO">Upgrade or downgrade</a>
             </div>
           </div>

@@ -3,6 +3,8 @@ package com.budget.mate.api;
 import com.budget.mate.dto.ProfileDto;
 import com.budget.mate.dto.RegisterUserDto;
 import com.budget.mate.dto.UserDto;
+import com.budget.mate.enums.UserRoles;
+import com.budget.mate.mapper.Mapper;
 import com.budget.mate.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -22,6 +24,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private ApplicationContext context;
+    @Resource
+    private Mapper mapper;
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody RegisterUserDto registerUserDto) {
@@ -56,5 +60,10 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @PutMapping("/promote")
+    public ResponseEntity<UserDto> promoteUser(@RequestParam("role") String role) {
+        return ResponseEntity.ok(userService.changeBilling(UserRoles.valueOf(role)));
     }
 }

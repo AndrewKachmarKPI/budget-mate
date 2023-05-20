@@ -5,6 +5,7 @@ import {url} from "../../../environments/environment";
 import {BehaviorSubject, Observable} from "rxjs";
 import {BillingPlan} from "../../auth/models/billing-plan";
 import {ProfileDto} from "../../auth/models/profile-dto";
+import {UserRoles} from "../../auth/models/user-roles";
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,14 @@ export class UserService {
 
   getAllUsers(): Observable<UserDto[]> {
     return this.http.get<UserDto[]>(`${url}/users`);
+  }
+
+  promoteUser(userRole: string): Observable<UserDto> {
+    return this.http.put<UserDto>(`${url}/users/promote`, {}, {
+      params: {
+        role: userRole
+      }
+    });
   }
 
   myProfile(): Observable<UserDto> {

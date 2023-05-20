@@ -6,6 +6,7 @@ import {NgxSpinnerService} from "ngx-spinner";
 import {UserDto} from "../../auth/models/user-dto";
 import {UserService} from "../services/user.service";
 import {BillingPlan} from "../../auth/models/billing-plan";
+import {UserRoles} from "../../auth/models/user-roles";
 
 @Component({
   selector: 'app-dashboard',
@@ -20,6 +21,11 @@ export class DashboardComponent implements OnInit {
   public nestedElements: HTMLLIElement[] = [];
   public animationState: boolean = false;
   public userDto: UserDto;
+  public isAdmin: boolean = false;
+  public isBasicClient: boolean = false;
+  public isPremiumClient: boolean = false;
+  public isProClient: boolean = false;
+
 
   constructor(private router: Router, private spinnerService: NgxSpinnerService, private userService: UserService,
               private authService: AuthService) {
@@ -28,6 +34,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getProfile();
     this.listenAvatarChange();
+    this.getIsAdmin();
   }
 
   get currentYear() {
@@ -126,7 +133,10 @@ export class DashboardComponent implements OnInit {
     return "";
   }
 
-  public isAdmin() {
-    return this.authService.isAdmin;
+  public getIsAdmin() {
+    this.isAdmin = this.authService.isRole(UserRoles.ADMIN);
+    this.isBasicClient = this.authService.isRole(UserRoles.BASIC_CLIENT);
+    this.isPremiumClient = this.authService.isRole(UserRoles.PREMIUM_CLIENT);
+    this.isProClient = this.authService.isRole(UserRoles.PRO_CLIENT);
   }
 }

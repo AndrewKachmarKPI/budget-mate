@@ -53,8 +53,9 @@ export class AuthService {
     return token['authorities'];
   }
 
-  get isAdmin() {
+  public isRole(role: string) {
     let token = jwtDecode(this.tokenService.getToken());
-    return token['authorities'].includes(UserRoles.ADMIN);
+    console.log("ADMIN", token);
+    return token['authorities'].includes(role);
   }
 }

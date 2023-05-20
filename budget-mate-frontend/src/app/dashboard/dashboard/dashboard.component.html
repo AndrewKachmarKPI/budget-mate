@@ -90,8 +90,6 @@
           </ul>
         </li>
 
-
-        <!-- Misc -->
         <li class="menu-header small text-uppercase" *ngIf="isAdmin">
           <span class="menu-header-text">Admin tools</span>
         </li>
@@ -106,13 +104,15 @@
         <li class="menu-header small text-uppercase">
           <span class="menu-header-text">Tools</span>
         </li>
-        <li class="menu-item" [ngClass]="{'active':isRouteActive('piggy')}">
+        <li class="menu-item" [ngClass]="{'active':isRouteActive('piggy')}"
+            *ngIf="isAdmin || isProClient || isPremiumClient || isBasicClient">
           <a routerLink="/piggy" class="menu-link">
             <i class="menu-icon tf-icons bx bxs-bank"></i>
             <div data-i18n="Layouts">Piggy bank</div>
           </a>
         </li>
-        <li class="menu-item" [ngClass]="{'active':isRouteActive('budgets')}">
+        <li class="menu-item" [ngClass]="{'active':isRouteActive('budgets')}"
+            *ngIf="isAdmin || isProClient || isPremiumClient">
           <a routerLink="/budgets" class="menu-link">
             <i class="menu-icon tf-icons bx bx-money"></i>
             <div data-i18n="Layouts">Budgets</div>
@@ -185,7 +185,8 @@
           <ul class="navbar-nav flex-row align-items-center ms-auto">
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
               <a class="nav-link dropdown-toggle hide-arrow" routerLink="/pricing">
-                <span class="badge rounded-pill" [ngClass]="[getBillingPlanColor()]" *ngIf="userDto && userDto.billingPlan">
+                <span class="badge rounded-pill" [ngClass]="[getBillingPlanColor()]"
+                      *ngIf="userDto && userDto.billingPlan">
                   {{userDto.billingPlan}}
                 </span>
               </a>

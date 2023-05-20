@@ -72,6 +72,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto changeBilling(UserRoles roles) {
+        UserEntity userEntity = findUserEntity(mapper.username());
+        BillingPlan billingPlan = userEntity.getProfileEntity().getBillingPlan();
+        if (roles == UserRoles.BASIC_CLIENT) billingPlan = BillingPlan.BASIC;
+        if (roles == UserRoles.PREMIUM_CLIENT) billingPlan = BillingPlan.PREMIUM;
+        if (roles == UserRoles.PRO_CLIENT) billingPlan = BillingPlan.PRO;
+
+        userEntity.getProfileEntity().setBillingPlan(billingPlan);
+        profileRepository.save(userEntity.getProfileEntity());
+        userRepository.save(userEntity);
+        return promoteUser(mapper.username(), roles);
+    }
+
+    @Override
     public UserDto getUser() {
         UserEntity userEntity = findUserEntity(mapper.username());
         return mapper.userToDto(userEntity);
