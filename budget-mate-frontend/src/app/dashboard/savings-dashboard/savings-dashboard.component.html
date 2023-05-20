@@ -24,7 +24,8 @@
   </ng-template>
   <ng-container *ngFor="let bank of chartsOptions|keyvalue">
     <div class="col-md-4 col-xl-3  mb-4">
-      <div class="card h-100" [ngClass]="{'border border-success':bank.key['percent'] == 100}">
+      <div class="card h-100 saving-container" [ngClass]="{'border border-success':bank.key['percent'] == 100}">
+        <span class="badge bg-label-success top-left" *ngIf="bank.key.isClosed">DONE</span>
         <div class="card-header text-center">
           <small class="card-subtitle mb-2">Savings goal</small>
           <h4 class="card-title mb-0 mt-1">
@@ -49,6 +50,7 @@
                  data-bs-toggle="modal" data-bs-target="#bankDetails"
                  (click)="openBankDetails(bank.key)">View details</a>
               <a href="javascript:void(0)" class="btn btn-sm btn-success mt-2" role="button"
+                 *ngIf="bank.key && bank.key.currentAmount != bank.key.goal"
                  data-bs-toggle="modal" data-bs-target="#transfer" (click)="openBankDetails(bank.key)">
                 <i class="bx bx-transfer me-sm-1"></i>
                 Transfer money
@@ -122,7 +124,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Bank | <b>{{selectedBank?.bankName}}</b></h5>
-        <button type="button"
+        <button #closeDetails type="button"
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
@@ -155,6 +157,12 @@
                    [value]="selectedBank?.currentAmount"/>
           </div>
           <div class="col mb-0 mt-3">
+            <label class="form-label" for="emailSmall">Left</label>
+            <input type="number" class="form-control" placeholder="100₴" min="1"
+                   [readonly]="true"
+                   [value]="selectedBank?.goal-selectedBank?.currentAmount"/>
+          </div>
+          <div class="col mb-0 mt-3">
             <label class="form-label">Deadline</label>
             <input type="text" class="form-control" placeholder="DD / MM / YY"
                    [readonly]="true"
@@ -175,41 +183,55 @@
                 <th>Actions</th>
               </tr>
               </thead>
-              <tbody class="table-border-bottom-0">
-              <tr>
-                <td>
-                  <i class="fab fa-cc-visa fa-lg me-3"></i>
-                  <strong>Angular Project</strong>
-                </td>
-                <td>100$</td>
-                <td>
-                  2023
-                </td>
-                <td>
+              <tbody class="table-border-bottom-0" *ngIf="selectedBank && selectedBank.transactions">
+              <ng-template [ngIf]="selectedBank && selectedBank.transactions.length == 0">
+                <tr>
+                  <td colspan="5">
+                    No transactions yet
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-container *ngFor="let transaction of selectedBank.transactions">
+                <tr>
+                  <td>
+                    <i class="fab fa-lg me-3" [ngClass]="[getCardType(transaction.cardDto)]"></i>
+                    <strong>
+                      {{transaction.cardDto.name}}
+                    </strong>
+                  </td>
+                  <td>{{transaction.sum}}$</td>
+                  <td>
+                    {{transaction.created|date:"dd.MM.yy HH:MM"}}
+                  </td>
+                  <td>
                   <span class="badge bg-label-primary me-1">
                     COMPLETED
                   </span>
-                </td>
-                <td>
-                  <div class="dropdown">
-                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                      <i class="bx bx-paperclip"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                        <i class="bx bx-paperclip"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
               </tbody>
             </table>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary">
-          <i class="bx bx-move me-sm-1"></i>
+        <button type="button" class="btn btn-outline-primary"
+                *ngIf="selectedBank && selectedBank.currentAmount == selectedBank.goal && !selectedBank.isClosed"
+                (click)="closeBank(closeDetails)">
+          <i class="bx bx-transfer-alt me-sm-1"></i>
           Widthraw
         </button>
         <button type="submit" class="btn btn-success" role="button"
-                data-bs-toggle="modal" data-bs-target="#transfer">
+                data-bs-toggle="modal" data-bs-target="#transfer"
+                *ngIf="selectedBank && selectedBank.currentAmount != selectedBank.goal">
           <i class="bx bx-transfer me-sm-1"></i>
           Transfer
         </button>
@@ -236,25 +258,35 @@
         <div class="modal-body">
           <div class="col-12 fv-plugins-icon-container mb-3">
             <label class="form-label w-100">Transfer sum</label>
-            <input type="number" class="form-control" placeholder="100₴" min="1" formControlName="sumControl"
-                   [ngClass]="{'invalid': controls['sumControl'].invalid && (formTopUo.submitted||controls['sumControl'].touched)}"/>
-          </div>
-          <div class="col-md mb-md-0 mb-2">
-            <div class="form-check custom-option custom-option-icon checked">
-              <label class="form-check-label custom-option-content" for="customRadioPercentage">
-                    <span class="card-body">
-                      <i class="bx bx-purchase-tag"></i>
-                      <span class="custom-option-title">Percentage</span>
-                      <small>Create a deal which offer uses some % off (i.e 5% OFF) on total.</small>
-                    </span>
-                <input name="customRadioIcon" class="form-check-input" type="radio" value="" id="customRadioPercentage"
-                       checked="">
-              </label>
-            </div>
+            <input type="number" class="form-control" placeholder="{{allowedSum}}$" min="1" formControlName="sumControl"
+                   [ngClass]="{'invalid': topUpControls['sumControl'].invalid && (formTopUo.submitted||topUpControls['sumControl'].touched)}"/>
           </div>
           <div class="col-12 fv-plugins-icon-container">
             <label class="form-label w-100">Card</label>
-
+          </div>
+          <div class="col-md mb-md-0 mb-2">
+            <ng-container *ngFor="let card of cards; let i = index">
+              <div class="form-check custom-option border border-primary rounded px-5 py-3 custom-option-icon checked"
+                   [ngClass]="{'mb-3':i+1!=cards.length}">
+                <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center"
+                       for="card{{i}}">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="me-0 d-flex justify-content-between align-items-center">
+                      <input name="customRadioIcon" class="form-check-input" type="radio"
+                             id="card{{i}}" (click)="selectTopUpCard(card)">
+                      <div class="ms-3">
+                        <div class="d-flex align-items-center mb-1 flex-wrap gap-2">
+                          <h6 class="mb-0 me-2">{{card.name}}</h6>
+                        </div>
+                        <span class="card-number">∗∗∗∗ ∗∗∗∗ {{card.number.slice(-4)}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <img class="mb-0 ms-3 img-fluid" src="assets/img/icons/brands/{{card.type}}.png"
+                       alt="{{card.type}}">
+                </label>
+              </div>
+            </ng-container>
           </div>
         </div>
         <div class="modal-footer">

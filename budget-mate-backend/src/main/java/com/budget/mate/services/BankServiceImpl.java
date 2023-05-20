@@ -41,6 +41,7 @@ public class BankServiceImpl implements BankService {
                 .currentAmount(0.0)
                 .goal(createBankDto.getGoal())
                 .deadline(LocalDate.parse(createBankDto.getDeadline()))
+                .isClosed(false)
                 .transactions(new ArrayList<>()).build();
         return bm.bankEntityToDto(bankRepository.save(bankEntity));
     }
@@ -71,6 +72,16 @@ public class BankServiceImpl implements BankService {
         transactions.add(transactionRepository.save(transaction));
         bankEntity.setTransactions(transactions);
         bankEntity.setCurrentAmount(getBankCurrentAmount(bankEntity));
+        return bm.bankEntityToDto(bankRepository.save(bankEntity));
+    }
+
+    @Override
+    public BankDto closeBank(String bankId, String cardId) {
+        BankEntity bankEntity = getBankEntityById(bankId);
+        if (!bankEntity.getGoal().equals(bankEntity.getCurrentAmount())) {
+            throw new RuntimeException("Could not close bank");
+        }
+        bankEntity.setIsClosed(true);
         return bm.bankEntityToDto(bankRepository.save(bankEntity));
     }
 

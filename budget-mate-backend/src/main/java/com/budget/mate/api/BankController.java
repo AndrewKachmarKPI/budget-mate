@@ -32,6 +32,12 @@ public class BankController {
         return ResponseEntity.ok(bankService.topUpBank(bankId, cardId, sum));
     }
 
+    @PutMapping("/close")
+    public ResponseEntity<BankDto> closeBank(@RequestParam("bankId") String bankId,
+                                             @RequestParam("cardId") String cardId) {
+        return ResponseEntity.ok(bankService.closeBank(bankId, cardId));
+    }
+
     @GetMapping("/{bankId}")
     public ResponseEntity<BankDto> getBankById(@PathVariable("bankId") @NotNull @NotEmpty @NotBlank String bankId) {
         return ResponseEntity.ok(bankService.getBankById(bankId));

@@ -24,10 +24,12 @@ public class BankEntity {
     private String bankName;
     @Column(nullable = false, updatable = false)
     private Double goal;
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private Double currentAmount;
     @Column(nullable = false)
     private LocalDate deadline;
+    @Column
+    private Boolean isClosed = false;
     @OneToMany
     private List<TransactionEntity> transactions;
 }

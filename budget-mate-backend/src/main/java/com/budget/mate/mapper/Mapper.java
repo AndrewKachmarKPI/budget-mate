@@ -22,6 +22,7 @@ public class Mapper {
                 .currentAmount(bankEntity.getCurrentAmount())
                 .deadline(bankEntity.getDeadline())
                 .goal(bankEntity.getGoal())
+                .isClosed(bankEntity.getIsClosed())
                 .transactions(bankEntity.getTransactions().stream().map(this::transactionEntityToDto).collect(Collectors.toList()))
                 .build();
     }

@@ -17,5 +17,6 @@ public class BankDto {
     private Double goal;
     private Double currentAmount;
     private LocalDate deadline;
+    private Boolean isClosed;
     private List<TransactionDto> transactions;
 }

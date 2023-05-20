@@ -1,3 +1,12 @@
 .progress-height {
   height: 25px !important;
 }
+.top-left {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
+.saving-container {
+  position: relative;
+  text-align: center;
+}

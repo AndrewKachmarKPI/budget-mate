@@ -15,4 +15,6 @@ public interface BankService {
     List<BankDto> findMyBanks();
 
     BankDto topUpBank(String bankId, String cardId, Double sum);
+
+    BankDto closeBank(String bankId, String cardId);
 }
