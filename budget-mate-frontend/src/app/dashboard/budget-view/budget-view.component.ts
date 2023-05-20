@@ -16,6 +16,11 @@ import {
   ApexResponsive,
 } from "ng-apexcharts";
 
+interface Category {
+  icon: string;
+  name: string;
+}
+
 export type BarChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -102,7 +107,7 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       }
     ],
   };
-    const categoriesAndSumsTwo: { [key: string]: { category: string; sum: number } } = this.expenses.reduce((result, item) => {
+    const categoriesAndSumsTwo: { [key: string]: { category: Category; sum: number } } = this.expenses.reduce((result, item) => {
       const { category, amount } = item;
       if (!result[category.name]) {
         result[category.name] = { category, sum: 0 };
@@ -114,8 +119,8 @@ export class BudgetViewComponent implements OnInit, OnChanges {
     var topFiveCategories=Object.values(categoriesAndSumsTwo)
       .sort((a, b) => b.sum - a.sum)
       .slice(0, 5)
-      .map(({ category, sum }) => ({ category, sum }));
-    console.log(Object.values(topFiveCategories).map(({ category }) => category))
+      .map(({ category, sum }) => ({ category:category, sum }));
+    console.log(Object.values(topFiveCategories).map(({ category }) => category.name))
     this.barChartOptions= {
       series: [{ data: Object.values(topFiveCategories).map(({ sum }) => sum) }],
       chart: {
@@ -131,7 +136,8 @@ export class BudgetViewComponent implements OnInit, OnChanges {
         enabled: false
       },
       xaxis: {
-        categories: Object.values(topFiveCategories).map(({ category }) => category)
+        categories: Object.values(topFiveCategories)
+          .map(({ category }) => category.name)
       }
     };
   }
