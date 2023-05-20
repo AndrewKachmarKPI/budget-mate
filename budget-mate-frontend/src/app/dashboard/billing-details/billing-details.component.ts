@@ -52,9 +52,7 @@ export class BillingDetailsComponent implements OnInit {
           this.toastrService.error("Oops! Couldn't retrieve cards information...");
       }
     );
-
   }
-
 
   ngOnInit(): void {
     const n=document.getElementById("modalAddCard");
@@ -115,18 +113,18 @@ export class BillingDetailsComponent implements OnInit {
         numeralPositiveOnly: true
       });
     }
-  }
-  if(name){
-    new Cleave(name, {
-      delimiter: '',
-      numericOnly: false,
-      uppercase: true,
-      blocks: [
-        { // Only allow letters and spaces
-          pattern: /^[A-Za-z\s]+$/,
-        }
-      ]
-    });
+    if(nameEdit){
+      new Cleave(nameEdit, {
+        delimiter: '',
+        numericOnly: false,
+        uppercase: true,
+        blocks: [
+          { // Only allow letters and spaces
+            pattern: /^[A-Za-z\s]+$/,
+          }
+        ]
+      });
+    }
   }
   public tempCard;
   saveCard():void {
