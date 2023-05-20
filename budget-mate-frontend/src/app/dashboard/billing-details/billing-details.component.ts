@@ -1,13 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { ElementRef } from '@angular/core';
+import Cleave from "cleave.js";
+import 'cleave.js/dist/addons/cleave-phone.i18n';
+import {CardDto} from "../../models/card-dto";
+import {CardService} from "../../_services/card.service";
+import {ToastrService} from "ngx-toastr";
+import {CreateCardDto} from "../../models/create-card-dto";
 
 @Component({
   selector: 'app-billing-details',
   templateUrl: './billing-details.component.html',
   styleUrls: ['./billing-details.component.css']
 })
+
 export class BillingDetailsComponent implements OnInit {
+
 
   invoices: any = [
     { code:'1XBDAS1',amount: 9,plan: 'Plan1',invoiceDate:'11.05.2023',datePaid:'12.05.23',status:'Active',paymentMethod:'karta1',invoiceNumber:1234},
@@ -16,57 +24,168 @@ export class BillingDetailsComponent implements OnInit {
     { code:'1XBDAS4',amount: 99,plan: 'Plan4',invoiceDate:'11.05.2023',datePaid:'12.05.23',status:'Pending',paymentMethod:'karta4',invoiceNumber:1234},
   ];
 
-  cards:any=[
+  /*public cards:any=[
     {type:"mastercard",ownerName:"Tom McBride", expiration:"12/26", number:"4716313599689856",cvv:"133",isPrimary:true},
     {type:"visa",ownerName:"Mildred Melnyk", expiration:"12/26", number:"5525132581415896",cvv:"144",isPrimary:false},
-  ]
-
-   public statusesAndClasses = new Map<string, String>([
+  ]*/
+  public cards:CardDto[];
+  public statusesAndClasses = new Map<string, String>([
     ["Completed", 'badge bg-label-success me-1'],
-     ["Active",'badge bg-label-primary me-1'],
-     ["Scheduled", 'badge bg-label-info me-1'],
-     ["Pending", 'badge bg-label-warning me-1']
-   ]);
+    ["Active",'badge bg-label-primary me-1'],
+    ["Scheduled", 'badge bg-label-info me-1'],
+    ["Pending", 'badge bg-label-warning me-1']
+  ]);
   public cardFormGroup = new FormGroup({
-    ownerName: new FormControl('', Validators.compose([Validators.required])),
-    number: new FormControl('', Validators.compose([Validators.required])),
-    expiration: new FormControl('', Validators.compose([Validators.required])),
-    cvv: new FormControl('', Validators.compose([Validators.required])),
+    ownerName: new FormControl('', Validators.compose([Validators.required,Validators.minLength(4)])),
+    number: new FormControl('', Validators.compose([Validators.required,Validators.minLength(16)])),
+    expiration: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5)])),
+    cvv: new FormControl('', Validators.compose([Validators.required,Validators.minLength(3)])),
   });
-  constructor(private elementRef: ElementRef) { }
-
+  constructor(private elementRef: ElementRef,
+              private cardService:CardService,
+              private toastrService:ToastrService) {
+    cardService.findAllMyCards().subscribe(
+      (data: CardDto[]) => {
+        this.cards = data;
+      },
+      (error: any) => {
+          this.toastrService.error("Oops! Couldn't retrieve cards information...");
+      }
+    );
+  }
 
   ngOnInit(): void {
+    const n=document.getElementById("modalAddCard");
+    const a = document.getElementById("modalAddCardExpiryDate");
+    const o = document.getElementById("modalAddCardCvv");
+    const name= document.getElementById("modalAddCardName");
+    const nEdit=document.getElementById("modalEditCard");
+    const aEdit = document.getElementById("modalEditCardExpiryDate");
+    const oEdit = document.getElementById("modalEditCardCvv");
+    const nameEdit= document.getElementById("modalEditCardName");
+
+    if(n){
+      new Cleave(n,{
+        creditCard: !0
+      });
+    }
+    if(nEdit){
+      new Cleave(nEdit,{
+        creditCard: !0
+      });
+    }
+    if (a) {
+      new Cleave(a, {
+        date: true,
+        delimiter: '/',
+        datePattern: ['m', 'y']
+      });
+    }
+    if(name){
+      new Cleave(name, {
+        delimiter: '',
+        numericOnly: false,
+        uppercase: true,
+        blocks: [
+          { // Only allow letters and spaces
+            pattern: /^[A-Za-z\s]+$/,
+          }
+        ]
+      });
+    }
+    if (aEdit) {
+      new Cleave(aEdit, {
+        date: true,
+        delimiter: '/',
+        datePattern: ['m', 'y']
+      });
+    }
+
+    if (o) {
+      new Cleave(o, {
+        numeral: true,
+        numeralPositiveOnly: true
+      });
+    }
+    if (oEdit) {
+      new Cleave(oEdit, {
+        numeral: true,
+        numeralPositiveOnly: true
+      });
+    }
+    if(nameEdit){
+      new Cleave(nameEdit, {
+        delimiter: '',
+        numericOnly: false,
+        uppercase: true,
+        blocks: [
+          { // Only allow letters and spaces
+            pattern: /^[A-Za-z\s]+$/,
+          }
+        ]
+      });
+    }
   }
-  saveCard():void{
-    console.log("dodav kartu")
-    console.log(this.cardFormGroup)
-    var tempData={type:"",ownerName:"",number:"",expiration:"",cvv:"",isPrimary:false};
-    tempData.type=this.determineCardType(this.cardFormGroup.value.number)
-    tempData.ownerName=this.cardFormGroup.value.ownerName
-    tempData.number=this.cardFormGroup.value.number
-    tempData.expiration=this.cardFormGroup.value.expiration
-    tempData.cvv=this.cardFormGroup.value.cvv
-    //treba she podumati yak handleti primarity of cards
-    //tempData.isPrimary=false
-    this.cardFormGroup.reset()
-    //tipa she v bd shletsia
-    this.cards.push(tempData)
+  public tempCard;
+  saveCard():void {
+
+
+    var newCard= new CreateCardDto(
+      this.cardFormGroup.value.number.replace(/\s/g, ""),
+      this.cardFormGroup.value.ownerName,
+      this.cardFormGroup.value.expiration,
+      this.cardFormGroup.value.cvv,
+    )
+
+    this.cardService.addCard(newCard).subscribe({
+      next: (bank) => {
+        this.cardFormGroup.reset()
+        this.toastrService.success("Card successfully saved!");
+        this.cards.push(newCard);
+      },
+      error:()=>{
+        this.toastrService.error("Oops! Couldn't add new card");
+      }
+    })
   }
-   determineCardType(cardNumber: string): string {
-    // Remove any non-digit characters from the card number
+  saveCardChanges(card:CardDto){
+
+    card.number=this.cardFormGroup.value.number.replace(/\s/g, "")
+    card.holderName= this.cardFormGroup.value.ownerName
+    card.expirationDate= this.cardFormGroup.value.expiration
+    card.secretCode= this.cardFormGroup.value.cvv
+    card.type = this.determineCardType(this.cardFormGroup.value.number.replace(/\s/g, ""))
+
+    this.cardService.updateCardById(card.cardId,card).subscribe({
+      next: (bank) => {
+        this.cardFormGroup.reset()
+        this.toastrService.success("Card successfully edited!");
+      },
+      error:()=>{
+        this.toastrService.error("Oops! Save card changes");
+      }
+    })
+  }
+  loadCardDataToFormGroup(card:CardDto){
+    this.cardFormGroup.patchValue({
+      //щось цей клів не хоче апдейтити автоматом по загрузці, отож костиль
+      number: this.formatCreditCardNumber(card.number),
+      ownerName: card.holderName,
+      expiration: card.expirationDate,
+      cvv: card.secretCode
+    })
+    this.tempCard=card;
+  }
+  determineCardType(cardNumber: string): string {
     const cleanedNumber = cardNumber.replace(/\D/g, '');
 
-    // Define regular expressions for different card types
     const cardPatterns = {
       visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
       mastercard: /^5[1-5][0-9]{14}$/,
     };
 
-    // Check the card number against the defined patterns
     for (const cardType in cardPatterns) {
       if (cardPatterns[cardType].test(cleanedNumber)) {
-        console.log(cardType)
         return cardType;
       }
     }
@@ -75,5 +194,40 @@ export class BillingDetailsComponent implements OnInit {
   closeCardModal(){
     this.cardFormGroup.reset()
   }
-}
+  deleteCard(cardDto:CardDto){
+    this.cardService.removeCardById(cardDto.cardId).subscribe({
+      next: (bank) => {
+        this.toastrService.success("Card successfully removed!");
+        //this.cards.pop(cardDto) ?
+      },
+      error:()=>{
+        this.toastrService.error("Oops! Something went wrong");
+      }
+    })
+  }
+  formatCreditCardNumber(cardNumber: string): string {
+    //formats my digit sequence in a manner that this cleave would format
+    const pattern = '9999 9999 9999 9999';
 
+    if (pattern) {
+      const formattedNumber = cardNumber.replace(/\D/g, '');
+      let formattedString = '';
+
+      let j = 0;
+      for (let i = 0; i < formattedNumber.length; i++) {
+        if (j < pattern.length && pattern.charAt(j) === '9') {
+          formattedString += formattedNumber.charAt(i);
+          j++;
+        } else {
+          formattedString += ' ' + formattedNumber.charAt(i);
+          j = formattedString.length;
+        }
+      }
+
+      return formattedString.trim();
+    }
+
+    return cardNumber;
+  }
+
+}

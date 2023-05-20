@@ -22,9 +22,11 @@ public class CardEntity {
     @Column(nullable = false, unique = true)
     private String number;
     @Column
+    private String name;
+    @Column
     private String holder;
     @Column(nullable = false)
-    private LocalDate expirationDate;
+    private String expirationDate;
     @Column(nullable = false)
     private String secretCode;
     @Column(nullable = false)

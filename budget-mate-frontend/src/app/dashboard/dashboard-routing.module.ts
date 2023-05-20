@@ -57,7 +57,7 @@ const routes: Routes = [
       {
         path: 'billings',
         component: BillingDetailsComponent,
-        canActivate: [AuthGuard],
+        //canActivate: [AuthGuard],
       },
       {
         path: 'invoice/:code',

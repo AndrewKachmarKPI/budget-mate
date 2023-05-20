@@ -1,6 +1,7 @@
 package com.budget.mate.api;
 
 import com.budget.mate.dto.CardDto;
+import com.budget.mate.dto.CreateCardDto;
 import com.budget.mate.services.CardService;
 import com.sun.istack.NotNull;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class CardController {
     private CardService cardService;
 
     @PostMapping
-    public ResponseEntity<CardDto> addCard(@RequestBody CardDto cardDto) {
+    public ResponseEntity<CardDto> addCard(@RequestBody CreateCardDto cardDto) {
         return ResponseEntity.ok(cardService.addCard(cardDto));
     }
 
