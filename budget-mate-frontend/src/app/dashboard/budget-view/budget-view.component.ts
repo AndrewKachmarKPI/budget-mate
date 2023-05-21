@@ -49,8 +49,8 @@ export type PieChartOptions = {
   styleUrls: ['./budget-view.component.css']
 })
 export class BudgetViewComponent implements OnInit, OnChanges {
-  public categories:ExpensesCategoryDto[];
-  private expenses:TransactionDto[] =[]
+  public categories: ExpensesCategoryDto[];
+  private expenses: TransactionDto[] = []
   public expenseFormGroup = new FormGroup({
     name: new FormControl('', Validators.compose([Validators.required])),
     amount: new FormControl('', Validators.compose([Validators.required, Validators.min(0), Validators.pattern('^[0-9]*$')])),
@@ -64,19 +64,20 @@ export class BudgetViewComponent implements OnInit, OnChanges {
 
   @Input()
   public selectedCategory = "None";
-  public expensesView:TransactionDto[];
-  public totalExpenses=0;
+  public expensesView: TransactionDto[];
+  public totalExpenses = 0;
   @ViewChild("pieChart") pieChart: ChartComponent;
   @ViewChild("barChart") barChart: ChartComponent;
 
   public pieChartOptions: Partial<PieChartOptions>;
   public barChartOptions: Partial<BarChartOptions>;
-  public budget:BudgetDto;
-  public cards:CardDto[];
-  constructor( private budgetService:BudgetService,
-               private route: ActivatedRoute,
-               private toastrService:ToastrService,
-               private cardService:CardService) {
+  public budget: BudgetDto;
+  public cards: CardDto[];
+
+  constructor(private budgetService: BudgetService,
+              private route: ActivatedRoute,
+              private toastrService: ToastrService,
+              private cardService: CardService) {
 
     budgetService.findBudgetById(this.id).subscribe(
       (data: BudgetDto) => {
@@ -84,13 +85,13 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       },
       (error: any) => {
         this.toastrService.error("Oops! Couldn't retrieve budget information...");
-      })
-    this.expenses=this.budget.transactions;
-    this.expensesView=this.expenses;
-    this.totalExpenses= this.expenses.reduce((accumulator, currentItem) => {
+      });
+    this.expenses = this.budget.transactions;
+    this.expensesView = this.expenses;
+    this.totalExpenses = this.expenses.reduce((accumulator, currentItem) => {
       return accumulator + currentItem.sum;
     }, 0);
-    this.categories=this.expenses.reduce((uniqueArray: ExpensesCategoryDto[], trans: TransactionDto) => {
+    this.categories = this.expenses.reduce((uniqueArray: ExpensesCategoryDto[], trans: TransactionDto) => {
       if (!uniqueArray.some((p) => p.name === trans.category.name)) {
         uniqueArray.push(trans.category);
       }
@@ -108,9 +109,11 @@ export class BudgetViewComponent implements OnInit, OnChanges {
 
     this.prepareBarChartData()
   }
-  public id:string;
+
+  public id: string;
+
   ngOnInit(): void {
-    this.id=this.route.snapshot.params['id']
+    this.id = this.route.snapshot.params['id'];
     const n = document.getElementById("addAmount");
     if (n) {
       new Cleave(n, {
@@ -118,6 +121,7 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       });
     }
   }
+
   public getCardType(card: CardDto) {
     if (card.type == "Visa") return "fa-cc-visa";
     if (card.type == "Mastercard") return "fa-cc-mastercard";
@@ -125,6 +129,7 @@ export class BudgetViewComponent implements OnInit, OnChanges {
     if (card.type == "Discover") return "fa-cc-discover";
     return "fa-credit-card";
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedCategory']) {
       this.categoryFilterSelected(this.selectedCategory);
@@ -141,7 +146,7 @@ export class BudgetViewComponent implements OnInit, OnChanges {
   }
 
   saveExpense() {
-    var temp:TransactionDto;
+    var temp: TransactionDto;
     this.budgetService.createTransaction(
       this.id,
       parseInt(this.expenseFormGroup.value.amount),
@@ -167,7 +172,7 @@ export class BudgetViewComponent implements OnInit, OnChanges {
     this.categoryFormGroup.reset()
   }
 
-  preparePiChartData(){
+  preparePiChartData() {
     var categoriesAndSums = this.expenses.reduce((result, item) => {
       const {category, sum} = item;
       if (!result[category.name]) {
@@ -198,7 +203,8 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       ],
     };
   }
-  prepareBarChartData(){
+
+  prepareBarChartData() {
     const categoriesAndSumsTwo: { [key: string]: { category: Category; sum: number } } = this.expenses.reduce((result, item) => {
       const {category, sum} = item;
       if (!result[category.name]) {
@@ -233,9 +239,10 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       }
     };
   }
-  calculateDaysBetweenDeadlineAndToday( deadline: string): number {
-    const date1=new Date();
-    var deadlineDate=new Date(deadline)
+
+  calculateDaysBetweenDeadlineAndToday(deadline: string): number {
+    const date1 = new Date();
+    var deadlineDate = new Date(deadline)
     const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
     const timeDifference = Math.abs(deadlineDate.getTime() - date1.getTime()); // Calculate the time difference in milliseconds
     const daysDifference = Math.round(timeDifference / oneDayInMilliseconds); // Convert the time difference to days
