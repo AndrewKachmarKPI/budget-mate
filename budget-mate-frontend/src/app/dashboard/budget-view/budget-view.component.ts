@@ -1,5 +1,4 @@
 import {Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import {formatDate} from '@angular/common';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import Cleave from "cleave.js";
 import {ChartComponent} from "ng-apexcharts";
@@ -81,7 +80,11 @@ export class BudgetViewComponent implements OnInit, OnChanges {
   }
 
   public id: string;
-
+  public icons=[
+    "bx bx-heart",
+    "bx bx-alarm",
+    "bx bx-dollar"
+  ]
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     /*this.cardService.findAllMyCards().subscribe(
@@ -104,6 +107,7 @@ export class BudgetViewComponent implements OnInit, OnChanges {
         "Mastercard",
         "02/28",
         "532"),]
+
     /*this.budgetService.findBudgetById(this.id).subscribe(
       (data: BudgetDto) => {
         this.budget = data;
@@ -148,6 +152,37 @@ export class BudgetViewComponent implements OnInit, OnChanges {
             "03/28",
             "533"),
           new ExpensesCategoryDto("0","Entertainment","bx bx-pie-chart-alt bx-xs","2023-05-21"))])
+    this.expenses = [new TransactionDto("2023-08-23",500,new CardDto("1",
+        "5430122998547682",
+        "Andrew",
+        "Mastercard",
+        "02/28",
+        "532"),
+      new ExpensesCategoryDto("0","Gachi","bx bx-heart bx-xs","2023-05-21")),
+      new TransactionDto("2023-08-22",500,new CardDto("1",
+          "4326985694683880",
+          "Khiliy",
+          "Visa",
+          "03/28",
+          "533"),
+        new ExpensesCategoryDto("0","Entertainment","bx bx-pie-chart-alt bx-xs","2023-05-21"))]
+    this.expensesView = this.expenses;
+    this.categories=[new ExpensesCategoryDto("0","Entertainment","bx bx-pie-chart-alt bx-xs","2023-05-21"),
+      new ExpensesCategoryDto("0","Gachi","bx bx-heart bx-xs","2023-05-21")]
+    this.totalExpenses = this.expenses.reduce((accumulator, currentItem) => {
+      return accumulator + currentItem.sum;
+    }, 0);
+    this.categories = this.expenses.reduce((uniqueArray: ExpensesCategoryDto[], trans: TransactionDto) => {
+      if (!uniqueArray.some((p) => p.name === trans.category.name)) {
+        uniqueArray.push(trans.category);
+      }
+      return uniqueArray;
+    }, []);
+    console.log(this.categories)
+    console.log(this.expenses)
+    console.log(this.expensesView)
+
+    this.categoryFilterSelected("None")
     const n = document.getElementById("addAmount");
     if (n) {
       new Cleave(n, {
@@ -283,4 +318,10 @@ export class BudgetViewComponent implements OnInit, OnChanges {
 
     return daysDifference;
   }
+  saveCategory(){
+    const tempCat=new ExpensesCategoryDto("0",this.categoryFormGroup.value.name,this.categoryFormGroup.value.icon,new Date().toString())
+    this.categories.push(tempCat)
+    console.log(this.categories)
+  }
+
 }

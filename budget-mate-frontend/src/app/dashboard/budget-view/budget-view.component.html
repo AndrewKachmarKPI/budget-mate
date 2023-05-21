@@ -126,6 +126,14 @@
                     <option value="{{category.name}}" *ngFor="let category of categories">{{category.name}}</option>
                   </select>
                 </div>
+                <div class="col-auto d-flex justify-content-end align-items-center" style="margin-right: 1rem">
+                  <button class="btn btn-secondary" tabindex="0" type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#addCategoryModal">
+                    <i class="bx bx-plus me-0 me-sm-1"></i>
+                    <span class="d-none d-sm-inline-block ">Add new category</span>
+                  </button>
+                </div>
                 <div class="col-auto d-flex justify-content-end align-items-center">
                   <button class="btn btn-primary" tabindex="0" type="button" data-bs-toggle="offcanvas"
                           data-bs-target="#offcanvasAddUser">
@@ -317,6 +325,137 @@
         </button>
         <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
         <input type="hidden"></div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal create category -->
+<div class="modal fade" id="addCategoryModal" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #f="ngForm" [formGroup]="categoryFormGroup" (ngSubmit)="saveCategory()">
+      <div class="modal-header">
+        <h5 class="modal-title">Add new category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                (click)="clearCategoryForm()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 mb-3">
+            <label class="form-label w-100" for="modalSelectName">Select name</label>
+            <div class="input-group input-group-merge has-validation">
+              <input id="modalSelectName"
+                     name="modalSelectIcon"
+                     class="form-control credit-card-mask"
+                     type="text"
+                     placeholder="i.e. Entertainment"
+                     aria-describedby="modalAddCategory2"
+                     formControlName="name">
+            </div>
+            <div class="fv-plugins-message-container invalid-feedback"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding:2rem">
+        <div class="col">
+          <div class="form-check custom-option custom-option-image custom-option-image-radio">
+            <label class="form-check-label custom-option-content" for="customRadioImg1">
+              <span class="badge bg-label-primary rounded p-2">
+                <i class="bx bx-alarm"></i>
+              </span>
+            </label>
+            <input name="customRadioImage"
+                   class="form-check-input"
+                   type="radio"
+                   value="customRadioImg1"
+                   id="customRadioImg1" checked
+                   formControlName="icon"/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-check custom-option custom-option-image custom-option-image-radio">
+            <label class="form-check-label custom-option-content" for="customRadioImg2">
+              <span class="badge bg-label-primary rounded p-2">
+                <i class="bx bx-happy"></i>
+              </span>
+            </label>
+            <input name="customRadioImage"
+                   class="form-check-input"
+                   type="radio"
+                   value="customRadioImg2"
+                   id="customRadioImg2"
+                   formControlName="icon"/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-check custom-option custom-option-image custom-option-image-radio">
+            <label class="form-check-label custom-option-content" for="customRadioImg3">
+              <span class="badge bg-label-primary rounded p-2">
+                <i class="bx bx-heart"></i>
+              </span>
+            </label>
+            <input name="customRadioImage"
+                   class="form-check-input"
+                   type="radio"
+                   value="customRadioImg3"
+                   id="customRadioImg3"
+                   formControlName="icon"/>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding:2rem">
+        <div class="col">
+          <div class="form-check custom-option custom-option-image custom-option-image-radio">
+            <label class="form-check-label custom-option-content" for="customRadioImg1">
+              <span class="badge bg-label-primary rounded p-2">
+                <i class="bx bx-diamond"></i>
+              </span>
+            </label>
+            <input name="customRadioImage"
+                   class="form-check-input"
+                   type="radio"
+                   value="customRadioImg1"
+                   id="customRadioImg4" checked
+                   formControlName="icon"/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-check custom-option custom-option-image custom-option-image-radio">
+            <label class="form-check-label custom-option-content" for="customRadioImg2">
+              <span class="badge bg-label-primary rounded p-2">
+                <i class="bx bx-dollar"></i>
+              </span>
+            </label>
+            <input name="customRadioImage"
+                   class="form-check-input"
+                   type="radio"
+                   value="customRadioImg2"
+                   id="customRadioImg5"
+                   formControlName="icon"/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-check custom-option custom-option-image custom-option-image-radio">
+            <label class="form-check-label custom-option-content" for="customRadioImg3">
+              <span class="badge bg-label-primary rounded p-2">
+                <i class="bx bx-album"></i>
+              </span>
+            </label>
+            <input name="customRadioImage"
+                   class="form-check-input"
+                   type="radio"
+                   value="customRadioImg3"
+                   id="customRadioImg6"
+                   formControlName="icon"/>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal" (click)="clearCategoryForm()">Close
+        </button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!this.categoryFormGroup.valid">
+          Save
+        </button>
+      </div>
     </form>
   </div>
 </div>
