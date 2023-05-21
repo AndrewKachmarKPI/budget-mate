@@ -110,6 +110,7 @@ public class Mapper {
                 .expenses(budget.getExpenses())
                 .deadline(budget.getDeadline())
                 .category(budget.getCategory())
+                .created(budget.getCreated())
                 .transactions(budget.getTransactions().stream().map(this::transactionEntityToDto).collect(Collectors.toList()))
                 .build();
     }
