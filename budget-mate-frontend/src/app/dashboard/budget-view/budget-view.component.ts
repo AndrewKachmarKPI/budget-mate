@@ -104,70 +104,9 @@ export class BudgetViewComponent implements OnInit, OnChanges {
   public barChartOptions: Partial<BarChartOptions>;
 
   constructor() {
-    var categoriesAndSums = this.expenses.reduce((result, item) => {
-      const {category, amount} = item;
-      if (!result[category.name]) {
-        result[category.name] = {category, sum: 0};
-      }
-      result[category.name].sum += amount;
-      return result;
-    }, {});
-    this.pieChartOptions = {
-      series: Object.values(categoriesAndSums).map(({sum}) => sum),
-      chart: {
-        width: 480,
-        type: "pie",
-      },
-      labels: Object.values(categoriesAndSums).map(({category}) => category.name),
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: "bottom"
-            }
-          }
-        }
-      ],
-    };
+    this.preparePiChartData()
 
-
-    const categoriesAndSumsTwo: { [key: string]: { category: Category; sum: number } } = this.expenses.reduce((result, item) => {
-      const {category, amount} = item;
-      if (!result[category.name]) {
-        result[category.name] = {category, sum: 0};
-      }
-      result[category.name].sum += amount;
-      return result;
-    }, {});
-
-    var topFiveCategories = Object.values(categoriesAndSumsTwo)
-      .sort((a, b) => b.sum - a.sum)
-      .slice(0, 5)
-      .map(({category, sum}) => ({category: category, sum}));
-    console.log(Object.values(topFiveCategories).map(({category}) => category.name))
-    this.barChartOptions = {
-      series: [{data: Object.values(topFiveCategories).map(({sum}) => sum)}],
-      chart: {
-        type: "bar",
-        height: 350,
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      xaxis: {
-        categories: Object.values(topFiveCategories)
-          .map(({category}) => category.name)
-      }
-    };
+    this.prepareBarChartData()
   }
 
   ngOnInit(): void {
@@ -202,6 +141,7 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       category: this.categories.find(item => item.name === this.expenseFormGroup.value.categoryName)
     }
     this.expenses.push(tempExpense)
+    this.categoryFilterSelected(this.selectedCategory)
     console.log(this.expenses)
     this.clearExpenseForm()
   }
@@ -212,5 +152,72 @@ export class BudgetViewComponent implements OnInit, OnChanges {
 
   clearCategoryForm() {
     this.categoryFormGroup.reset()
+  }
+
+  preparePiChartData(){
+    var categoriesAndSums = this.expenses.reduce((result, item) => {
+      const {category, amount} = item;
+      if (!result[category.name]) {
+        result[category.name] = {category, sum: 0};
+      }
+      result[category.name].sum += amount;
+      return result;
+    }, {});
+    this.pieChartOptions = {
+      series: Object.values(categoriesAndSums).map(({sum}) => sum),
+      chart: {
+        width: 480,
+        type: "pie",
+      },
+      labels: Object.values(categoriesAndSums).map(({category}) => category.name),
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ],
+    };
+  }
+  prepareBarChartData(){
+    const categoriesAndSumsTwo: { [key: string]: { category: Category; sum: number } } = this.expenses.reduce((result, item) => {
+      const {category, amount} = item;
+      if (!result[category.name]) {
+        result[category.name] = {category, sum: 0};
+      }
+      result[category.name].sum += amount;
+      return result;
+    }, {});
+
+    var topFiveCategories = Object.values(categoriesAndSumsTwo)
+      .sort((a, b) => b.sum - a.sum)
+      .slice(0, 5)
+      .map(({category, sum}) => ({category: category, sum}));
+    console.log(Object.values(topFiveCategories).map(({category}) => category.name))
+    this.barChartOptions = {
+      series: [{data: Object.values(topFiveCategories).map(({sum}) => sum)}],
+      chart: {
+        type: "bar",
+        height: 350,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: Object.values(topFiveCategories)
+          .map(({category}) => category.name)
+      }
+    };
   }
 }
