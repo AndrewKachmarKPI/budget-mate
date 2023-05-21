@@ -12,13 +12,14 @@ import {UsersComponent} from './users/users/users.component';
 import {PricingComponent} from './pricing/pricing.component';
 import {SavingsDashboardComponent} from './savings-dashboard/savings-dashboard.component';
 import {NgApexchartsModule} from "ng-apexcharts";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BillingDetailsComponent} from './billing-details/billing-details.component';
 import {InvoiceComponent} from './invoice/invoice.component';
 import {ImageCropperModule} from "ngx-image-cropper";
 import {FrequentyAskedQuestionsComponent} from './frequenty-asked-questions/frequenty-asked-questions.component';
 import {HttpClientModule} from "@angular/common/http";
 import { ImgBoxComponent } from './img-box/img-box.component';
+import { BudgetViewComponent } from './budget-view/budget-view.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ImgBoxComponent } from './img-box/img-box.component';
     BillingDetailsComponent,
     InvoiceComponent,
     FrequentyAskedQuestionsComponent,
-    ImgBoxComponent
+    ImgBoxComponent,
+    BudgetViewComponent
   ],
   imports: [
     CommonModule,
@@ -43,7 +45,8 @@ import { ImgBoxComponent } from './img-box/img-box.component';
     DashboardRoutingModule,
     NgApexchartsModule,
     ReactiveFormsModule,
-    ImageCropperModule
+    ImageCropperModule,
+    FormsModule
   ]
 })
 
