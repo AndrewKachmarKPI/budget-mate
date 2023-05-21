@@ -1,0 +1,8 @@
+.chart-row {
+  display: flex;
+}
+
+.chart-container {
+  flex: 1;
+  margin-right: 10px; /* Add margin between the charts */
+}
