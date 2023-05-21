@@ -14,7 +14,7 @@ import {
   ApexNonAxisChartSeries,
   ApexResponsive,
 } from "ng-apexcharts";
-//import {BudgetService} from "../../_services/budget.service";
+import {BudgetService} from "../../_services/budget.service";
 import {BudgetDto} from "../../auth/models/budget-dto";
 import {CardDto} from "../../models/card-dto";
 import {ActivatedRoute} from "@angular/router";
@@ -73,27 +73,23 @@ export class BudgetViewComponent implements OnInit, OnChanges {
   public budget: BudgetDto;
   public cards: CardDto[];
 
-  constructor(/*private budgetService: BudgetService,*/
+  constructor(private budgetService: BudgetService,
               private route: ActivatedRoute,
               private toastrService: ToastrService,
-              /*private cardService: CardService*/) {
+              private cardService: CardService) {
   }
 
   public id: string;
-  public icons=[
-    "bx bx-heart",
-    "bx bx-alarm",
-    "bx bx-dollar"
-  ]
+
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    /*this.cardService.findAllMyCards().subscribe(
+    this.cardService.findAllMyCards().subscribe(
       (data: CardDto[]) => {
         this.cards = data;
       },
       (error: any) => {
         this.toastrService.error("Oops! Couldn't retrieve cards information...");
-      })*/
+      })
     this.cards=[
       new CardDto("0",
                   "4326985694683880",
@@ -108,7 +104,7 @@ export class BudgetViewComponent implements OnInit, OnChanges {
         "02/28",
         "532"),]
 
-    /*this.budgetService.findBudgetById(this.id).subscribe(
+    this.budgetService.findBudgetById(this.id).subscribe(
       (data: BudgetDto) => {
         this.budget = data;
 
@@ -128,8 +124,8 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       },
       (error: any) => {
         this.toastrService.error("Oops! Couldn't retrieve budget information...");
-      });*/
-    this.budget=new BudgetDto(
+      });
+    /*this.budget=new BudgetDto(
       "0",
       "Test1",
       "Somebody",
@@ -165,10 +161,10 @@ export class BudgetViewComponent implements OnInit, OnChanges {
           "Visa",
           "03/28",
           "533"),
-        new ExpensesCategoryDto("0","Entertainment","bx bx-pie-chart-alt bx-xs","2023-05-21"))]
+        new ExpensesCategoryDto("0","Entertainment","bx bx-pie-chart-alt bx-xs","2023-05-21"))]*/
     this.expensesView = this.expenses;
-    this.categories=[new ExpensesCategoryDto("0","Entertainment","bx bx-pie-chart-alt bx-xs","2023-05-21"),
-      new ExpensesCategoryDto("0","Gachi","bx bx-heart bx-xs","2023-05-21")]
+    /*this.categories=[new ExpensesCategoryDto("0","Entertainment","bx bx-pie-chart-alt bx-xs","2023-05-21"),
+      new ExpensesCategoryDto("0","Gachi","bx bx-heart bx-xs","2023-05-21")]*/
     this.totalExpenses = this.expenses.reduce((accumulator, currentItem) => {
       return accumulator + currentItem.sum;
     }, 0);
@@ -178,9 +174,6 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       }
       return uniqueArray;
     }, []);
-    console.log(this.categories)
-    console.log(this.expenses)
-    console.log(this.expensesView)
 
     this.categoryFilterSelected("None")
     const n = document.getElementById("addAmount");
@@ -319,8 +312,15 @@ export class BudgetViewComponent implements OnInit, OnChanges {
     return daysDifference;
   }
   saveCategory(){
-    const tempCat=new ExpensesCategoryDto("0",this.categoryFormGroup.value.name,this.categoryFormGroup.value.icon,new Date().toString())
-    this.categories.push(tempCat)
+    this.budgetService.createCategory(this.categoryFormGroup.value.name,
+      this.categoryFormGroup.value.icon)
+      .subscribe(
+      (data: ExpensesCategoryDto) => {
+        this.categories.push(data)
+      },
+      (error: any) => {
+        this.toastrService.error("Oops! Couldn't save categories information...");
+      });
     console.log(this.categories)
   }
 

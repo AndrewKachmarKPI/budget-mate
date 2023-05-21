@@ -5,6 +5,7 @@ import {url} from "../../environments/environment";
 import {CreateBudgetDto} from "../auth/models/create-budget-dto";
 import {BudgetDto} from "../auth/models/budget-dto";
 import {TransactionDto} from "../models/transaction-dto";
+import {ExpensesCategoryDto} from "../auth/models/expenses-category-dto";
 @Injectable({
   providedIn: 'root'
 })
@@ -30,5 +31,10 @@ export class BudgetService {
     const params = { sum, categoryId, cardId };
     const req = `${url}/budgets`;
     return this.http.put<TransactionDto>(`${req}/${budgetId}`, params);
+  }
+  createCategory(name:string,icon:string): Observable<ExpensesCategoryDto>{
+    const params = { name,icon };
+    const req = `${url}/categories`;
+    return this.http.put<ExpensesCategoryDto>(`${req}`, params);
   }
 }
