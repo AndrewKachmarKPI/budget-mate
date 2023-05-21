@@ -78,42 +78,40 @@ export class BudgetViewComponent implements OnInit, OnChanges {
               private route: ActivatedRoute,
               private toastrService: ToastrService,
               private cardService: CardService) {
-
-    budgetService.findBudgetById(this.id).subscribe(
-      (data: BudgetDto) => {
-        this.budget = data;
-      },
-      (error: any) => {
-        this.toastrService.error("Oops! Couldn't retrieve budget information...");
-      });
-    this.expenses = this.budget.transactions;
-    this.expensesView = this.expenses;
-    this.totalExpenses = this.expenses.reduce((accumulator, currentItem) => {
-      return accumulator + currentItem.sum;
-    }, 0);
-    this.categories = this.expenses.reduce((uniqueArray: ExpensesCategoryDto[], trans: TransactionDto) => {
-      if (!uniqueArray.some((p) => p.name === trans.category.name)) {
-        uniqueArray.push(trans.category);
-      }
-      return uniqueArray;
-    }, []);
-    cardService.findAllMyCards().subscribe(
-      (data: CardDto[]) => {
-        this.cards = data;
-      },
-      (error: any) => {
-        this.toastrService.error("Oops! Couldn't retrieve cards information...");
-      })
-
-    this.preparePiChartData()
-
-    this.prepareBarChartData()
   }
 
   public id: string;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    this.cardService.findAllMyCards().subscribe(
+      (data: CardDto[]) => {
+        this.cards = data;
+      },
+      (error: any) => {
+        this.toastrService.error("Oops! Couldn't retrieve cards information...");
+      })
+    this.budgetService.findBudgetById(this.id).subscribe(
+      (data: BudgetDto) => {
+        this.budget = data;
+
+        this.expenses = this.budget.transactions;
+        this.expensesView = this.expenses;
+        this.totalExpenses = this.expenses.reduce((accumulator, currentItem) => {
+          return accumulator + currentItem.sum;
+        }, 0);
+        this.categories = this.expenses.reduce((uniqueArray: ExpensesCategoryDto[], trans: TransactionDto) => {
+          if (!uniqueArray.some((p) => p.name === trans.category.name)) {
+            uniqueArray.push(trans.category);
+          }
+          return uniqueArray;
+        }, []);
+        this.preparePiChartData()
+        this.prepareBarChartData()
+      },
+      (error: any) => {
+        this.toastrService.error("Oops! Couldn't retrieve budget information...");
+      });
     const n = document.getElementById("addAmount");
     if (n) {
       new Cleave(n, {
