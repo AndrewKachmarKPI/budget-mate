@@ -71,7 +71,7 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path:'budgets/1',
+        path:'budgets/:id',
         component:BudgetViewComponent,
         //canActivate:[AuthGuard]
       }

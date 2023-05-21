@@ -6,7 +6,8 @@
           <div class="content-left">
             <h5>Budget</h5>
             <div class="d-flex align-items-end mt-2">
-              <h2 class="mb-0 me-2">{{budget}}$</h2>
+              <h2 class="mb-0 me-2">{{budget.budget}}$</h2>
+<!--              <h2 class="mb-0 me-2">{{budget}}$</h2>-->
             </div>
           </div>
           <span class="badge bg-label-primary rounded p-2">
@@ -24,7 +25,8 @@
             <h5>Expenses</h5>
             <div class="d-flex align-items-end mt-2">
               <h2 class="mb-0 me-2">{{totalExpenses}}$</h2>
-              <small class="text-success">({{(this.totalExpenses / this.budget) * 100}}%)</small>
+              <small class="text-success">({{(this.totalExpenses / this.budget.budget) * 100}}%)</small>
+<!--              <small class="text-success">({{(this.totalExpenses / this.budget) * 100}}%)</small>-->
             </div>
           </div>
           <span class="badge bg-label-danger rounded p-2">
@@ -41,7 +43,8 @@
           <div class="content-left">
             <h5>Left</h5>
             <div class="d-flex align-items-end mt-2">
-              <h2 class="mb-0 me-2">{{budget - totalExpenses}}$</h2>
+              <h2 class="mb-0 me-2">{{budget.budget - totalExpenses}}$</h2>
+<!--              <h2 class="mb-0 me-2">{{budget - totalExpenses}}$</h2>-->
             </div>
           </div>
           <span class="badge bg-label-success rounded p-2">
@@ -58,7 +61,8 @@
           <div class="content-left">
             <h5>Days left</h5>
             <div class="d-flex align-items-end mt-2">
-              <h2 class="mb-0 me-2">12</h2>
+              <h2 class="mb-0 me-2">{{calculateDaysBetweenDeadlineAndToday(budget.deadline)}}</h2>
+<!--              <h2 class="mb-0 me-2">12</h2>-->
             </div>
           </div>
           <span class="badge bg-label-primary rounded p-2">
@@ -142,7 +146,8 @@
           <tr>
             <th class="control sorting_disabled" rowspan="1" colspan="1" style="width: 0px;" aria-label=""></th>
             <th class="sorting sorting_desc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                style="width: 201px;" aria-label="User: activate to sort column ascending" aria-sort="descending">Name
+                style="width: 201px;" aria-label="User: activate to sort column ascending" aria-sort="descending">Card
+<!--                style="width: 201px;" aria-label="User: activate to sort column ascending" aria-sort="descending">Name-->
             </th>
             <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
                 style="width: 147px;" aria-label="Role: activate to sort column ascending">Category
@@ -159,7 +164,11 @@
           <tr class="odd" *ngFor="let expense of expensesView">
             <td class="control" tabindex="0" style=""></td>
             <td class="sorting_1">
-              {{expense.name}}
+              <i class="fab fa-lg me-3" [ngClass]="[getCardType(expense.cardDto)]"></i>
+              <strong>
+                {{expense.cardDto.holderName}}
+              </strong>
+<!--              {{expense.name}}-->
             </td>
             <td>
               <span class="text-truncate d-flex align-items-center">
@@ -170,12 +179,17 @@
               </span>
             </td>
             <td>
+              <span class="fw-semibold">{{expense.sum}}$</span>
+            </td>
+            <td>{{expense.created}}</td>
+            <td class="dtr-hidden" style="display: none;">
+              <span class="badge bg-label-success">{{expense.created}}</span>
               <span class="fw-semibold">{{expense.amount}}$</span>
             </td>
-            <td>{{expense.date}}</td>
-            <td class="dtr-hidden" style="display: none;">
-              <span class="badge bg-label-success">{{expense.date}}</span>
-            </td>
+<!--            <td>{{expense.date}}</td>-->
+<!--            <td class="dtr-hidden" style="display: none;">-->
+<!--              <span class="badge bg-label-success">{{expense.date}}</span>-->
+<!--            </td>-->
           </tr>
           </tbody>
         </table>
@@ -265,13 +279,23 @@
         <div class="fv-plugins-message-container invalid-feedback"></div>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="add-user-contact">Date</label>
-        <input type="date"
-               id="add-user-contact"
-               class="form-control phone-mask"
-               aria-label="john.doe@example.com"
-               name="date"
-               formControlName="date">
+        <label class="form-label" for="card">Card</label>
+        <select id="card"
+                class="select2 form-select select2-hidden-accessible"
+                data-select2-id="card"
+                tabindex="-1"
+                aria-hidden="true"
+                formControlName="card">
+          <option value="" data-select2-id="2">Select</option>
+          <option value="{{card.cardId}}" *ngFor="let card of cards">{{card.type}} {{card.number}}</option>
+        </select>
+<!--        <label class="form-label" for="add-user-contact">Date</label>-->
+<!--        <input type="date"-->
+<!--               id="add-user-contact"-->
+<!--               class="form-control phone-mask"-->
+<!--               aria-label="john.doe@example.com"-->
+<!--               name="date"-->
+<!--               formControlName="date">-->
       </div>
       <div class="mb-3">
         <label class="form-label" for="country">Category</label>
@@ -283,7 +307,8 @@
                   aria-hidden="true"
                   formControlName="categoryName">
             <option value="" data-select2-id="2">Select</option>
-            <option value="{{category.name}}" *ngFor="let category of categories">{{category.name}}</option>
+            <option value="{{category.categoryId}}" *ngFor="let category of categories">{{category.name}}</option>
+<!--            <option value="{{category.name}}" *ngFor="let category of categories">{{category.name}}</option>-->
           </select>
         </div>
         <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit" style="margin-top: 1rem"

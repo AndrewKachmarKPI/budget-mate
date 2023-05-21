@@ -15,6 +15,14 @@ import {
   ApexNonAxisChartSeries,
   ApexResponsive,
 } from "ng-apexcharts";
+import {BudgetService} from "../../_services/budget.service";
+import {BudgetDto} from "../../auth/models/budget-dto";
+import {CardDto} from "../../models/card-dto";
+import {ActivatedRoute} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
+import {TransactionDto} from "../../models/transaction-dto";
+import {CardService} from "../../_services/card.service";
+import {ExpensesCategoryDto} from "../../auth/models/expenses-category-dto";
 
 interface Category {
   icon: string;
@@ -41,45 +49,12 @@ export type PieChartOptions = {
   styleUrls: ['./budget-view.component.css']
 })
 export class BudgetViewComponent implements OnInit, OnChanges {
-  public categories = [{icon: "bx bx-pie-chart-alt bx-xs", name: "Entertainment"},
-    {icon: "bx bx-heart bx-xs", name: "Gachi"}]
-  private expenses = [
-    {
-      name: "Kek1",
-      amount: 500,
-      date: "2023-05-12",
-      category: {icon: "bx bx-pie-chart-alt bx-xs", name: "Entertainment"}
-    },
-    {name: "Kek2", amount: 300, date: "2023-05-11", category: {icon: "bx bx-heart bx-xs", name: "Gachi"}},
-    {
-      name: "Kek3",
-      amount: 200,
-      date: "2023-05-10",
-      category: {icon: "bx bx-pie-chart-alt bx-xs", name: "Entertainment"}
-    },
-    {
-      name: "Kek4",
-      amount: 200,
-      date: "2023-05-09",
-      category: {icon: "bx bx-pie-chart-alt bx-xs", name: "Entertainment"}
-    },
-    {
-      name: "Kek5",
-      amount: 200,
-      date: "2023-05-08",
-      category: {icon: "bx bx-pie-chart-alt bx-xs", name: "Entertainment"}
-    },
-    {
-      name: "Kek6",
-      amount: 200,
-      date: "2023-05-07",
-      category: {icon: "bx bx-pie-chart-alt bx-xs", name: "Entertainment"}
-    },
-  ]
+  public categories:ExpensesCategoryDto[];
+  private expenses:TransactionDto[] =[]
   public expenseFormGroup = new FormGroup({
     name: new FormControl('', Validators.compose([Validators.required])),
     amount: new FormControl('', Validators.compose([Validators.required, Validators.min(0), Validators.pattern('^[0-9]*$')])),
-    date: new FormControl('', Validators.compose([Validators.required])),
+    card: new FormControl('', Validators.compose([Validators.required])),
     categoryName: new FormControl('', Validators.compose([Validators.required]))
   });
   public categoryFormGroup = new FormGroup({
@@ -89,36 +64,67 @@ export class BudgetViewComponent implements OnInit, OnChanges {
 
   @Input()
   public selectedCategory = "None";
-  public expensesView = this.expenses;
-  public budget = 5000;
-  public totalExpenses = this.expenses.reduce((accumulator, currentItem) => {
-    if (currentItem.amount > 5) {
-      return accumulator + currentItem.amount;
-    }
-    return accumulator;
-  }, 0);
+  public expensesView:TransactionDto[];
+  public totalExpenses=0;
   @ViewChild("pieChart") pieChart: ChartComponent;
   @ViewChild("barChart") barChart: ChartComponent;
 
   public pieChartOptions: Partial<PieChartOptions>;
   public barChartOptions: Partial<BarChartOptions>;
+  public budget:BudgetDto;
+  public cards:CardDto[];
+  constructor( private budgetService:BudgetService,
+               private route: ActivatedRoute,
+               private toastrService:ToastrService,
+               private cardService:CardService) {
 
-  constructor() {
+    budgetService.findBudgetById(this.id).subscribe(
+      (data: BudgetDto) => {
+        this.budget = data;
+      },
+      (error: any) => {
+        this.toastrService.error("Oops! Couldn't retrieve budget information...");
+      })
+    this.expenses=this.budget.transactions;
+    this.expensesView=this.expenses;
+    this.totalExpenses= this.expenses.reduce((accumulator, currentItem) => {
+      return accumulator + currentItem.sum;
+    }, 0);
+    this.categories=this.expenses.reduce((uniqueArray: ExpensesCategoryDto[], trans: TransactionDto) => {
+      if (!uniqueArray.some((p) => p.name === trans.category.name)) {
+        uniqueArray.push(trans.category);
+      }
+      return uniqueArray;
+    }, []);
+    cardService.findAllMyCards().subscribe(
+      (data: CardDto[]) => {
+        this.cards = data;
+      },
+      (error: any) => {
+        this.toastrService.error("Oops! Couldn't retrieve cards information...");
+      })
+
     this.preparePiChartData()
 
     this.prepareBarChartData()
   }
-
+  public id:string;
   ngOnInit(): void {
+    this.id=this.route.snapshot.params['id']
     const n = document.getElementById("addAmount");
-
     if (n) {
       new Cleave(n, {
         numeral: true
       });
     }
   }
-
+  public getCardType(card: CardDto) {
+    if (card.type == "Visa") return "fa-cc-visa";
+    if (card.type == "Mastercard") return "fa-cc-mastercard";
+    if (card.type == "American Express") return "fa-cc-amex";
+    if (card.type == "Discover") return "fa-cc-discover";
+    return "fa-credit-card";
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedCategory']) {
       this.categoryFilterSelected(this.selectedCategory);
@@ -130,19 +136,26 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       this.expensesView = this.expenses;
       return
     }
-    this.expensesView = this.expenses.filter(item => item.category.name === categoryName);
+    this.expensesView = this.expenses
+      .filter(item => item.category.name === categoryName);
   }
 
   saveExpense() {
-    var tempExpense = {
-      name: this.expenseFormGroup.value.name,
-      amount: parseInt(this.expenseFormGroup.value.amount),
-      date: this.expenseFormGroup.value.date,
-      category: this.categories.find(item => item.name === this.expenseFormGroup.value.categoryName)
-    }
-    this.expenses.push(tempExpense)
-    this.categoryFilterSelected(this.selectedCategory)
-    console.log(this.expenses)
+    var temp:TransactionDto;
+    this.budgetService.createTransaction(
+      this.id,
+      parseInt(this.expenseFormGroup.value.amount),
+      this.expenseFormGroup.value.categoryName,
+      this.expenseFormGroup.value.card).subscribe(
+      (data: TransactionDto) => {
+        temp = data;
+        this.expenses.push(temp)
+        this.categoryFilterSelected(this.selectedCategory)
+      },
+      (error: any) => {
+        this.toastrService.error("Oops! Couldn't save the expense...");
+      })
+
     this.clearExpenseForm()
   }
 
@@ -156,11 +169,11 @@ export class BudgetViewComponent implements OnInit, OnChanges {
 
   preparePiChartData(){
     var categoriesAndSums = this.expenses.reduce((result, item) => {
-      const {category, amount} = item;
+      const {category, sum} = item;
       if (!result[category.name]) {
         result[category.name] = {category, sum: 0};
       }
-      result[category.name].sum += amount;
+      result[category.name].sum += sum;
       return result;
     }, {});
     this.pieChartOptions = {
@@ -187,11 +200,11 @@ export class BudgetViewComponent implements OnInit, OnChanges {
   }
   prepareBarChartData(){
     const categoriesAndSumsTwo: { [key: string]: { category: Category; sum: number } } = this.expenses.reduce((result, item) => {
-      const {category, amount} = item;
+      const {category, sum} = item;
       if (!result[category.name]) {
         result[category.name] = {category, sum: 0};
       }
-      result[category.name].sum += amount;
+      result[category.name].sum += sum;
       return result;
     }, {});
 
@@ -219,5 +232,14 @@ export class BudgetViewComponent implements OnInit, OnChanges {
           .map(({category}) => category.name)
       }
     };
+  }
+  calculateDaysBetweenDeadlineAndToday( deadline: string): number {
+    const date1=new Date();
+    var deadlineDate=new Date(deadline)
+    const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+    const timeDifference = Math.abs(deadlineDate.getTime() - date1.getTime()); // Calculate the time difference in milliseconds
+    const daysDifference = Math.round(timeDifference / oneDayInMilliseconds); // Convert the time difference to days
+
+    return daysDifference;
   }
 }
