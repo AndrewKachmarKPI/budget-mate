@@ -6,6 +6,7 @@ import {CreateBudgetDto} from "../auth/models/create-budget-dto";
 import {BudgetDto} from "../auth/models/budget-dto";
 import {TransactionDto} from "../models/transaction-dto";
 import {ExpensesCategoryDto} from "../auth/models/expenses-category-dto";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,18 +24,34 @@ export class BudgetService {
     return this.http.get<BudgetDto[]>(req);
   }
 
+  public getAllCategories(): Observable<ExpensesCategoryDto[]> {
+    const req = `${url}/budget/categories`
+    return this.http.get<ExpensesCategoryDto[]>(req);
+  }
+
   findBudgetById(budgetId: string): Observable<BudgetDto> {
     const req = `${url}/budgets`
     return this.http.get<BudgetDto>(`${req}/${budgetId}`);
   }
+
   createTransaction(budgetId: string, sum: number, categoryId: string, cardId: string): Observable<TransactionDto> {
-    const params = { sum, categoryId, cardId };
     const req = `${url}/budgets`;
-    return this.http.put<TransactionDto>(`${req}/${budgetId}`, params);
+    return this.http.put<TransactionDto>(`${req}/${budgetId}`, {}, {
+      params: {
+        sum: sum,
+        categoryId: categoryId,
+        cardId: cardId
+      }
+    });
   }
-  createCategory(name:string,icon:string): Observable<ExpensesCategoryDto>{
-    const params = { name,icon };
-    const req = `${url}/categories`;
-    return this.http.put<ExpensesCategoryDto>(`${req}`, params);
+
+  createCategory(name: string, icon: string): Observable<ExpensesCategoryDto> {
+    const req = `${url}/budgets/categories`;
+    return this.http.post<ExpensesCategoryDto>(`${req}`, {}, {
+      params: {
+        name: name,
+        icon: icon
+      }
+    });
   }
 }

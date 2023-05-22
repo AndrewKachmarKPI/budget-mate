@@ -90,6 +90,17 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       (error: any) => {
         this.toastrService.error("Oops! Couldn't retrieve cards information...");
       })
+    this.updateBudget();
+    this.categoryFilterSelected("None")
+    const n = document.getElementById("addAmount");
+    if (n) {
+      new Cleave(n, {
+        numeral: true
+      });
+    }
+  }
+
+  public updateBudget() {
     this.budgetService.findBudgetById(this.id).subscribe(
       (data: BudgetDto) => {
         this.budget = data;
@@ -121,14 +132,7 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       }
       return uniqueArray;
     }, []);
-
-    this.categoryFilterSelected("None")
-    const n = document.getElementById("addAmount");
-    if (n) {
-      new Cleave(n, {
-        numeral: true
-      });
-    }
+    // this.getCategory();
   }
 
   public getCardType(card: CardDto) {
@@ -163,8 +167,9 @@ export class BudgetViewComponent implements OnInit, OnChanges {
       this.expenseFormGroup.value.card).subscribe(
       (data: TransactionDto) => {
         temp = data;
-        this.expenses.push(temp)
-        this.categoryFilterSelected(this.selectedCategory)
+        this.expenses.push(temp);
+        this.categoryFilterSelected(this.selectedCategory);
+        this.updateBudget();
       },
       (error: any) => {
         this.toastrService.error("Oops! Couldn't save the expense...");
@@ -172,6 +177,15 @@ export class BudgetViewComponent implements OnInit, OnChanges {
 
     this.clearExpenseForm()
   }
+
+  public getCategory() {
+    this.budgetService.getAllCategories().subscribe({
+      next: (cat) => {
+        this.categories = cat;
+      }
+    })
+  }
+
 
   clearExpenseForm() {
     this.expenseFormGroup.reset()
@@ -258,16 +272,17 @@ export class BudgetViewComponent implements OnInit, OnChanges {
 
     return daysDifference;
   }
-  saveCategory(){
+
+  saveCategory() {
     this.budgetService.createCategory(this.categoryFormGroup.value.name,
       this.categoryFormGroup.value.icon)
       .subscribe(
-      (data: ExpensesCategoryDto) => {
-        this.categories.push(data)
-      },
-      (error: any) => {
-        this.toastrService.error("Oops! Couldn't save categories information...");
-      });
+        (data: ExpensesCategoryDto) => {
+          this.categories.push(data)
+        },
+        (error: any) => {
+          this.toastrService.error("Oops! Couldn't save categories information...");
+        });
     console.log(this.categories)
   }
 
