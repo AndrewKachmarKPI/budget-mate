@@ -21,9 +21,9 @@ public class CardEntity {
     private String cardId;
     @Column(nullable = false, unique = true)
     private String number;
-    @Column
+    @Column(nullable = false)
     private String name;
-    @Column
+    @Column(nullable = false)
     private String holder;
     @Column(nullable = false)
     private String expirationDate;

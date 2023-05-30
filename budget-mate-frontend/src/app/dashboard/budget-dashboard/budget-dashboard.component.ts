@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {BudgetService} from "../../_services/budget.service";
@@ -95,8 +95,6 @@ export class BudgetDashboardComponent implements OnInit, AfterViewInit {
 
   public getDateDifference(startDate: Date, endDate: Date): number {
     const timeDiff = endDate.getTime() - startDate.getTime();
-    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); // 1000 milliseconds * 3600 seconds * 24 hours
-
-    return daysDiff;
+    return Math.ceil(timeDiff / (1000 * 3600 * 24));
   }
 }

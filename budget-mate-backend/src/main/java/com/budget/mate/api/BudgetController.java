@@ -26,8 +26,8 @@ public class BudgetController {
     }
 
     @PostMapping("/categories")
-    public ResponseEntity<ExpensesCategoryDto> createBudgetCategory(@RequestParam("name") String name,
-                                                                    @RequestParam("icon") String icon) {
+    public ResponseEntity<ExpensesCategoryDto> createBudgetCategory(@RequestParam("name") @NotNull @NotEmpty @NotBlank String name,
+                                                                    @RequestParam("icon") @NotNull @NotEmpty @NotBlank String icon) {
         return ResponseEntity.ok(budgetService.createCategory(name, icon));
     }
 
@@ -42,15 +42,15 @@ public class BudgetController {
     }
 
     @GetMapping("/{budgetId}")
-    public ResponseEntity<BudgetDto> findAllBudgets(@PathVariable("budgetId") String budgetId) {
+    public ResponseEntity<BudgetDto> findAllBudgets(@PathVariable("budgetId") @NotNull @NotEmpty @NotBlank String budgetId) {
         return ResponseEntity.ok(budgetService.findBudgetById(budgetId));
     }
 
     @PutMapping("/{budgetId}")
-    public ResponseEntity<TransactionDto> findAllBudgets(@PathVariable("budgetId") String budgetId,
-                                                         @RequestParam("sum") Double sum,
-                                                         @RequestParam("categoryId") String categoryId,
-                                                         @RequestParam("cardId") String cardId) {
+    public ResponseEntity<TransactionDto> findAllBudgets(@PathVariable("budgetId") @NotNull @NotEmpty @NotBlank String budgetId,
+                                                         @RequestParam("sum") @NotNull Double sum,
+                                                         @RequestParam("categoryId") @NotNull @NotEmpty @NotBlank String categoryId,
+                                                         @RequestParam("cardId") @NotNull @NotEmpty @NotBlank String cardId) {
         return ResponseEntity.ok(budgetService.createTransaction(sum, budgetId, categoryId, cardId));
     }
 

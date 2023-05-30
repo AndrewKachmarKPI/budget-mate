@@ -18,7 +18,7 @@ import {BillingPlan} from "../../auth/models/billing-plan";
 export class BillingDetailsComponent implements OnInit {
 
 
-  invoices: any = [
+  public mockInvoices: any = [
     {
       code: '1XBDAS1',
       amount: 14,
@@ -60,13 +60,9 @@ export class BillingDetailsComponent implements OnInit {
       invoiceNumber: 1234
     },
   ];
-
-  /*public cards:any=[
-    {type:"mastercard",ownerName:"Tom McBride", expiration:"12/26", number:"4716313599689856",cvv:"133",isPrimary:true},
-    {type:"visa",ownerName:"Mildred Melnyk", expiration:"12/26", number:"5525132581415896",cvv:"144",isPrimary:false},
-  ]*/
   public cards: CardDto[] = [];
-  public statusesAndClasses = new Map<string, String>([
+  public billingPlan: BillingPlan = BillingPlan.BASIC;
+  public mockStatusesAndClasses = new Map<string, String>([
     ["Completed", 'badge bg-label-success me-1'],
     ["Active", 'badge bg-label-primary me-1'],
     ["Scheduled", 'badge bg-label-info me-1'],
@@ -78,21 +74,24 @@ export class BillingDetailsComponent implements OnInit {
     expiration: new FormControl('', Validators.compose([Validators.required, Validators.minLength(5)])),
     cvv: new FormControl('', Validators.compose([Validators.required, Validators.minLength(3)])),
   });
-
-  public billingPlan: BillingPlan = BillingPlan.BASIC;
+  public tempCard;
 
   constructor(private elementRef: ElementRef,
               private cardService: CardService,
               private userService: UserService,
               private toastrService: ToastrService) {
-    cardService.findAllMyCards().subscribe(
-      (data: CardDto[]) => {
-        this.cards = data;
+    this.fetchMyCards();
+  }
+
+  private fetchMyCards() {
+    this.cardService.findAllMyCards().subscribe({
+      next: (cards) => {
+        this.cards = cards;
       },
-      (error: any) => {
+      error: () => {
         this.toastrService.error("Oops! Couldn't retrieve cards information...");
       }
-    );
+    });
   }
 
   ngOnInit(): void {
@@ -101,81 +100,15 @@ export class BillingDetailsComponent implements OnInit {
         if (plan) this.billingPlan = plan;
       }
     });
-
-    const n = document.getElementById("modalAddCard");
-    const a = document.getElementById("modalAddCardExpiryDate");
-    const o = document.getElementById("modalAddCardCvv");
-    const name = document.getElementById("modalAddCardName");
-    const nEdit = document.getElementById("modalEditCard");
-    const aEdit = document.getElementById("modalEditCardExpiryDate");
-    const oEdit = document.getElementById("modalEditCardCvv");
-    const nameEdit = document.getElementById("modalEditCardName");
-
-    if (n) {
-      new Cleave(n, {
-        creditCard: !0
-      });
-    }
-    if (nEdit) {
-      new Cleave(nEdit, {
-        creditCard: !0
-      });
-    }
-    if (a) {
-      new Cleave(a, {
-        date: true,
-        delimiter: '/',
-        datePattern: ['m', 'y']
-      });
-    }
-    if (name) {
-      new Cleave(name, {
-        delimiter: '',
-        numericOnly: false,
-        uppercase: true,
-      });
-    }
-    if (aEdit) {
-      new Cleave(aEdit, {
-        date: true,
-        delimiter: '/',
-        datePattern: ['m', 'y']
-      });
-    }
-
-    if (o) {
-      new Cleave(o, {
-        numeral: true,
-        numeralPositiveOnly: true
-      });
-    }
-    if (oEdit) {
-      new Cleave(oEdit, {
-        numeral: true,
-        numeralPositiveOnly: true
-      });
-    }
-    if (nameEdit) {
-      new Cleave(nameEdit, {
-        delimiter: '',
-        numericOnly: false,
-        uppercase: true,
-      });
-    }
   }
 
-  public tempCard;
-
   saveCard(): void {
-
-
     const newCard = new CreateCardDto(
       this.cardFormGroup.value.number.replace(/\s/g, ""),
       this.cardFormGroup.value.ownerName,
       this.cardFormGroup.value.expiration,
       this.cardFormGroup.value.cvv,
     )
-
     this.cardService.addCard(newCard).subscribe({
       next: (card) => {
         this.cardFormGroup.reset()
@@ -189,7 +122,6 @@ export class BillingDetailsComponent implements OnInit {
   }
 
   saveCardChanges(card: CardDto) {
-
     card.number = this.cardFormGroup.value.number.replace(/\s/g, "")
     card.name = this.cardFormGroup.value.ownerName
     card.expirationDate = this.cardFormGroup.value.expiration
@@ -211,7 +143,6 @@ export class BillingDetailsComponent implements OnInit {
 
   loadCardDataToFormGroup(card: CardDto) {
     this.cardFormGroup.patchValue({
-      //щось цей клів не хоче апдейтити автоматом по загрузці, отож костиль
       number: this.formatCreditCardNumber(card.number),
       ownerName: card.name,
       expiration: card.expirationDate,
@@ -222,12 +153,10 @@ export class BillingDetailsComponent implements OnInit {
 
   determineCardType(cardNumber: string): string {
     const cleanedNumber = cardNumber.replace(/\D/g, '');
-
     const cardPatterns = {
       visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
       mastercard: /^5[1-5][0-9]{14}$/,
     };
-
     for (const cardType in cardPatterns) {
       if (cardPatterns[cardType].test(cleanedNumber)) {
         return cardType;
@@ -255,13 +184,10 @@ export class BillingDetailsComponent implements OnInit {
   }
 
   formatCreditCardNumber(cardNumber: string): string {
-    //formats my digit sequence in a manner that this cleave would format
     const pattern = '9999 9999 9999 9999';
-
     if (pattern) {
       const formattedNumber = cardNumber.replace(/\D/g, '');
       let formattedString = '';
-
       let j = 0;
       for (let i = 0; i < formattedNumber.length; i++) {
         if (j < pattern.length && pattern.charAt(j) === '9') {
@@ -272,10 +198,8 @@ export class BillingDetailsComponent implements OnInit {
           j = formattedString.length;
         }
       }
-
       return formattedString.trim();
     }
-
     return cardNumber;
   }
 

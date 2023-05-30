@@ -26,15 +26,15 @@ public class BankController {
     }
 
     @PostMapping("/top-up")
-    public ResponseEntity<BankDto> topUpBank(@RequestParam("bankId") String bankId,
-                                             @RequestParam("cardId") String cardId,
-                                             @RequestParam("sum") Double sum) {
+    public ResponseEntity<BankDto> topUpBank(@RequestParam("bankId") @NotNull @NotEmpty @NotBlank String bankId,
+                                             @RequestParam("cardId") @NotNull @NotEmpty @NotBlank String cardId,
+                                             @RequestParam("sum") @NotNull Double sum) {
         return ResponseEntity.ok(bankService.topUpBank(bankId, cardId, sum));
     }
 
     @PutMapping("/close")
-    public ResponseEntity<BankDto> closeBank(@RequestParam("bankId") String bankId,
-                                             @RequestParam("cardId") String cardId) {
+    public ResponseEntity<BankDto> closeBank(@RequestParam("bankId") @NotNull @NotEmpty @NotBlank String bankId,
+                                             @RequestParam("cardId") @NotNull @NotEmpty @NotBlank String cardId) {
         return ResponseEntity.ok(bankService.closeBank(bankId, cardId));
     }
 

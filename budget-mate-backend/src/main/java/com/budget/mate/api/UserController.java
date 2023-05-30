@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/change-avatar")
-    public ResponseEntity<String> changeAvatar(@RequestParam("fileId") String fileId) {
+    public ResponseEntity<String> changeAvatar(@RequestParam("fileId") @NotNull @NotEmpty @NotBlank  String fileId) {
         return ResponseEntity.ok(userService.changeAvatar(fileId));
     }
 
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @PutMapping("/promote")
-    public ResponseEntity<UserDto> promoteUser(@RequestParam("role") String role) {
+    public ResponseEntity<UserDto> promoteUser(@RequestParam("role") @NotNull @NotEmpty @NotBlank  String role) {
         return ResponseEntity.ok(userService.changeBilling(UserRoles.valueOf(role)));
     }
 }

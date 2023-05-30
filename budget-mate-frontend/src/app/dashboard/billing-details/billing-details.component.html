@@ -60,11 +60,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let invoice of invoices">
+                    <tr *ngFor="let invoice of mockInvoices">
                       <td><strong>{{invoice.code}}</strong></td>
                       <td>{{invoice.invoiceDate}}</td>
                       <td><strong>{{invoice.amount}}$</strong></td>
-                      <td><span class="{{this.statusesAndClasses[invoice.status]}}">{{invoice.status}}</span></td>
+                      <td><span class="{{this.mockStatusesAndClasses[invoice.status]}}">{{invoice.status}}</span></td>
                       <td>
                         {{invoice.paymentMethod}}
                       </td>

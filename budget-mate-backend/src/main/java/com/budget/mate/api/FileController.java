@@ -19,7 +19,7 @@ public class FileController {
 
 
     @GetMapping("/{fileId}")
-    public ResponseEntity<byte[]> getChatFile(@PathVariable("fileId") String fileId) {
+    public ResponseEntity<byte[]> getChatFile(@PathVariable("fileId") @NotNull @NotEmpty @NotBlank  String fileId) {
         ResponseEntity<byte[]> response;
         try {
             FileDto fileDto = fileService.findFileById(fileId);
