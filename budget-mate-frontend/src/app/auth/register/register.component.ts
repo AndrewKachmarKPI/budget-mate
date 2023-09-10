@@ -1,13 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../_services/auth.service';
 import {ToastrService} from "ngx-toastr";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {StorageService} from '../../_services/storage.service';
-import {NgModule} from "@angular/core";
-import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {animate, style, transition, trigger} from "@angular/animations";
 import {RegisterUserDto} from "../models/register-user-dto";
+import {AuthService} from "../services/auth.service";
+import {StorageService} from "../../dashboard/services/storage.service";
 
 @Component({
   selector: 'app-register',

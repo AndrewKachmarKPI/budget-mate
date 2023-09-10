@@ -4,6 +4,7 @@ import com.budget.mate.domain.FileEntity;
 import com.budget.mate.dto.FileDto;
 import com.budget.mate.mapper.Mapper;
 import com.budget.mate.repositories.FileRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,13 +16,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
-    @Resource
-    private FileRepository fileRepository;
-    @Resource
-    private Mapper bm;
-    private static final List<String> defaultAvatars = List.of("anaconda.png", "chicken.png", "deer.png",
-            "jaguar.png", "koi.png", "panda-bear.png", "pelican.png", "pork.png", "shark.png", "turtle.png");
+    private final FileRepository fileRepository;
+    private final Mapper bm;
+    private static final List<String> defaultAvatars = List.of("anaconda.png", "chicken.png", "deer.png", "jaguar.png", "koi.png", "panda-bear.png", "pelican.png", "pork.png", "shark.png", "turtle.png");
 
     @Override
     public void loadDefaultAvatars() {

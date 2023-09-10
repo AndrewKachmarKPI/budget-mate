@@ -1,10 +1,9 @@
-export class FileDto {
-  constructor(public fileId: string,
-              public category: string,
-              public name: string,
-              public type: string,
-              public content: any[],
-              public url: string,
-              public size: number) {
-  }
+export interface FileDto {
+  fileId: string;
+  category: string;
+  name: string;
+  type: string;
+  content: any[];
+  url: string;
+  size: number;
 }

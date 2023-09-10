@@ -1,13 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
-import {login_url, url} from "../../environments/environment";
-import {RegisterUserDto} from "../auth/models/register-user-dto";
-import {UserDto} from "../auth/models/user-dto";
 import {TokenService} from "./token-service";
-import * as jwt_decode from 'jwt-decode';
 import jwtDecode from "jwt-decode";
-import {UserRoles} from "../auth/models/user-roles";
+import {RegisterUserDto} from "../models/register-user-dto";
+import {UserDto} from "../models/user-dto";
+import {login_url, url} from "../../../environments/environment";
 
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({

@@ -9,8 +9,8 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthService} from "../_services/auth.service";
-import {TokenService} from "../_services/token-service";
+import {AuthService} from "../services/auth.service";
+import {TokenService} from "../services/token-service";
 
 @Injectable({providedIn: 'root'})
 export class TokenInterceptor implements HttpInterceptor {

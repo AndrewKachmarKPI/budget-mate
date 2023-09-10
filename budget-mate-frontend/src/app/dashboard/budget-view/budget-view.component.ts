@@ -10,14 +10,14 @@ import {
   ApexXAxis,
   ChartComponent
 } from "ng-apexcharts";
-import {BudgetService} from "../../_services/budget.service";
 import {BudgetDto} from "../../auth/models/budget-dto";
 import {CardDto} from "../../models/card-dto";
 import {ActivatedRoute} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {TransactionDto} from "../../models/transaction-dto";
-import {CardService} from "../../_services/card.service";
 import {ExpensesCategoryDto} from "../../auth/models/expenses-category-dto";
+import {BudgetService} from "../services/budget.service";
+import {CardService} from "../services/card.service";
 
 interface Category {
   icon: string;

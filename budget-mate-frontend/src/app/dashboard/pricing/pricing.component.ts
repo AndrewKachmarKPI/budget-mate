@@ -5,7 +5,7 @@ import {BillingPlan} from "../../auth/models/billing-plan";
 import {UserRoles} from "../../auth/models/user-roles";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
-import {AuthService} from "../../_services/auth.service";
+import {AuthService} from "../../auth/services/auth.service";
 
 @Component({
   selector: 'app-pricing',

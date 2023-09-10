@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
-import {FileService} from "../../_services/file.service";
 import {FileDto} from "../../models/file-dto";
 import {UserDto} from "../../auth/models/user-dto";
+import {FileService} from "../services/file.service";
 
 
 @Component({

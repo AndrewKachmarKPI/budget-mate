@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {BudgetService} from "../../_services/budget.service";
 import {CreateBudgetDto} from "../../auth/models/create-budget-dto";
 import flatpickr from "flatpickr";
 import {BudgetDto} from "../../auth/models/budget-dto";
+import {BudgetService} from "../services/budget.service";
 
 @Component({
   selector: 'app-budget-dashboard',

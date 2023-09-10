@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {url} from "../../environments/environment";
-import {CardDto} from "../models/card-dto";
-import {CreateCardDto} from "../models/create-card-dto";
+import {CardDto} from "../../models/card-dto";
+import {url} from "../../../environments/environment";
+import {CreateCardDto} from "../../models/create-card-dto";
 
 @Injectable({
   providedIn: 'root'

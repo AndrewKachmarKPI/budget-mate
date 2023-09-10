@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
@@ -19,7 +22,7 @@ public class FileController {
 
 
     @GetMapping("/{fileId}")
-    public ResponseEntity<byte[]> getChatFile(@PathVariable("fileId") @NotNull @NotEmpty @NotBlank  String fileId) {
+    public ResponseEntity<byte[]> getChatFile(@PathVariable("fileId") @NotNull @NotEmpty @NotBlank String fileId) {
         ResponseEntity<byte[]> response;
         try {
             FileDto fileDto = fileService.findFileById(fileId);

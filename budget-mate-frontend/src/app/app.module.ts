@@ -8,12 +8,12 @@ import {AppRoutingModule} from "./app-routing.module";
 import {ToastrModule} from "ngx-toastr";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {NgxSpinnerModule} from "ngx-spinner";
-import {TokenInterceptor} from "./_helpers/token-interceptor";
-import {SpinnerInterceptor} from "./_helpers/spinner-interceptor";
 import {RegisterComponent} from './auth/register/register.component';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {NgApexchartsModule} from "ng-apexcharts";
 import {ImageCropperModule} from "ngx-image-cropper";
+import {TokenInterceptor} from "./auth/tools/token-interceptor";
+import {SpinnerInterceptor} from "./auth/tools/spinner-interceptor";
 
 
 @NgModule({

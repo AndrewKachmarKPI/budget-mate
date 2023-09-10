@@ -12,6 +12,7 @@ import com.budget.mate.enums.UserStatus;
 import com.budget.mate.mapper.Mapper;
 import com.budget.mate.repositories.ProfileRepository;
 import com.budget.mate.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,17 +23,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Resource
-    private UserRepository userRepository;
-    @Resource
-    private ProfileRepository profileRepository;
-    @Resource
-    private RoleService roleService;
-    @Resource
-    private FileService fileService;
-    @Resource
-    private Mapper mapper;
+    private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
+    private final RoleService roleService;
+    private final FileService fileService;
+    private final Mapper mapper;
 
     @Override
     @Transactional
@@ -40,7 +37,6 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(registerUserDto.getUsername())) {
             throw new RuntimeException("User with username [" + registerUserDto.getUsername() + "] already exits");
         }
-        System.out.println("INPUT_>" + registerUserDto);
         ProfileEntity profileEntity = profileRepository.save(ProfileEntity.builder()
                 .avatar(fileService.findAvatarUrlByName("chicken.png"))
                 .registered(LocalDateTime.now())

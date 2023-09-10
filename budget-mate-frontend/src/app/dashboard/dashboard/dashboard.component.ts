@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthService} from "../../_services/auth.service";
 import {bounceAnimation} from "angular-animations";
 import {NgxSpinnerService} from "ngx-spinner";
 import {UserDto} from "../../auth/models/user-dto";
 import {UserService} from "../services/user.service";
 import {BillingPlan} from "../../auth/models/billing-plan";
 import {UserRoles} from "../../auth/models/user-roles";
+import {AuthService} from "../../auth/services/auth.service";
 
 @Component({
   selector: 'app-dashboard',

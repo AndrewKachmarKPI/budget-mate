@@ -3,11 +3,11 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import Cleave from "cleave.js";
 import 'cleave.js/dist/addons/cleave-phone.i18n';
 import {CardDto} from "../../models/card-dto";
-import {CardService} from "../../_services/card.service";
 import {ToastrService} from "ngx-toastr";
 import {CreateCardDto} from "../../models/create-card-dto";
 import {UserService} from "../services/user.service";
 import {BillingPlan} from "../../auth/models/billing-plan";
+import {CardService} from "../services/card.service";
 
 @Component({
   selector: 'app-billing-details',
@@ -103,12 +103,12 @@ export class BillingDetailsComponent implements OnInit {
   }
 
   saveCard(): void {
-    const newCard = new CreateCardDto(
-      this.cardFormGroup.value.number.replace(/\s/g, ""),
-      this.cardFormGroup.value.ownerName,
-      this.cardFormGroup.value.expiration,
-      this.cardFormGroup.value.cvv,
-    )
+    const newCard: CreateCardDto = {
+      number: this.cardFormGroup.value.number.replace(/\s/g, ""),
+      name: this.cardFormGroup.value.ownerName,
+      expDate: this.cardFormGroup.value.expiration,
+      secretCode: this.cardFormGroup.value.cvv,
+    };
     this.cardService.addCard(newCard).subscribe({
       next: (card) => {
         this.cardFormGroup.reset()

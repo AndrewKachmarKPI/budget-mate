@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {url} from "../../environments/environment";
-import {CreateBudgetDto} from "../auth/models/create-budget-dto";
-import {BudgetDto} from "../auth/models/budget-dto";
-import {TransactionDto} from "../models/transaction-dto";
-import {ExpensesCategoryDto} from "../auth/models/expenses-category-dto";
+import {url} from "../../../environments/environment";
+import {CreateBudgetDto} from "../../auth/models/create-budget-dto";
+import {BudgetDto} from "../../auth/models/budget-dto";
+import {TransactionDto} from "../../models/transaction-dto";
+import {ExpensesCategoryDto} from "../../auth/models/expenses-category-dto";
 
 @Injectable({
   providedIn: 'root'

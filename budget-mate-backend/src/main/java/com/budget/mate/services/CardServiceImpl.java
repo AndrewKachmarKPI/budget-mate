@@ -6,6 +6,7 @@ import com.budget.mate.dto.CreateCardDto;
 import com.budget.mate.enums.CardType;
 import com.budget.mate.mapper.Mapper;
 import com.budget.mate.repositories.CardRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +16,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
-    @Resource
-    private Mapper mapper;
-    @Resource
-    private CardRepository cardRepository;
+    private final Mapper mapper;
+    private final CardRepository cardRepository;
 
     @Override
     public CardDto addCard(CreateCardDto cardDto) {

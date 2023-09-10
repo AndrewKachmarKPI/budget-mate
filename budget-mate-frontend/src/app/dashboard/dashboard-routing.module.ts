@@ -9,9 +9,9 @@ import {SavingsDashboardComponent} from "./savings-dashboard/savings-dashboard.c
 import {BillingDetailsComponent} from "./billing-details/billing-details.component";
 import {InvoiceComponent} from "./invoice/invoice.component";
 import {FrequentyAskedQuestionsComponent} from "./frequenty-asked-questions/frequenty-asked-questions.component";
-import {AuthGuard} from "../_helpers/auth-guard.service";
 import {UserRoles} from "../auth/models/user-roles";
 import {BudgetViewComponent} from "./budget-view/budget-view.component";
+import {AuthGuard} from "../auth/tools/auth-guard.service";
 
 const routes: Routes = [
   {
@@ -62,9 +62,8 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path:'budget/:id',
-        component:BudgetViewComponent,
-        //canActivate:[AuthGuard]
+        path: 'budget/:id',
+        component: BudgetViewComponent
       }
     ]
   }

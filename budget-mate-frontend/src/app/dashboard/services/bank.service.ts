@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {CreateBankDto} from "../models/create-bank-dto";
-import {BankDto} from "../models/bank-dto";
-import {url} from "../../environments/environment";
+import {CreateBankDto} from "../../models/create-bank-dto";
+import {BankDto} from "../../models/bank-dto";
+import {url} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'

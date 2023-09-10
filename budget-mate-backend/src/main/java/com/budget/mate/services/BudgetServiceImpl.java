@@ -4,6 +4,7 @@ import com.budget.mate.domain.*;
 import com.budget.mate.dto.*;
 import com.budget.mate.mapper.Mapper;
 import com.budget.mate.repositories.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,17 +17,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+
 public class BudgetServiceImpl implements BudgetService {
-    @Resource
-    private BudgetRepository budgetRepository;
-    @Resource
-    private ExpensesCategoryRepository categoryRepository;
-    @Resource
-    private TransactionRepository transactionRepository;
-    @Resource
-    private CardRepository cardRepository;
-    @Resource
-    private Mapper mapper;
+    private final BudgetRepository budgetRepository;
+    private final ExpensesCategoryRepository categoryRepository;
+    private final TransactionRepository transactionRepository;
+    private final CardRepository cardRepository;
+    private final Mapper mapper;
 
     @Override
     public ExpensesCategoryDto createCategory(String name, String icon) {

@@ -9,12 +9,12 @@ import {
 } from "ng-apexcharts";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import flatpickr from "flatpickr";
-import {BankService} from "../../_services/bank.service";
 import {ToastrService} from "ngx-toastr";
 import {CreateBankDto} from "../../models/create-bank-dto";
 import {BankDto} from "../../models/bank-dto";
-import {CardService} from "../../_services/card.service";
 import {CardDto} from "../../models/card-dto";
+import {BankService} from "../services/bank.service";
+import {CardService} from "../services/card.service";
 
 
 export type ChartOptions = {
@@ -161,10 +161,11 @@ export class SavingsDashboardComponent implements OnInit, AfterViewInit, AfterVi
 
   public createBank(closeBtn) {
     if (this.formGroup.valid) {
-      const createBankDto: CreateBankDto = new CreateBankDto(
-        this.controls['bankTitleControl'].value,
-        this.controls['goalControl'].value,
-        this.controls['deadlineControl'].value,)
+      const createBankDto: CreateBankDto = {
+        title: this.controls['bankTitleControl'].value,
+        goal: this.controls['goalControl'].value,
+        deadline: this.controls['deadlineControl'].value
+      }
       this.bankService.createBank(createBankDto).subscribe({
         next: (bank) => {
           closeBtn.click();

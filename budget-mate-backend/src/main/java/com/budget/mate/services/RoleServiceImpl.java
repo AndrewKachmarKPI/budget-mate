@@ -3,15 +3,16 @@ package com.budget.mate.services;
 import com.budget.mate.domain.RoleEntity;
 import com.budget.mate.enums.UserRoles;
 import com.budget.mate.repositories.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    @Resource
-    private RoleRepository repository;
+    private final RoleRepository repository;
 
     @Override
     public void createDefaultRoles() {

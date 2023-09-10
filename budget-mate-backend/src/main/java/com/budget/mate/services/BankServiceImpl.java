@@ -8,6 +8,7 @@ import com.budget.mate.dto.CreateBankDto;
 import com.budget.mate.mapper.Mapper;
 import com.budget.mate.repositories.BankRepository;
 import com.budget.mate.repositories.TransactionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,15 +20,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class BankServiceImpl implements BankService {
-    @Resource
-    private BankRepository bankRepository;
-    @Resource
-    private TransactionRepository transactionRepository;
-    @Resource
-    private Mapper bm;
-    @Resource
-    private CardService cardService;
+    private final BankRepository bankRepository;
+    private final TransactionRepository transactionRepository;
+    private final Mapper bm;
+    private final CardService cardService;
 
     @Override
     public BankDto createBank(CreateBankDto createBankDto) {
@@ -55,7 +53,7 @@ public class BankServiceImpl implements BankService {
     @Override
     public List<BankDto> findMyBanks() {
         return bankRepository.findAllByOwnerUsernameOrderByDeadlineDesc(bm.username())
-                .stream().map(bankEntity -> bm.bankEntityToDto(bankEntity))
+                .stream().map(bm::bankEntityToDto)
                 .collect(Collectors.toList());
     }
 

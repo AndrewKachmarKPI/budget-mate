@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../_services/auth.service';
-import {StorageService} from '../../_services/storage.service';
+import {AuthService} from '../services/auth.service';
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {animate, style, transition, trigger} from "@angular/animations";
-import {TokenService} from "../../_services/token-service";
+import {StorageService} from "../../dashboard/services/storage.service";
+import {TokenService} from "../services/token-service";
 
 @Component({
   selector: 'app-login',
