@@ -1,7 +1,6 @@
-export class RoleDto {
-  constructor(public icon?: string,
-              public style?: string,
-              public roleName?: string,
-              public created?: string) {
-  }
+export interface RoleDto {
+  icon?: string;
+  style?: string;
+  roleName?: string;
+  created?: string;
 }

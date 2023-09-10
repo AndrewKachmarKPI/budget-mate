@@ -1,8 +1,7 @@
-export class ProfileDto {
-  constructor(public firstName:string,
-              public lastName:string,
-              public email:string,
-              public phoneNumber:string,
-              public currency:string) {
-  }
+export interface ProfileDto {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  currency: string;
 }

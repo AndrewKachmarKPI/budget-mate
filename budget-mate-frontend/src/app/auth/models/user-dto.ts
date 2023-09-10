@@ -2,17 +2,16 @@ import {BillingPlan} from "./billing-plan";
 import {UserStatus} from "./user-status";
 import {RoleDto} from "./role-dto";
 
-export class UserDto {
-  constructor(public username?: string,
-              public userStatus?: UserStatus,
-              public firstName?: string,
-              public lastName?: string,
-              public email?: string,
-              public phoneNumber?: string,
-              public billingPlan?: BillingPlan,
-              public registered?: string,
-              public currency?: string,
-              public avatarId?: string,
-              public roles?: RoleDto[]) {
-  }
+export interface UserDto {
+  username?: string;
+  userStatus?: UserStatus;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  billingPlan?: BillingPlan;
+  registered?: string;
+  currency?: string;
+  avatarId?: string;
+  roles?: RoleDto[];
 }

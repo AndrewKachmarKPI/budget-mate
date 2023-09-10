@@ -96,11 +96,13 @@ export class AccountSettingsComponent implements OnInit {
 
   public saveProfile() {
     if (this.profileGroup.valid) {
-      const dto: ProfileDto = new ProfileDto(this.controls['firstName'].value,
-        this.controls['lastName'].value,
-        this.controls['email'].value,
-        this.controls['phoneNumber'].value,
-        this.controls['currency'].value);
+      const dto: ProfileDto = {
+        firstName: this.controls['firstName'].value,
+        lastName: this.controls['lastName'].value,
+        email: this.controls['email'].value,
+        phoneNumber: this.controls['phoneNumber'].value,
+        currency: this.controls['currency'].value
+      };
       this.userService.changeProfile(dto).subscribe({
         next: () => {
           this.toast.success("Profile updated");

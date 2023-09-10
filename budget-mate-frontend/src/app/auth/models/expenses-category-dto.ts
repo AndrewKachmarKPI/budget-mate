@@ -1,7 +1,6 @@
-export class ExpensesCategoryDto {
-  constructor(public categoryId: string,
-              public name: string,
-              public icon: string,
-              public created: string) {
-  }
+export interface ExpensesCategoryDto {
+  categoryId: string;
+  name: string;
+  icon: string;
+  created: string;
 }

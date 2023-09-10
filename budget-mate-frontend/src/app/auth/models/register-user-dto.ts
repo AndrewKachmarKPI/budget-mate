@@ -1,6 +1,5 @@
-export class RegisterUserDto {
-  constructor(public username?: string,
-              public email?: string,
-              public password?:string) {
-  }
+export interface RegisterUserDto {
+  username?: string;
+  email?: string;
+  password?: string;
 }

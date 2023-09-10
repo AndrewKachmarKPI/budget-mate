@@ -1,7 +1,6 @@
-export class CreateBudgetDto {
-  constructor(public name: string,
-              public budget: number,
-              public category: string,
-              public deadline: string) {
-  }
+export interface CreateBudgetDto {
+  name: string;
+  budget: number;
+  category: string;
+  deadline: string;
 }

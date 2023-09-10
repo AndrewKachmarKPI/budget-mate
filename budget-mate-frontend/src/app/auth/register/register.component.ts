@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
       const username: string = this.formGroup.controls.username.value;
       const email = this.formGroup.controls.email.value;
       const password: string = this.formGroup.controls.password.value;
-      this.authService.register(new RegisterUserDto(username, email, password)).subscribe({
+      this.authService.register({username, email, password}).subscribe({
         next: (data) => {
           this.router.navigate(['/auth/login']).then(() => {
             this.toaster.success("Successfully signed up!");

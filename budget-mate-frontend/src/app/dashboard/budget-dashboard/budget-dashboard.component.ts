@@ -48,10 +48,12 @@ export class BudgetDashboardComponent implements OnInit, AfterViewInit {
 
   public createBudget(close: HTMLButtonElement) {
     if (this.formGroup.valid) {
-      const dto = new CreateBudgetDto(this.controls['name'].value,
-        this.controls['budget'].value,
-        this.controls['category'].value,
-        this.controls['deadline'].value)
+      const dto: CreateBudgetDto = {
+        name: this.controls['name'].value,
+        budget: this.controls['budget'].value,
+        category: this.controls['category'].value,
+        deadline: this.controls['deadline'].value
+      };
       this.budgetService.createBudget(dto).subscribe({
         next: (budget) => {
           this.budgets.push(budget);
